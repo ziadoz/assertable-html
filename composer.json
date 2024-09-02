@@ -1,0 +1,23 @@
+{
+    "name": "ziadoz/assert-html",
+    "description": "A library for performing test assertions on HTML.",
+    "homepage": "https://github.com/ziadoz/assert-html",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ziadoz\\AssertHtml\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jamie York",
+            "email": "ziadoz@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "ext-dom": "*",
+        "ext-libxml": "*"
+    }
+}
