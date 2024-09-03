@@ -53,7 +53,7 @@ class AssertableHtml
      */
     public function with(string $selector, ?callable $callback = null, bool $prepend = true): static
     {
-        $instance = new static($this->document, $prepend ? $this->selector . ' ' . $selector : $selector);
+        $instance = new static($this->document, ($prepend ? $this->selector . ' ' . $selector : $selector));
 
         if ($callback) {
             $callback($instance);
