@@ -117,12 +117,4 @@ class AssertableHtml
     {
         dd($this->getRootHtml());
     }
-
-    /**
-     * Create an assertable HTML instance from an HTML string.
-     */
-    public static function createFromString(string $content, string $selector = 'body'): static
-    {
-        return new static(HtmlDocument::createFromString($content), $selector);
-    }
 }

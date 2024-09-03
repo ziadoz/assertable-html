@@ -8,7 +8,7 @@ use Ziadoz\AssertHtml\AssertableHtml;
 
 class AssertableHtmlTest extends TestCase
 {
-    public function testCreateFromString(): void
+    public function testInstance(): void
     {
         $html = <<<HTML
         <!DOCTYPE html>
@@ -22,7 +22,7 @@ class AssertableHtmlTest extends TestCase
         </html>
         HTML;
 
-        $assertable = AssertableHtml::createFromString($html);
+        $assertable = new AssertableHtml(HtmlDocument::createFromString($html));
         $this->assertInstanceOf(HtmlDocument::class, $assertable->getDocument());
         $this->assertInstanceOf(HtmlElement::class, $assertable->getRoot());
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
