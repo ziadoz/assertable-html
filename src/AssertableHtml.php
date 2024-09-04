@@ -25,7 +25,7 @@ class AssertableHtml
     /**
      * Create an assertable HTML instance.
      */
-    public function __construct(HtmlDocument|HtmlElement $document, $selector = 'body')
+    public function __construct(HtmlDocument|HtmlElement $document, string $selector)
     {
         $this->document = $document;
         $this->selector = $selector;

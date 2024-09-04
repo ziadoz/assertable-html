@@ -10,7 +10,7 @@ class AssertableHtmlTest extends TestCase
 {
     public function testInstance(): void
     {
-        $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'));
+        $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'body');
         $this->assertInstanceOf(HtmlDocument::class, $assertable->getDocument());
         $this->assertInstanceOf(HtmlElement::class, $assertable->getRoot());
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
@@ -26,7 +26,7 @@ class AssertableHtmlTest extends TestCase
 
     public function testWithScoping(): void
     {
-        $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'));
+        $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
         $this->assertSame($document, $assertable->getDocument());
 
@@ -43,7 +43,7 @@ class AssertableHtmlTest extends TestCase
 
     public function testWithScopingClosure(): void
     {
-        $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'));
+        $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
         $this->assertSame($document, $assertable->getDocument());
 
@@ -62,7 +62,7 @@ class AssertableHtmlTest extends TestCase
 
     public function testElsewhereScoping(): void
     {
-        $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'));
+        $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
         $this->assertSame($document, $assertable->getDocument());
 
@@ -79,7 +79,7 @@ class AssertableHtmlTest extends TestCase
 
     public function testElsewhereScopingClosure(): void
     {
-        $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'));
+        $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
         $this->assertSame($document, $assertable->getDocument());
 
