@@ -10,7 +10,7 @@ class AssertableHtml
     /**
      * The document to perform assertions on.
      */
-    protected HtmlDocument $document;
+    protected HtmlDocument|HtmlElement $document;
 
     /**
      * The selector to identify the root element.
