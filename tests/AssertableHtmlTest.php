@@ -140,48 +140,59 @@ class AssertableHtmlTest extends TestCase
 
     public function testGetDocumentHtml(): void
     {
+        $html = <<<'HTML'
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Test Page Title</title>
+        </head>
+        <body>
+            <p>Test Paragraph 1</p>
+            <p>Test Paragraph 2</p>
+            <ul class="outer">
+                <li>Outer List Item 1</li>
+                <li>
+                    Outer List Item 2
+                    <ul class="inner">
+                        <li>Inner List Item 1</li>
+                        <li>Inner List Item 2</li>
+                    </ul>
+                </li>
+            </ul>
+        </body>
+        </html>
+        HTML;
+
         $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'body');
-        $this->assertXmlStringEqualsXmlString(
-            <<<'HTML'
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Test Page Title</title>
-            </head>
-            <body>
-                <p>Test Paragraph 1</p>
-                <p>Test Paragraph 2</p>
-                <ul class="outer">
-                    <li>Outer List Item 1</li>
-                    <li>
-                        Outer List Item 2
-                        <ul class="inner">
-                            <li>Inner List Item 1</li>
-                            <li>Inner List Item 2</li>
-                        </ul>
-                    </li>
-                </ul>
-            </body>
-            </html>
-            HTML,
-            $assertable->getDocumentHtml(),
-        );
+        $this->assertXmlStringEqualsXmlString($html, $assertable->getDocumentHtml());
+
+        $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'ul.outer');
+        $this->assertXmlStringEqualsXmlString($html, $assertable->getDocumentHtml());
     }
     public function testGetRootHtml(): void
     {
+        // The indentation here is from HtmlDocument...
+        $html = <<<'HTML'
+        <ul class="outer">
+          <li>Outer List Item 1</li>
+          <li>
+                    Outer List Item 2
+                    <ul class="inner"><li>Inner List Item 1</li><li>Inner List Item 2</li></ul>
+                </li>
+        </ul>
+        HTML;
+
         $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'ul.outer');
-        $this->assertXmlStringEqualsXmlString(
-            // The indentation here is down to HtmlDocument...
-            <<<'HTML'
-            <ul class="outer">
-              <li>Outer List Item 1</li>
-              <li>
-                        Outer List Item 2
-                        <ul class="inner"><li>Inner List Item 1</li><li>Inner List Item 2</li></ul>
-                    </li>
-            </ul>
-            HTML,
-            $assertable->getRootHtml(),
-        );
+        $this->assertXmlStringEqualsXmlString($html, $assertable->getRootHtml());
+
+        $html = <<<'HTML'
+        <ul class="inner">
+          <li>Inner List Item 1</li>
+          <li>Inner List Item 2</li>
+        </ul>
+        HTML;
+
+        $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'ul.inner');
+        $this->assertXmlStringEqualsXmlString($html, $assertable->getRootHtml());
     }
 }

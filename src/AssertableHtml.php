@@ -93,7 +93,7 @@ class AssertableHtml
      */
     public function getDocumentHtml(): string
     {
-        return $this->root->ownerDocument->saveHtml();
+        return $this->getDocument()->saveHtml();
     }
 
     /**
@@ -101,7 +101,7 @@ class AssertableHtml
      */
     public function getRootHtml(): string
     {
-        return $this->root->ownerDocument->saveHtml($this->root);
+        return $this->getDocument()->saveHtml($this->getRoot() instanceof HtmlElement ? $this->getRoot() : null);
     }
 
     /**
