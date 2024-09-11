@@ -26,36 +26,30 @@ class AssertableHtmlTest extends TestCase
 
     public function testWithScoping(): void
     {
-        $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'), 'body');
+        $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
-        $this->assertSame($document, $assertable->getDocument());
 
         $assertableOuter = $assertable->with('ul.outer');
         $this->assertSame('UL', $assertableOuter->getRoot()->tagName);
         $this->assertSame('outer', $assertableOuter->getRoot()->classList->value);
-        $this->assertSame($document, $assertableOuter->getDocument());
 
         $assertableInner = $assertableOuter->with('ul.inner');
         $this->assertSame('UL', $assertableInner->getRoot()->tagName);
         $this->assertSame('inner', $assertableInner->getRoot()->classList->value);
-        $this->assertSame($document, $assertableInner->getDocument());
     }
 
     public function testWithScopingClosure(): void
     {
         $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
-        $this->assertSame($document, $assertable->getDocument());
 
-        $assertable->with('ul.outer', function (AssertableHtml $assertableOuter) use ($document): void {
-            $this->assertSame('UL', $assertableOuter->getRoot()->tagName);
-            $this->assertSame('outer', $assertableOuter->getRoot()->classList->value);
-            $this->assertSame($document, $assertableOuter->getDocument());
+        $assertable->with('ul.outer', function (AssertableHtml $assertable): void {
+            $this->assertSame('UL', $assertable->getRoot()->tagName);
+            $this->assertSame('outer', $assertable->getRoot()->classList->value);
 
-            $assertableOuter->with('ul.inner', function (AssertableHtml $assertableInner) use ($document): void {
-                $this->assertSame('UL', $assertableInner->getRoot()->tagName);
-                $this->assertSame('inner', $assertableInner->getRoot()->classList->value);
-                $this->assertSame($document, $assertableInner->getDocument());
+            $assertable->with('ul.inner', function (AssertableHtml $assertable): void {
+                $this->assertSame('UL', $assertable->getRoot()->tagName);
+                $this->assertSame('inner', $assertable->getRoot()->classList->value);
             });
         });
     }
@@ -64,34 +58,28 @@ class AssertableHtmlTest extends TestCase
     {
         $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
-        $this->assertSame($document, $assertable->getDocument());
 
         $assertableInner = $assertable->with('ul.inner');
         $this->assertSame('UL', $assertableInner->getRoot()->tagName);
         $this->assertSame('inner', $assertableInner->getRoot()->classList->value);
-        $this->assertSame($document, $assertableInner->getDocument());
 
         $assertableElsewhere = $assertable->elsewhere('ul.outer');
         $this->assertSame('UL', $assertableElsewhere->getRoot()->tagName);
         $this->assertSame('outer', $assertableElsewhere->getRoot()->classList->value);
-        $this->assertSame($document, $assertableElsewhere->getDocument());
     }
 
     public function testElsewhereScopingClosure(): void
     {
-        $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'), 'body');
+        $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
-        $this->assertSame($document, $assertable->getDocument());
 
-        $assertable->with('ul.inner', function (AssertableHtml $assertableInner) use ($document): void {
-            $this->assertSame('UL', $assertableInner->getRoot()->tagName);
-            $this->assertSame('inner', $assertableInner->getRoot()->classList->value);
-            $this->assertSame($document, $assertableInner->getDocument());
+        $assertable->with('ul.inner', function (AssertableHtml $assertable): void {
+            $this->assertSame('UL', $assertable->getRoot()->tagName);
+            $this->assertSame('inner', $assertable->getRoot()->classList->value);
 
-            $assertableInner->elsewhere('ul.outer', function (AssertableHtml $assertableElsewhere) use ($document): void {
-                $this->assertSame('UL', $assertableElsewhere->getRoot()->tagName);
-                $this->assertSame('outer', $assertableElsewhere->getRoot()->classList->value);
-                $this->assertSame($document, $assertableElsewhere->getDocument());
+            $assertable->elsewhere('ul.outer', function (AssertableHtml $assertable): void {
+                $this->assertSame('UL', $assertable->getRoot()->tagName);
+                $this->assertSame('outer', $assertable->getRoot()->classList->value);
             });
         });
     }
@@ -101,11 +89,15 @@ class AssertableHtmlTest extends TestCase
         $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'), 'body');
         $this->assertSame($document, $assertable->getDocument());
 
-        $assertable->with('ul.inner', function (AssertableHtml $assertableInner) use ($document): void {
-            $this->assertSame($document, $assertableInner->getDocument());
+        $assertable->with('ul.inner', function (AssertableHtml $assertable) use ($document): void {
+            $this->assertSame($document, $assertable->getDocument());
 
-            $assertableInner->elsewhere('ul.outer', function (AssertableHtml $assertableElsewhere) use ($document): void {
-                $this->assertSame($document, $assertableElsewhere->getDocument());
+            $assertable->with('li:first-of-type', function (AssertableHtml $assertable) use ($document): void {
+                $this->assertSame($document, $assertable->getDocument());
+            });
+
+            $assertable->elsewhere('ul.outer', function (AssertableHtml $assertable) use ($document): void {
+                $this->assertSame($document, $assertable->getDocument());
             });
         });
     }
@@ -120,15 +112,15 @@ class AssertableHtmlTest extends TestCase
         $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'body');
         $this->assertSame('body', $assertable->getSelector());
 
-        $assertable->with('ul.inner', function (AssertableHtml $assertableInner): void {
-            $this->assertSame('body ul.inner', $assertableInner->getSelector());
+        $assertable->with('ul.inner', function (AssertableHtml $assertable): void {
+            $this->assertSame('body ul.inner', $assertable->getSelector());
 
-            $assertableInner->with('li:first-of-type', function (AssertableHtml $assertableInnerInner): void {
-                $this->assertSame('body ul.inner li:first-of-type', $assertableInnerInner->getSelector());
+            $assertable->with('li:first-of-type', function (AssertableHtml $assertable): void {
+                $this->assertSame('body ul.inner li:first-of-type', $assertable->getSelector());
             });
 
-            $assertableInner->elsewhere('ul.outer', function (AssertableHtml $assertableElsewhere): void {
-                $this->assertSame('ul.outer', $assertableElsewhere->getSelector());
+            $assertable->elsewhere('ul.outer', function (AssertableHtml $assertable): void {
+                $this->assertSame('ul.outer', $assertable->getSelector());
             });
         });
     }
