@@ -1,5 +1,5 @@
 <?php
-namespace Ziadoz\AssertHtml;
+namespace Ziadoz\AssertableHtml;
 
 use Dom\HtmlDocument;
 use Dom\HtmlElement;

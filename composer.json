@@ -6,8 +6,8 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Ziadoz\\AssertHtml\\": "src/",
-            "Ziadoz\\AssertHtml\\Tests\\": "tests/"
+            "Ziadoz\\AssertableHtml\\": "src/",
+            "Ziadoz\\AssertableHtml\\Tests\\": "tests/"
         }
     },
     "authors": [

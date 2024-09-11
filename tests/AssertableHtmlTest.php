@@ -1,10 +1,10 @@
 <?php
-namespace Ziadoz\AssertHtml\Tests;
+namespace Ziadoz\AssertableHtml\Tests;
 
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
 use PHPUnit\Framework\ExpectationFailedException;
-use Ziadoz\AssertHtml\AssertableHtml;
+use Ziadoz\AssertableHtml\AssertableHtml;
 
 class AssertableHtmlTest extends TestCase
 {

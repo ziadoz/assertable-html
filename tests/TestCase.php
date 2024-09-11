@@ -1,5 +1,5 @@
 <?php
-namespace Ziadoz\AssertHtml\Tests;
+namespace Ziadoz\AssertableHtml\Tests;
 
 use Dom\HtmlDocument;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
