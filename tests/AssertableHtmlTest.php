@@ -110,6 +110,11 @@ class AssertableHtmlTest extends TestCase
         });
     }
 
+    public function testGetRoot(): void
+    {
+        $this->markTestIncomplete('@todo');
+    }
+
     public function testGetSelector(): void
     {
         $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'body');
