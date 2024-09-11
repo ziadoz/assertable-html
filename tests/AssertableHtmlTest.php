@@ -95,4 +95,51 @@ class AssertableHtmlTest extends TestCase
             });
         });
     }
+
+    public function testGetDocumentHtml(): void
+    {
+        $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'body');
+        $this->assertXmlStringEqualsXmlString(
+            <<<'HTML'
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Test Page Title</title>
+            </head>
+            <body>
+                <p>Test Paragraph 1</p>
+                <p>Test Paragraph 2</p>
+                <ul class="outer">
+                    <li>Outer List Item 1</li>
+                    <li>
+                        Outer List Item 2
+                        <ul class="inner">
+                            <li>Inner List Item 1</li>
+                            <li>Inner List Item 2</li>
+                        </ul>
+                    </li>
+                </ul>
+            </body>
+            </html>
+            HTML,
+            $assertable->getDocumentHtml(),
+        );
+    }
+    public function testGetRootHtml(): void
+    {
+        $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'ul.outer');
+        $this->assertXmlStringEqualsXmlString(
+            // The indentation here is down to HtmlDocument...
+            <<<'HTML'
+            <ul class="outer">
+              <li>Outer List Item 1</li>
+              <li>
+                        Outer List Item 2
+                        <ul class="inner"><li>Inner List Item 1</li><li>Inner List Item 2</li></ul>
+                    </li>
+            </ul>
+            HTML,
+            $assertable->getRootHtml(),
+        );
+    }
 }
