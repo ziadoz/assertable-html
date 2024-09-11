@@ -8,9 +8,9 @@ use PHPUnit\Framework\Assert as PHPUnit;
 class AssertableHtml
 {
     /**
-     * The document to perform assertions on.
+     * The root HTML document or element to perform assertions on.
      */
-    protected HtmlDocument|HtmlElement $document;
+    protected HtmlDocument|HtmlElement $root;
 
     /**
      * The selector to identify the root element.
@@ -18,31 +18,25 @@ class AssertableHtml
     protected string $selector;
 
     /**
-     * The root element to perform assertions on.
-     */
-    protected HtmlElement $root;
-
-    /**
      * Create an assertable HTML instance.
      */
     public function __construct(HtmlDocument|HtmlElement $document, string $selector)
     {
-        $this->document = $document;
+        $this->root = $this->determineRoot($document, $selector);
         $this->selector = $selector;
-        $this->root = $this->determineRoot();
     }
 
     /**
      * Determine the root element to perform assertions on. The root can only ever be a single element.
      */
-    protected function determineRoot(): HtmlElement
+    protected function determineRoot(HtmlDocument|HtmlElement $document, string $selector): HtmlElement
     {
-        $nodes = $this->document->querySelectorAll($this->selector);
+        $nodes = $document->querySelectorAll($selector);
 
         PHPUnit::assertCount(
             1,
             $nodes,
-            sprintf('The root selector [%s] matches %d elements instead of exactly 1 element.', $this->selector, count($nodes)),
+            sprintf('The root selector [%s] matches %d elements instead of exactly 1 element.', $selector, count($nodes)),
         );
 
         return $nodes[0];
@@ -53,7 +47,7 @@ class AssertableHtml
      */
     public function with(string $selector, ?callable $callback = null, bool $prepend = true): static
     {
-        $instance = new static($this->document, ($prepend ? $this->selector . ' ' . $selector : $selector));
+        $instance = new static($this->getDocument(), ($prepend ? $this->selector . ' ' . $selector : $selector));
 
         if ($callback) {
             $callback($instance);
@@ -75,13 +69,13 @@ class AssertableHtml
      */
     public function getDocument(): HtmlDocument
     {
-        return $this->document;
+        return $this->root instanceof HtmlElement ? $this->root->ownerDocument : $this->root;
     }
 
     /**
-     * Return the underlying root HTML element instance.
+     * Return the root HTML document or element assertions are being performed on.
      */
-    public function getRoot(): HtmlElement
+    public function getRoot(): HtmlDocument|HtmlElement
     {
         return $this->root;
     }
@@ -91,7 +85,7 @@ class AssertableHtml
      */
     public function getDocumentHtml(): string
     {
-        return $this->document->saveHtml();
+        return $this->root->ownerDocument->saveHtml();
     }
 
     /**
@@ -99,7 +93,7 @@ class AssertableHtml
      */
     public function getRootHtml(): string
     {
-        return $this->document->saveHtml($this->root);
+        return $this->root->ownerDocument->saveHtml($this->root);
     }
 
     /**
