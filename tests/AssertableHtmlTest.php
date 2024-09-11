@@ -104,7 +104,20 @@ class AssertableHtmlTest extends TestCase
 
     public function testGetRoot(): void
     {
-        $this->markTestIncomplete('@todo');
+        $assertable = new AssertableHtml($document = $this->getFixtureHtml('skeleton.html'), 'body');
+        $this->assertSame($document->querySelector('body'), $assertable->getRoot());
+
+        $assertable->with('ul.inner', function (AssertableHtml $assertable) use ($document): void {
+            $this->assertSame($document->querySelector('body ul.inner'), $assertable->getRoot());
+
+            $assertable->with('li:first-of-type', function (AssertableHtml $assertable) use ($document): void {
+                $this->assertSame($document->querySelector('body ul.inner li:first-of-type'), $assertable->getRoot());
+            });
+
+            $assertable->elsewhere('ul.outer', function (AssertableHtml $assertable) use ($document): void {
+                $this->assertSame($document->querySelector('ul.outer'), $assertable->getRoot());
+            });
+        });
     }
 
     public function testGetSelector(): void
