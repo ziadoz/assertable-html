@@ -110,6 +110,24 @@ class AssertableHtmlTest extends TestCase
         });
     }
 
+    public function testGetSelector(): void
+    {
+        $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'body');
+        $this->assertSame('body', $assertable->getSelector());
+
+        $assertable->with('ul.inner', function (AssertableHtml $assertableInner): void {
+            $this->assertSame('body ul.inner', $assertableInner->getSelector());
+
+            $assertableInner->with('li:first-of-type', function (AssertableHtml $assertableInnerInner): void {
+                $this->assertSame('body ul.inner li:first-of-type', $assertableInnerInner->getSelector());
+            });
+
+            $assertableInner->elsewhere('ul.outer', function (AssertableHtml $assertableElsewhere): void {
+                $this->assertSame('ul.outer', $assertableElsewhere->getSelector());
+            });
+        });
+    }
+
     public function testGetDocumentHtml(): void
     {
         $assertable = new AssertableHtml($this->getFixtureHtml('skeleton.html'), 'body');
