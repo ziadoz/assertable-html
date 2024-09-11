@@ -81,6 +81,14 @@ class AssertableHtml
     }
 
     /**
+     * Return the selector used to find the root element.
+     */
+    public function getSelector(): string
+    {
+        return $this->selector;
+    }
+
+    /**
      * Return the document HTML.
      */
     public function getDocumentHtml(): string
