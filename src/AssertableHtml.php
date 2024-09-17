@@ -101,7 +101,7 @@ class AssertableHtml
      */
     public function getRootHtml(): string
     {
-        return $this->getDocument()->saveHtml($this->getRoot() instanceof HtmlElement ? $this->getRoot() : null);
+        return $this->getDocument()->saveHtml($this->getRoot());
     }
 
     /**
