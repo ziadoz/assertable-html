@@ -11,7 +11,7 @@ class TestCase extends PHPUnitTestCase
      */
     public function getFixture(string $file): string
     {
-        return file_get_contents(__DIR__ . '/fixtures/' . $file);
+        return file_get_contents(__DIR__ . '/Fixtures/' . $file);
     }
 
     /**
