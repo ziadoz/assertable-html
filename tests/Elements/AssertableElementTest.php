@@ -36,12 +36,12 @@ class AssertableElementTest extends TestCase
         $this->assertSame('<li>Foo</li>', $assertable->getHtml());
     }
 
-    public function testAssertMatches(): void
+    public function testAssertMatchesPasses(): void
     {
         $this->markTestSkipped('How do you do this?');
     }
 
-    public function testAssertDoesNotMatch(): void
+    public function testAssertMatchesFails(): void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage(
