@@ -5,6 +5,7 @@ use Dom\HtmlDocument;
 use Dom\HtmlElement;
 use Dom\NodeList;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Ziadoz\AssertableHtml\Utilities;
 
 class AssertableElement implements AssertableElementInterface
 {
@@ -73,5 +74,19 @@ class AssertableElement implements AssertableElementInterface
     public function dd(): never
     {
         dd($this->getHtml());
+    }
+
+    /** Assert the element matches the given selector. */
+    public function assertMatches(string $selector): void
+    {
+        PHPUnit::assertTrue(
+            $this->root->matches($selector),
+            sprintf(
+                "The element [%s] does not match the given selector [%s]:\n\n%s",
+                Utilities::selectorFromElement($this->root),
+                $selector,
+                $this->getHtml(),
+            ),
+        );
     }
 }
