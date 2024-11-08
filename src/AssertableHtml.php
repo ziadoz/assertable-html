@@ -4,6 +4,7 @@ namespace Ziadoz\AssertableHtml;
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Ziadoz\AssertableHtml\Elements\AssertableElement;
 
 class AssertableHtml
 {
@@ -50,6 +51,21 @@ class AssertableHtml
     public function elsewhere(string $selector, ?callable $callback = null): static
     {
         return $this->with($selector, $callback, false);
+    }
+
+    /** Perform assertions on an exact HTML element. */
+    public function element(string $selector, ?callable $callback = null): AssertableElement
+    {
+        $element = new AssertableElement($this->root, $this->selector . ' ' . $selector);
+
+        // @todo: Assert the element is valid (e.g. $element->assertValid())?
+        // @todo: Need a map of elements to assertables (e.g. "form" => AssertableForm::class).
+
+        if ($callback) {
+            $callback($element);
+        }
+
+        return $element;
     }
 
     /** Return the underlying HTML document instance. */

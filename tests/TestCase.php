@@ -2,6 +2,7 @@
 namespace Ziadoz\AssertableHtml\Tests;
 
 use Dom\HtmlDocument;
+use Dom\HtmlElement;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 class TestCase extends PHPUnitTestCase
@@ -10,5 +11,11 @@ class TestCase extends PHPUnitTestCase
     public function getFixtureHtml(string $file): HtmlDocument
     {
         return HtmlDocument::createFromString(file_get_contents(__DIR__ . '/Fixtures/' . $file));
+    }
+
+    /** Get a string of HTML as an HTML document. */
+    public function getFixtureElement(string $html, string $selector): HtmlElement
+    {
+        return HtmlDocument::createFromString($html, LIBXML_NOERROR)->querySelector($selector);
     }
 }

@@ -5,6 +5,7 @@ use Dom\HtmlDocument;
 use Dom\HtmlElement;
 use PHPUnit\Framework\ExpectationFailedException;
 use Ziadoz\AssertableHtml\AssertableHtml;
+use Ziadoz\AssertableHtml\Elements\AssertableElement;
 
 class AssertableHtmlTest extends TestCase
 {
@@ -82,6 +83,13 @@ class AssertableHtmlTest extends TestCase
                 $this->assertSame('outer', $assertable->getRoot()->classList->value);
             });
         });
+    }
+
+    public function testElement(): void
+    {
+        $element = new AssertableHtml($document = $this->getFixtureHtml('document.html'), 'body')->element('ul.inner');
+        $this->assertInstanceOf(AssertableElement::class, $element);
+        $this->assertSame($document->querySelector('body ul.inner'), $element->getRoot());
     }
 
     public function testGetDocument(): void
