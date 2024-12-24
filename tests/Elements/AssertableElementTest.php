@@ -7,14 +7,18 @@ use Ziadoz\AssertableHtml\Elements\AssertableElement;
 
 class AssertableElementTest extends TestCase
 {
-    public function test_determine_root_matches_multiple_elements()
+    public function test_determine_root_matches_no_elements(): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage(
-            'The element selector [li] matches 2 elements instead of exactly 1 element.' . "\n\n" .
-            '<li>Foo</li>' . "\n" .
-            '<li>Bar</li>'
-        );
+        $this->expectExceptionMessage('The element selector [foobar] matches 0 elements instead of exactly 1 element.');
+
+        new AssertableElement($this->getFixtureElement('<ul><li>Foo</li><li>Bar</li></ul>', 'ul'), 'foobar');
+    }
+
+    public function test_determine_root_matches_multiple_elements(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element selector [li] matches 2 elements instead of exactly 1 element.');
 
         new AssertableElement($this->getFixtureElement('<ul><li>Foo</li><li>Bar</li></ul>', 'ul'), 'li');
     }

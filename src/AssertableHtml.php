@@ -31,7 +31,11 @@ class AssertableHtml
         PHPUnit::assertCount(
             1,
             $nodes,
-            sprintf('The root selector [%s] matches %d elements instead of exactly 1 element.', $selector, count($nodes)),
+            trim(sprintf(
+                'The root selector [%s] matches %d elements instead of exactly 1 element.',
+                $selector,
+                count($nodes),
+            )),
         );
 
         return $nodes[0];

@@ -18,6 +18,14 @@ class AssertableHtmlTest extends TestCase
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
     }
 
+    public function test_determine_root_matches_no_elements(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The root selector [foobar] matches 0 elements instead of exactly 1 element.');
+
+        new AssertableHtml($this->getFixtureHtml('document.html'), 'foobar');
+    }
+
     public function test_determine_root_matches_multiple_elements(): void
     {
         $this->expectException(ExpectationFailedException::class);
