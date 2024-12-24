@@ -10,7 +10,7 @@ class Utilities
     {
         $parts = [mb_strtolower($element->tagName)];
 
-        if (trim((string) $id = $element->getAttribute('id')) !== '') {
+        if (trim($id = $element->id) !== '') {
             $parts[] = '#' . self::normaliseWhitespace(trim($id));
         }
 
