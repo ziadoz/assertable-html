@@ -1,7 +1,7 @@
 <?php
 namespace Ziadoz\AssertableHtml\Elements;
 
-use Dom\HtmlDocument;
+use Dom\Document;
 use Dom\HtmlElement;
 
 interface AssertableElementInterface
@@ -10,7 +10,7 @@ interface AssertableElementInterface
     public function __construct(HtmlElement $element, string $selector);
 
     /** Return the underlying HTML document instance. */
-    public function getDocument(): HtmlDocument;
+    public function getDocument(): Document;
 
     /** Return the root HTML element assertions are being performed on. */
     public function getRoot(): HtmlElement;

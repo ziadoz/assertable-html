@@ -1,6 +1,7 @@
 <?php
 namespace Ziadoz\AssertableHtml;
 
+use Dom\Document;
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
 use PHPUnit\Framework\Assert as PHPUnit;
@@ -15,7 +16,7 @@ class AssertableHtml
     protected string $selector;
 
     /** Create an assertable HTML instance. */
-    public function __construct(HtmlDocument|HtmlElement $document, string $selector)
+    public function __construct(HtmlDocument|Document|HtmlElement $document, string $selector)
     {
         $this->root = $this->determineRoot($document, $selector);
         $this->selector = $selector;
@@ -69,9 +70,9 @@ class AssertableHtml
     }
 
     /** Return the underlying HTML document instance. */
-    public function getDocument(): HtmlDocument
+    public function getDocument(): Document
     {
-        return $this->root instanceof HtmlElement ? $this->root->ownerDocument : $this->root;
+        return $this->root->ownerDocument;
     }
 
     /** Return the root HTML document or element assertions are being performed on. */

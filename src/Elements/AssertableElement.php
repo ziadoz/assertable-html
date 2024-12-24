@@ -1,9 +1,8 @@
 <?php
 namespace Ziadoz\AssertableHtml\Elements;
 
-use Dom\HtmlDocument;
+use Dom\Document;
 use Dom\HtmlElement;
-use Dom\NodeList;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Utilities;
 
@@ -47,7 +46,7 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Return the underlying HTML document instance. */
-    public function getDocument(): HtmlDocument
+    public function getDocument(): Document
     {
         return $this->root->ownerDocument;
     }
