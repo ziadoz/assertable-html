@@ -146,7 +146,7 @@ class AssertableElementTest extends TestCase
         HTML);
 
         new AssertableElement($html, 'p')->assertTextContains('Hello');
-        new AssertableElement($html, 'p')->assertTextContains('World!', false);
+        new AssertableElement($html, 'p')->assertTextContains('World', false);
     }
 
     public function test_assert_text_contains_fails(): void
@@ -178,7 +178,7 @@ class AssertableElementTest extends TestCase
         HTML);
 
         new AssertableElement($html, 'p')->assertTextDoesntContain('Foo');
-        new AssertableElement($html, 'p')->assertTextDoesntContain('Bar!', false);
+        new AssertableElement($html, 'p')->assertTextDoesntContain('Bar', false);
     }
 
     public function test_assert_text_doesnt_contain_fails(): void
@@ -195,7 +195,7 @@ class AssertableElementTest extends TestCase
         </div>
         HTML);
 
-        new AssertableElement($html, 'p')->assertTextDoesntContain('Hello, World!');
+        new AssertableElement($html, 'p')->assertTextDoesntContain('Hello, World');
     }
 
     public function test_assert_class_contains_passes(): void
