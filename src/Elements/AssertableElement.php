@@ -72,11 +72,11 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element matches the given selector. */
-    public function assertMatchesSelector(string $selector, ?string $message = null): void
+    public function assertMatchesSelector(string $selector): void
     {
         PHPUnit::assertTrue(
             $this->root->matches($selector),
-            $message ?? sprintf(
+            sprintf(
                 'The element [%s] does not match the given selector [%s].',
                 Utilities::selectorFromElement($this->root),
                 $selector,
@@ -85,11 +85,11 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element doesn't match the given selector. */
-    public function assertDoesntMatchSelector(string $selector, ?string $message = null): void
+    public function assertDoesntMatchSelector(string $selector): void
     {
         PHPUnit::assertFalse(
             $this->root->matches($selector),
-            $message ?? sprintf(
+            sprintf(
                 'The element [%s] matches the given selector [%s].',
                 Utilities::selectorFromElement($this->root),
                 $selector,
@@ -98,11 +98,11 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element's classes contains the given class. */
-    public function assertClassContains(string $class, ?string $message = null): void
+    public function assertClassContains(string $class): void
     {
         PHPUnit::assertTrue(
             $this->root->classList->contains($class),
-            $message ?? sprintf(
+            sprintf(
                 'The element [%s] class does not match the given class [%s].',
                 Utilities::selectorFromElement($this->root),
                 '.' . $class,
@@ -111,11 +111,11 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element's classes doesn't contain the given class. */
-    public function assertClassDoesntContain(string $class, ?string $message = null): void
+    public function assertClassDoesntContain(string $class): void
     {
         PHPUnit::assertFalse(
             $this->root->classList->contains($class),
-            $message ?? sprintf(
+            sprintf(
                 'The element [%s] class matches the given class [%s].',
                 Utilities::selectorFromElement($this->root),
                 '.' . $class,
