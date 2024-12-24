@@ -18,10 +18,9 @@ class Utilities
         }
 
         if (count($element->classList) > 0) {
-            $parts = array_merge($parts, array_map(
-                fn (string $class): string => '.' . $class,
-                iterator_to_array($element->classList->getIterator()),
-            ));
+            foreach ($element->classList as $class) {
+                $parts[] = '.' . $class;
+            }
         }
 
         return implode('', $parts);
