@@ -32,9 +32,10 @@ class AssertableHtml
             1,
             $nodes,
             trim(sprintf(
-                'The root selector [%s] matches %d elements instead of exactly 1 element.',
+                "The root selector [%s] matches %d elements instead of exactly 1 element.\n\n%s",
                 $selector,
                 count($nodes),
+                Utilities::nodesToMatchesHtml($nodes),
             )),
         );
 

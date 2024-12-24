@@ -31,9 +31,10 @@ class AssertableElement implements AssertableElementInterface
             1,
             $nodes,
             trim(sprintf(
-                'The element selector [%s] matches %d elements instead of exactly 1 element.',
+                "The element selector [%s] matches %d elements instead of exactly 1 element.\n\n%s",
                 $selector,
                 count($nodes),
+                Utilities::nodesToMatchesHtml($nodes),
             )),
         );
 

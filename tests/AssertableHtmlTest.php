@@ -29,7 +29,18 @@ class AssertableHtmlTest extends TestCase
     public function test_determine_root_matches_multiple_elements(): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('The root selector [p] matches 2 elements instead of exactly 1 element.');
+        $this->expectExceptionMessage(<<<'MSG'
+        The root selector [p] matches 2 elements instead of exactly 1 element.
+
+        2 Matching Element(s) Found
+        ============================
+
+        1. [p]:
+        > <p>Test Paragraph 1</p>
+
+        2. [p]:
+        > <p>Test Paragraph 2</p>
+        MSG);
 
         new AssertableHtml($this->getFixtureHtml('document.html'), 'p');
     }

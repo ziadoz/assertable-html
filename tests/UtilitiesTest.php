@@ -2,6 +2,7 @@
 
 namespace Ziadoz\AssertableHtml\Tests;
 
+use Dom\HTMLDocument;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ziadoz\AssertableHtml\Utilities;
 
@@ -54,6 +55,43 @@ class UtilitiesTest extends TestCase
         $this->assertSame(
             'foo bar baz',
             Utilities::normaliseWhitespace("\t\t" . '  foo  ' . "\n\r" . '  bar  ' . "\r\t" . '  baz  ' . "\n\n"),
+        );
+    }
+
+    public function test_nodes_to_matches_html(): void
+    {
+        $nodes = HTMLDocument::createFromString(
+            <<<'HTML'
+            <p class="foo" id="foo">
+                <span class="foo">Foo</span>
+            </p>
+            <p class="bar">
+                <strong>Bar</strong>
+            </p>
+            <p id="baz">Baz</p>
+            <p class="qux">Qux</p>
+            HTML,
+            LIBXML_NOERROR,
+        )->querySelectorAll('p');
+
+        $this->assertSame(
+            <<<'OUTPUT'
+            4 Matching Element(s) Found
+            ============================
+
+            1. [p#foo.foo]:
+            > <p class="foo" id="foo">
+            >     <span class="foo">Foo</span>
+            > </p>
+
+            2. [p.bar]:
+            > <p class="bar">
+            >     <strong>Bar</strong>
+            > </p>
+
+            2 Matching Elements Omitted...
+            OUTPUT,
+            Utilities::nodesToMatchesHtml($nodes, 2),
         );
     }
 }

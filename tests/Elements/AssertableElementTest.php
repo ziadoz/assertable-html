@@ -18,7 +18,18 @@ class AssertableElementTest extends TestCase
     public function test_determine_root_matches_multiple_elements(): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('The element selector [li] matches 2 elements instead of exactly 1 element.');
+        $this->expectExceptionMessage(<<<'MSG'
+        The element selector [li] matches 2 elements instead of exactly 1 element.
+
+        2 Matching Element(s) Found
+        ============================
+
+        1. [li]:
+        > <li>Foo</li>
+
+        2. [li]:
+        > <li>Bar</li>
+        MSG);
 
         new AssertableElement($this->getFixtureElement('<ul><li>Foo</li><li>Bar</li></ul>', 'ul'), 'li');
     }
