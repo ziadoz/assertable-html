@@ -53,11 +53,11 @@ class AssertableElementTest extends TestCase
         $this->assertSame('<li>Foo</li>', $assertable->getHtml());
     }
 
-    /**
-     * ==================
-     * = ASSERT ELEMENT =
-     * ==================
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Element
+    |--------------------------------------------------------------------------
+    */
     public function test_assert_element_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
@@ -73,11 +73,11 @@ class AssertableElementTest extends TestCase
             ->assertElement(fn (HTMLElement $element): bool => $element->tagName === 'P');
     }
 
-    /**
-     * ===========================
-     * = ASSERT MATCHES SELECTOR =
-     * ===========================
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Matches Selector
+    |--------------------------------------------------------------------------
+    */
     public function test_assert_matches_selector_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
@@ -108,11 +108,11 @@ class AssertableElementTest extends TestCase
             ->assertDoesntMatchSelector('li.foo');
     }
 
-    /**
-     * ===============
-     * = ASSERT TEXT =
-     * ===============
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Text
+    |--------------------------------------------------------------------------
+    */
     public function test_assert_text_passes(): void
     {
         $html = $this->getFixtureElement(<<<'HTML'
@@ -149,11 +149,11 @@ class AssertableElementTest extends TestCase
             ->assertText(fn (string $text): bool => $text !== 'Hello, World!');
     }
 
-    /**
-     * ======================
-     * = ASSERT TEXT EQUALS =
-     * ======================
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Text Equals
+    |--------------------------------------------------------------------------
+    */
     public function test_assert_text_equals_passes(): void
     {
         $html = $this->getFixtureElement('<div><p>Hello, <strong>World!</strong></p></div>');
@@ -188,11 +188,11 @@ class AssertableElementTest extends TestCase
             ->assertTextDoesntEqual('Hello, World!');
     }
 
-    /**
-     * ========================
-     * = ASSERT TEXT CONTAINS =
-     * ========================
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Text Contains
+    |--------------------------------------------------------------------------
+    */
     public function test_assert_text_contains_passes(): void
     {
         $html = $this->getFixtureElement(<<<'HTML'
@@ -257,11 +257,11 @@ class AssertableElementTest extends TestCase
         new AssertableElement($html, 'p')->assertTextDoesntContain('Hello, World');
     }
 
-    /**
-     * =========================
-     * = ASSERT CLASS CONTAINS =
-     * =========================
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Class Contains
+    |--------------------------------------------------------------------------
+    */
     public function test_assert_class_contains_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
