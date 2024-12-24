@@ -1,4 +1,5 @@
 <?php
+
 namespace Ziadoz\AssertableHtml\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -7,7 +8,7 @@ use Ziadoz\AssertableHtml\Utilities;
 class UtilitiesTest extends TestCase
 {
     #[DataProvider('selectorFromElementDataProvider')]
-    public function testSelectorFromElement(string $expected, string $html, string $selector): void
+    public function test_selector_from_element(string $expected, string $html, string $selector): void
     {
         $this->assertSame(
             $expected,
@@ -48,7 +49,7 @@ class UtilitiesTest extends TestCase
         ];
     }
 
-    public function testNormaliseWhitespace(): void
+    public function test_normalise_whitespace(): void
     {
         $this->assertSame(
             'foo bar baz',

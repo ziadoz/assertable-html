@@ -1,4 +1,5 @@
 <?php
+
 namespace Ziadoz\AssertableHtml\Elements;
 
 use Dom\Document;
@@ -37,8 +38,8 @@ class AssertableElement implements AssertableElementInterface
                     "\n", array_map(
                         fn (HtmlElement $node): string => $element->ownerDocument->saveHtml($node),
                         iterator_to_array($nodes->getIterator(),
-                    ),
-                ))),
+                        ),
+                    ))),
             ),
         );
 

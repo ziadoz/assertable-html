@@ -1,4 +1,5 @@
 <?php
+
 namespace Ziadoz\AssertableHtml\Tests;
 
 use Dom\HtmlDocument;
@@ -9,7 +10,7 @@ use Ziadoz\AssertableHtml\Elements\AssertableElement;
 
 class AssertableHtmlTest extends TestCase
 {
-    public function testInstance(): void
+    public function test_instance(): void
     {
         $assertable = new AssertableHtml($this->getFixtureHtml('document.html'), 'body');
         $this->assertInstanceOf(HtmlDocument::class, $assertable->getDocument());
@@ -17,7 +18,7 @@ class AssertableHtmlTest extends TestCase
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
     }
 
-    public function testDetermineRootMatchesMultipleElements(): void
+    public function test_determine_root_matches_multiple_elements(): void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The root selector [p] matches 2 elements instead of exactly 1 element.');
@@ -25,7 +26,7 @@ class AssertableHtmlTest extends TestCase
         new AssertableHtml($this->getFixtureHtml('document.html'), 'p');
     }
 
-    public function testWithScoping(): void
+    public function test_with_scoping(): void
     {
         $assertable = new AssertableHtml($this->getFixtureHtml('document.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
@@ -39,7 +40,7 @@ class AssertableHtmlTest extends TestCase
         $this->assertSame('inner', $assertableInner->getRoot()->classList->value);
     }
 
-    public function testWithScopingClosure(): void
+    public function test_with_scoping_closure(): void
     {
         $assertable = new AssertableHtml($document = $this->getFixtureHtml('document.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
@@ -55,7 +56,7 @@ class AssertableHtmlTest extends TestCase
         });
     }
 
-    public function testElsewhereScoping(): void
+    public function test_elsewhere_scoping(): void
     {
         $assertable = new AssertableHtml($document = $this->getFixtureHtml('document.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
@@ -69,7 +70,7 @@ class AssertableHtmlTest extends TestCase
         $this->assertSame('outer', $assertableElsewhere->getRoot()->classList->value);
     }
 
-    public function testElsewhereScopingClosure(): void
+    public function test_elsewhere_scoping_closure(): void
     {
         $assertable = new AssertableHtml($this->getFixtureHtml('document.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
@@ -85,14 +86,14 @@ class AssertableHtmlTest extends TestCase
         });
     }
 
-    public function testElement(): void
+    public function test_element(): void
     {
         $element = new AssertableHtml($document = $this->getFixtureHtml('document.html'), 'body')->element('ul.inner');
         $this->assertInstanceOf(AssertableElement::class, $element);
         $this->assertSame($document->querySelector('body ul.inner'), $element->getRoot());
     }
 
-    public function testGetDocument(): void
+    public function test_get_document(): void
     {
         $assertable = new AssertableHtml($document = $this->getFixtureHtml('document.html'), 'body');
         $this->assertSame($document, $assertable->getDocument());
@@ -110,7 +111,7 @@ class AssertableHtmlTest extends TestCase
         });
     }
 
-    public function testGetRoot(): void
+    public function test_get_root(): void
     {
         $assertable = new AssertableHtml($document = $this->getFixtureHtml('document.html'), 'body');
         $this->assertSame($document->querySelector('body'), $assertable->getRoot());
@@ -128,7 +129,7 @@ class AssertableHtmlTest extends TestCase
         });
     }
 
-    public function testGetSelector(): void
+    public function test_get_selector(): void
     {
         $assertable = new AssertableHtml($this->getFixtureHtml('document.html'), 'body');
         $this->assertSame('body', $assertable->getSelector());
@@ -146,7 +147,7 @@ class AssertableHtmlTest extends TestCase
         });
     }
 
-    public function testGetDocumentHtml(): void
+    public function test_get_document_html(): void
     {
         $html = <<<'HTML'
         <!DOCTYPE html>
@@ -177,7 +178,8 @@ class AssertableHtmlTest extends TestCase
         $assertable = new AssertableHtml($this->getFixtureHtml('document.html'), 'ul.outer');
         $this->assertXmlStringEqualsXmlString($html, $assertable->getDocumentHtml());
     }
-    public function testGetRootHtml(): void
+
+    public function test_get_root_html(): void
     {
         // The indentation here is from HtmlDocument...
         $html = <<<'HTML'

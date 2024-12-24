@@ -1,4 +1,5 @@
 <?php
+
 namespace Ziadoz\AssertableHtml\Tests;
 
 use PHPUnit\Framework\ExpectationFailedException;
@@ -6,7 +7,7 @@ use Ziadoz\AssertableHtml\Elements\AssertableElement;
 
 class AssertableElementTest extends TestCase
 {
-    public function testDetermineRootMatchesMultipleElements()
+    public function test_determine_root_matches_multiple_elements()
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage(
@@ -18,30 +19,30 @@ class AssertableElementTest extends TestCase
         new AssertableElement($this->getFixtureElement('<ul><li>Foo</li><li>Bar</li></ul>', 'ul'), 'li');
     }
 
-    public function testGetDocument(): void
+    public function test_get_document(): void
     {
         $assertable = new AssertableElement($element = $this->getFixtureElement('<ul><li>Foo</li></ul>', 'ul'), 'li');
         $this->assertSame($element->ownerDocument, $assertable->getDocument());
     }
 
-    public function testGetRoot(): void
+    public function test_get_root(): void
     {
         $assertable = new AssertableElement($element = $this->getFixtureElement('<ul><li>Foo</li></ul>', 'ul'), 'li');
         $this->assertSame($element->querySelector('li'), $assertable->getRoot());
     }
 
-    public function testGetHtml(): void
+    public function test_get_html(): void
     {
         $assertable = new AssertableElement($this->getFixtureElement('<ul><li>Foo</li></ul>', 'ul'), 'li');
         $this->assertSame('<li>Foo</li>', $assertable->getHtml());
     }
 
-    public function testAssertMatchesPasses(): void
+    public function test_assert_matches_passes(): void
     {
         $this->markTestSkipped('How do you do this?');
     }
 
-    public function testAssertMatchesFails(): void
+    public function test_assert_matches_fails(): void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage(

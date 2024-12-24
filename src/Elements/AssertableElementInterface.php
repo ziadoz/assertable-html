@@ -1,4 +1,5 @@
 <?php
+
 namespace Ziadoz\AssertableHtml\Elements;
 
 use Dom\Document;
