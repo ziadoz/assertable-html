@@ -42,7 +42,7 @@ class AssertableHtmlTest extends TestCase
 
     public function test_with_scoping_closure(): void
     {
-        $assertable = new AssertableHtml($document = $this->getFixtureHtml('document.html'), 'body');
+        $assertable = new AssertableHtml($this->getFixtureHtml('document.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
 
         $assertable->with('ul.outer', function (AssertableHtml $assertable): void {
@@ -58,7 +58,7 @@ class AssertableHtmlTest extends TestCase
 
     public function test_elsewhere_scoping(): void
     {
-        $assertable = new AssertableHtml($document = $this->getFixtureHtml('document.html'), 'body');
+        $assertable = new AssertableHtml($this->getFixtureHtml('document.html'), 'body');
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
 
         $assertableInner = $assertable->with('ul.inner');
