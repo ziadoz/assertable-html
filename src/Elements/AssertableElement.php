@@ -72,7 +72,7 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element matches the given selector. */
-    public function assertMatches(string $selector, ?string $message = null): void
+    public function assertMatchesSelector(string $selector, ?string $message = null): void
     {
         PHPUnit::assertTrue(
             $this->root->matches($selector),
@@ -85,7 +85,7 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element doesn't match the given selector. */
-    public function assertDoesntMatch(string $selector, ?string $message = null): void
+    public function assertDoesntMatchSelector(string $selector, ?string $message = null): void
     {
         PHPUnit::assertFalse(
             $this->root->matches($selector),

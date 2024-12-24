@@ -52,30 +52,30 @@ class AssertableElementTest extends TestCase
         $this->assertSame('<li>Foo</li>', $assertable->getHtml());
     }
 
-    public function test_assert_matches_passes(): void
+    public function test_assert_matches_selector_passes(): void
     {
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertMatches('li.foo');
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertMatchesSelector('li.foo');
     }
 
-    public function test_assert_matches_fails(): void
+    public function test_assert_matches_selector_fails(): void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The element [li.foo] does not match the given selector [p].');
 
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertMatches('p');
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertMatchesSelector('p');
     }
 
-    public function test_assert_doesnt_match_passes(): void
+    public function test_assert_doesnt_match_selector_passes(): void
     {
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertDoesntMatch('p');
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertDoesntMatchSelector('p');
     }
 
-    public function test_assert_doesnt_match_fails(): void
+    public function test_assert_doesnt_match_selector_fails(): void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The element [li.foo] matches the given selector [li.foo].');
 
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertDoesntMatch('li.foo');
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertDoesntMatchSelector('li.foo');
     }
 
     public function test_assert_class_contains_passes(): void
