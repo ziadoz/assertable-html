@@ -77,4 +77,30 @@ class AssertableElementTest extends TestCase
 
         new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertDoesntMatch('li.foo');
     }
+
+    public function test_assert_class_contains_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertClassContains('foo');
+    }
+
+    public function test_assert_class_contains_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [li.foo] class does not match the given class [.bar]');
+
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertClassContains('bar');
+    }
+
+    public function test_assert_class_doesnt_contain_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertClassDoesntContain('bar');
+    }
+
+    public function test_assert_class_doesnt_contain_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [li.foo] class matches the given class [.foo]');
+
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertClassDoesntContain('foo');
+    }
 }

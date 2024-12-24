@@ -2,6 +2,8 @@
 
 namespace Ziadoz\AssertableHtml;
 
+use Dom\Document;
+use Dom\HTMLDocument;
 use Dom\HtmlElement;
 use Dom\NodeList;
 
@@ -10,19 +12,32 @@ class Utilities
     /** Return a simple selector for the given element (e.g. p#foo.bar.baz) */
     public static function selectorFromElement(HtmlElement $element): string
     {
-        $parts = [mb_strtolower($element->tagName)];
+        return implode('', array_filter([
+            self::formatTag($element),
+            self::formatId($element),
+            self::formatClasses($element),
+        ]));
+    }
 
-        if (trim($id = $element->id) !== '') {
-            $parts[] = '#' . self::normaliseWhitespace(trim($id));
+    public static function formatTag(HTMLDocument|Document|HtmlElement $element): string
+    {
+        return mb_strtolower($element->tagName);
+    }
+
+    public static function formatId(HTMLDocument|Document|HtmlElement $element): string
+    {
+        return trim($id = $element->id) !== '' ? '#' . self::normaliseWhitespace(trim($id)) : '';
+    }
+
+    public static function formatClasses(HTMLDocument|Document|HtmlElement $element): string
+    {
+        $formatted = '';
+
+        foreach ($element->classList as $class) {
+            $formatted .= '.' . $class;
         }
 
-        if (count($element->classList) > 0) {
-            foreach ($element->classList as $class) {
-                $parts[] = '.' . $class;
-            }
-        }
-
-        return implode('', $parts);
+        return $formatted;
     }
 
     /** Normalise the whitespace of the given string. @link: https://github.com/symfony/symfony/pull/48940 */

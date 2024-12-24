@@ -96,4 +96,30 @@ class AssertableElement implements AssertableElementInterface
             ),
         );
     }
+
+    /** Assert the element's classes contains the given class. */
+    public function assertClassContains(string $class, ?string $message = null): void
+    {
+        PHPUnit::assertTrue(
+            $this->root->classList->contains($class),
+            $message ?? sprintf(
+                'The element [%s] class does not match the given class [%s].',
+                Utilities::selectorFromElement($this->root),
+                '.' . $class,
+            ),
+        );
+    }
+
+    /** Assert the element's classes doesn't contain the given class. */
+    public function assertClassDoesntContain(string $class, ?string $message = null): void
+    {
+        PHPUnit::assertFalse(
+            $this->root->classList->contains($class),
+            $message ?? sprintf(
+                'The element [%s] class matches the given class [%s].',
+                Utilities::selectorFromElement($this->root),
+                '.' . $class,
+            ),
+        );
+    }
 }
