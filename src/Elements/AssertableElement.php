@@ -71,6 +71,18 @@ class AssertableElement implements AssertableElementInterface
         dd($this->getHtml());
     }
 
+    /** Assert the HTML element passes the given callback. */
+    public function assertElement(callable $callback): void
+    {
+        PHPUnit::assertTrue(
+            $callback($this->root),
+            sprintf(
+                'The element [%s] does not pass the given callback.',
+                Utilities::selectorFromElement($this->root),
+            ),
+        );
+    }
+
     /** Assert the element matches the given selector. */
     public function assertMatchesSelector(string $selector): void
     {
