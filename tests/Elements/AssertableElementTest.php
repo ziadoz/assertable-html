@@ -58,6 +58,7 @@ class AssertableElementTest extends TestCase
     | Assert Element
     |--------------------------------------------------------------------------
     */
+
     public function test_assert_element_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
@@ -78,6 +79,7 @@ class AssertableElementTest extends TestCase
     | Assert Matches Selector
     |--------------------------------------------------------------------------
     */
+
     public function test_assert_matches_selector_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
@@ -113,6 +115,7 @@ class AssertableElementTest extends TestCase
     | Assert Text
     |--------------------------------------------------------------------------
     */
+
     public function test_assert_text_passes(): void
     {
         $html = $this->getFixtureElement(<<<'HTML'
@@ -154,6 +157,7 @@ class AssertableElementTest extends TestCase
     | Assert Text Equals
     |--------------------------------------------------------------------------
     */
+
     public function test_assert_text_equals_passes(): void
     {
         $html = $this->getFixtureElement('<div><p>Hello, <strong>World!</strong></p></div>');
@@ -193,6 +197,7 @@ class AssertableElementTest extends TestCase
     | Assert Text Contains
     |--------------------------------------------------------------------------
     */
+
     public function test_assert_text_contains_passes(): void
     {
         $html = $this->getFixtureElement(<<<'HTML'
@@ -262,6 +267,7 @@ class AssertableElementTest extends TestCase
     | Assert Class Contains
     |--------------------------------------------------------------------------
     */
+
     public function test_assert_class_contains_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
