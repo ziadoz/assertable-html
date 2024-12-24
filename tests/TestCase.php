@@ -15,8 +15,8 @@ class TestCase extends PHPUnitTestCase
     }
 
     /** Get a string of HTML as an HTML document. */
-    public function getFixtureElement(string $html, string $selector): HtmlElement
+    public function getFixtureElement(string $html): HtmlElement
     {
-        return HtmlDocument::createFromString($html, LIBXML_NOERROR)->querySelector($selector);
+        return HtmlDocument::createFromString($html, LIBXML_NOERROR)->querySelector('body *:first-of-type');
     }
 }

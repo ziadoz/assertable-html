@@ -13,7 +13,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The element selector [foobar] matches 0 elements instead of exactly 1 element.');
 
-        new AssertableElement($this->getFixtureElement('<ul><li>Foo</li><li>Bar</li></ul>', 'ul'), 'foobar');
+        new AssertableElement($this->getFixtureElement('<ul><li>Foo</li><li>Bar</li></ul>'), 'foobar');
     }
 
     public function test_determine_root_matches_multiple_elements(): void
@@ -32,30 +32,30 @@ class AssertableElementTest extends TestCase
         > <li>Bar</li>
         MSG);
 
-        new AssertableElement($this->getFixtureElement('<ul><li>Foo</li><li>Bar</li></ul>', 'ul'), 'li');
+        new AssertableElement($this->getFixtureElement('<ul><li>Foo</li><li>Bar</li></ul>'), 'li');
     }
 
     public function test_get_document(): void
     {
-        $assertable = new AssertableElement($element = $this->getFixtureElement('<ul><li>Foo</li></ul>', 'ul'), 'li');
+        $assertable = new AssertableElement($element = $this->getFixtureElement('<ul><li>Foo</li></ul>'), 'li');
         $this->assertSame($element->ownerDocument, $assertable->getDocument());
     }
 
     public function test_get_root(): void
     {
-        $assertable = new AssertableElement($element = $this->getFixtureElement('<ul><li>Foo</li></ul>', 'ul'), 'li');
+        $assertable = new AssertableElement($element = $this->getFixtureElement('<ul><li>Foo</li></ul>'), 'li');
         $this->assertSame($element->querySelector('li'), $assertable->getRoot());
     }
 
     public function test_get_html(): void
     {
-        $assertable = new AssertableElement($this->getFixtureElement('<ul><li>Foo</li></ul>', 'ul'), 'li');
+        $assertable = new AssertableElement($this->getFixtureElement('<ul><li>Foo</li></ul>'), 'li');
         $this->assertSame('<li>Foo</li>', $assertable->getHtml());
     }
 
     public function test_assert_element_passes(): void
     {
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
             ->assertElement(fn (HTMLElement $element): bool => $element->tagName === 'LI');
     }
 
@@ -64,13 +64,13 @@ class AssertableElementTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The element [li.foo] does not pass the given callback.');
 
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
             ->assertElement(fn (HTMLElement $element): bool => $element->tagName === 'P');
     }
 
     public function test_assert_matches_selector_passes(): void
     {
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
             ->assertMatchesSelector('li.foo');
     }
 
@@ -79,13 +79,13 @@ class AssertableElementTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The element [li.foo] does not match the given selector [p].');
 
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
             ->assertMatchesSelector('p');
     }
 
     public function test_assert_doesnt_match_selector_passes(): void
     {
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
             ->assertDoesntMatchSelector('p');
     }
 
@@ -94,7 +94,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The element [li.foo] matches the given selector [li.foo].');
 
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
             ->assertDoesntMatchSelector('li.foo');
     }
 
@@ -107,7 +107,7 @@ class AssertableElementTest extends TestCase
                 <strong>World!</strong>
             </p>
         </div>
-        HTML, 'div');
+        HTML);
 
         new AssertableElement($html, 'p')
             ->assertText(fn (string $text): bool => $text === 'Hello, World!');
@@ -128,7 +128,7 @@ class AssertableElementTest extends TestCase
                 <strong>World!</strong>
             </p>
         </div>
-        HTML, 'div');
+        HTML);
 
         new AssertableElement($html, 'p')
             ->assertText(fn (string $text): bool => $text !== 'Hello, World!');
@@ -136,7 +136,7 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_class_contains_passes(): void
     {
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
             ->assertClassContains('foo');
     }
 
@@ -145,13 +145,13 @@ class AssertableElementTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The element [li.foo] class does not match the given class [.bar]');
 
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
             ->assertClassContains('bar');
     }
 
     public function test_assert_class_doesnt_contain_passes(): void
     {
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
             ->assertClassDoesntContain('bar');
     }
 
@@ -160,7 +160,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The element [li.foo] class matches the given class [.foo]');
 
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
             ->assertClassDoesntContain('foo');
     }
 }
