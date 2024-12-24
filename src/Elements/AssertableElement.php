@@ -30,6 +30,8 @@ class AssertableElement implements AssertableElementInterface
         PHPUnit::assertCount(
             1,
             $nodes,
+            trim(sprintf(
+                'The element selector [%s] matches %d elements instead of exactly 1 element.',
                 $selector,
                 count($nodes),
             )),
