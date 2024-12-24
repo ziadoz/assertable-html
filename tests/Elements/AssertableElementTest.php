@@ -98,6 +98,42 @@ class AssertableElementTest extends TestCase
             ->assertDoesntMatchSelector('li.foo');
     }
 
+    public function test_assert_text_passes(): void
+    {
+        $html = $this->getFixtureElement(<<<'HTML'
+        <div>
+            <p>
+                Hello,
+                <strong>World!</strong>
+            </p>
+        </div>
+        HTML, 'div');
+
+        new AssertableElement($html, 'p')
+            ->assertText(fn (string $text): bool => $text === 'Hello, World!');
+
+        new AssertableElement($html, 'p')
+            ->assertText(fn (string $text): bool => str_contains($text, 'Hello') && str_contains($text, 'World!'), false);
+    }
+
+    public function test_assert_text_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [p] text does not pass the given callback.');
+
+        $html = $this->getFixtureElement(<<<'HTML'
+        <div>
+            <p>
+                Hello,
+                <strong>World!</strong>
+            </p>
+        </div>
+        HTML, 'div');
+
+        new AssertableElement($html, 'p')
+            ->assertText(fn (string $text): bool => $text !== 'Hello, World!');
+    }
+
     public function test_assert_class_contains_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')

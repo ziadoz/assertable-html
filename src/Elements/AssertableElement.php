@@ -109,6 +109,21 @@ class AssertableElement implements AssertableElementInterface
         );
     }
 
+    public function assertText(callable $callback, bool $stripWhitespace = true): void
+    {
+        PHPUnit::assertTrue(
+            $callback(
+                $stripWhitespace
+                    ? Utilities::normaliseWhitespace($this->root->textContent)
+                    : $this->root->textContent
+            ),
+            sprintf(
+                'The element [%s] text does not pass the given callback.',
+                Utilities::selectorFromElement($this->root),
+            ),
+        );
+    }
+
     /** Assert the element's classes contains the given class. */
     public function assertClassContains(string $class): void
     {
