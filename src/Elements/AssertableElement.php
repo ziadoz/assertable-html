@@ -71,7 +71,7 @@ class AssertableElement implements AssertableElementInterface
         dd($this->getHtml());
     }
 
-    /** Assert the HTML element passes the given callback. */
+    /** Assert the element passes the given callback. */
     public function assertElement(callable $callback): void
     {
         PHPUnit::assertTrue(
@@ -109,6 +109,7 @@ class AssertableElement implements AssertableElementInterface
         );
     }
 
+    /** Assert the element's text passes the given callback. */
     public function assertText(callable $callback, bool $stripWhitespace = true): void
     {
         PHPUnit::assertTrue(
@@ -119,6 +120,36 @@ class AssertableElement implements AssertableElementInterface
             ),
             sprintf(
                 'The element [%s] text does not pass the given callback.',
+                Utilities::selectorFromElement($this->root),
+            ),
+        );
+    }
+
+    /** Assert the element's text contains the given text. */
+    public function assertTextContains(string $text, bool $stripWhitespace = true): void
+    {
+        PHPUnit::assertStringContainsString(
+            $text,
+            $stripWhitespace
+                ? Utilities::normaliseWhitespace($this->root->textContent)
+                : $this->root->textContent,
+            sprintf(
+                'The element [%s] text does not contain the given text.',
+                Utilities::selectorFromElement($this->root),
+            ),
+        );
+    }
+
+    /** Assert the element's text doesn't contain the given text. */
+    public function assertTextDoesntContain(string $text, bool $stripWhitespace = true): void
+    {
+        PHPUnit::assertStringNotContainsString(
+            $text,
+            $stripWhitespace
+                ? Utilities::normaliseWhitespace($this->root->textContent)
+                : $this->root->textContent,
+            sprintf(
+                'The element [%s] text contains the given text.',
                 Utilities::selectorFromElement($this->root),
             ),
         );

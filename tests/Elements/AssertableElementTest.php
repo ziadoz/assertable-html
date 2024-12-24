@@ -134,6 +134,70 @@ class AssertableElementTest extends TestCase
             ->assertText(fn (string $text): bool => $text !== 'Hello, World!');
     }
 
+    public function test_assert_text_contains_passes(): void
+    {
+        $html = $this->getFixtureElement(<<<'HTML'
+        <div>
+            <p>
+                Hello,
+                <strong>World!</strong>
+            </p>
+        </div>
+        HTML);
+
+        new AssertableElement($html, 'p')->assertTextContains('Hello');
+        new AssertableElement($html, 'p')->assertTextContains('World!', false);
+    }
+
+    public function test_assert_text_contains_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [p] text does not contain the given text.');
+
+        $html = $this->getFixtureElement(<<<'HTML'
+        <div>
+            <p>
+                Hello,
+                <strong>World!</strong>
+            </p>
+        </div>
+        HTML);
+
+        new AssertableElement($html, 'p')->assertTextContains('Foo, Bar!');
+    }
+
+    public function test_assert_text_doesnt_contain_passes(): void
+    {
+        $html = $this->getFixtureElement(<<<'HTML'
+        <div>
+            <p>
+                Hello,
+                <strong>World!</strong>
+            </p>
+        </div>
+        HTML);
+
+        new AssertableElement($html, 'p')->assertTextDoesntContain('Foo');
+        new AssertableElement($html, 'p')->assertTextDoesntContain('Bar!', false);
+    }
+
+    public function test_assert_text_doesnt_contain_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [p] text contains the given text.');
+
+        $html = $this->getFixtureElement(<<<'HTML'
+        <div>
+            <p>
+                Hello,
+                <strong>World!</strong>
+            </p>
+        </div>
+        HTML);
+
+        new AssertableElement($html, 'p')->assertTextDoesntContain('Hello, World!');
+    }
+
     public function test_assert_class_contains_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
