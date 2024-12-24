@@ -71,6 +71,12 @@ class AssertableElement implements AssertableElementInterface
         dd($this->getHtml());
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Element
+    |--------------------------------------------------------------------------
+    */
+
     /** Assert the element passes the given callback. */
     public function assertElement(callable $callback): void
     {
@@ -82,6 +88,12 @@ class AssertableElement implements AssertableElementInterface
             ),
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Matches Selector
+    |--------------------------------------------------------------------------
+    */
 
     /** Assert the element matches the given selector. */
     public function assertMatchesSelector(string $selector): void
@@ -109,6 +121,12 @@ class AssertableElement implements AssertableElementInterface
         );
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Text
+    |--------------------------------------------------------------------------
+    */
+
     /** Assert the element's text passes the given callback. */
     public function assertText(callable $callback, bool $stripWhitespace = true): void
     {
@@ -124,6 +142,12 @@ class AssertableElement implements AssertableElementInterface
             ),
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Text Equals
+    |--------------------------------------------------------------------------
+    */
 
     /** Assert the element's text equals the given text. */
     public function assertTextEquals(string $text, bool $stripWhitespace = true): void
@@ -153,6 +177,12 @@ class AssertableElement implements AssertableElementInterface
             ),
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Text Contains
+    |--------------------------------------------------------------------------
+    */
 
     /** Assert the element's text contains the given text. */
     public function assertTextContains(string $text, bool $stripWhitespace = true): void
@@ -195,6 +225,12 @@ class AssertableElement implements AssertableElementInterface
     {
         $this->assertTextDoesntContain($text, $stripWhitespace);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Class Contains
+    |--------------------------------------------------------------------------
+    */
 
     /** Assert the element's classes contains the given class. */
     public function assertClassContains(string $class): void
