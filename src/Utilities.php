@@ -15,13 +15,10 @@ class Utilities
         }
 
         if (count($element->classList) > 0) {
-            $class = [];
-
-            for ($i = 0; $i < count($element->classList); $i++) {
-                $class[] = $element->classList->item($i);
-            }
-
-            $parts[] = '.' . implode('.', $class);
+            $parts = array_merge($parts, array_map(
+                fn (string $class): string => '.' . $class,
+                iterator_to_array($element->classList->getIterator()),
+            ));
         }
 
         return implode('', $parts);
