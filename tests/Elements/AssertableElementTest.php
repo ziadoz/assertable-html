@@ -54,17 +54,27 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_matches_passes(): void
     {
-        $this->markTestSkipped('How do you do this?');
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertMatches('li.foo');
     }
 
     public function test_assert_matches_fails(): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage(
-            'The element [li#qux.foo] does not match the given selector [p]:' . "\n\n" .
-            '<li id="qux" class="foo">Foo</li>'
-        );
+        $this->expectExceptionMessage('The element [li.foo] does not match the given selector [p].');
 
-        new AssertableElement($this->getFixtureElement('<ul><li id="qux" class="foo">Foo</li></ul>', 'ul'), 'li')->assertMatches('p');
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertMatches('p');
+    }
+
+    public function test_assert_doesnt_match_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertDoesntMatch('p');
+    }
+
+    public function test_assert_doesnt_match_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [li.foo] matches the given selector [li.foo].');
+
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>', 'ul'), 'li')->assertDoesntMatch('li.foo');
     }
 }

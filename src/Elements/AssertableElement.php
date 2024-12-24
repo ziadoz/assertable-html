@@ -77,10 +77,22 @@ class AssertableElement implements AssertableElementInterface
         PHPUnit::assertTrue(
             $this->root->matches($selector),
             sprintf(
-                "The element [%s] does not match the given selector [%s]:\n\n%s",
+                'The element [%s] does not match the given selector [%s].',
                 Utilities::selectorFromElement($this->root),
                 $selector,
-                $this->getHtml(),
+            ),
+        );
+    }
+
+    /** Assert the element doesn't match the given selector. */
+    public function assertDoesntMatch(string $selector): void
+    {
+        PHPUnit::assertFalse(
+            $this->root->matches($selector),
+            sprintf(
+                'The element [%s] matches the given selector [%s].',
+                Utilities::selectorFromElement($this->root),
+                $selector,
             ),
         );
     }
