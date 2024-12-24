@@ -125,6 +125,35 @@ class AssertableElement implements AssertableElementInterface
         );
     }
 
+    /** Assert the element's text equals the given text. */
+    public function assertTextEquals(string $text, bool $stripWhitespace = true): void
+    {
+        PHPUnit::assertSame(
+            $text,
+            $stripWhitespace
+                ? Utilities::normaliseWhitespace($this->root->textContent)
+                : $this->root->textContent,
+            sprintf(
+                'The element [%s] text does not equal the given text.',
+                Utilities::selectorFromElement($this->root),
+            ),
+        );
+    }
+
+    public function assertTextDoesntEqual(string $text, bool $stripWhitespace = true): void
+    {
+        PHPUnit::assertNotSame(
+            $text,
+            $stripWhitespace
+                ? Utilities::normaliseWhitespace($this->root->textContent)
+                : $this->root->textContent,
+            sprintf(
+                'The element [%s] text equals the given text.',
+                Utilities::selectorFromElement($this->root),
+            ),
+        );
+    }
+
     /** Assert the element's text contains the given text. */
     public function assertTextContains(string $text, bool $stripWhitespace = true): void
     {

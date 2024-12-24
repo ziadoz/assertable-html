@@ -134,6 +134,40 @@ class AssertableElementTest extends TestCase
             ->assertText(fn (string $text): bool => $text !== 'Hello, World!');
     }
 
+    public function test_assert_text_equals_passes(): void
+    {
+        $html = $this->getFixtureElement('<div><p>Hello, <strong>World!</strong></p></div>');
+
+        new AssertableElement($html, 'p')->assertTextEquals('Hello, World!');
+        new AssertableElement($html, 'p')->assertTextEquals('Hello, World!', false);
+    }
+
+    public function test_assert_text_equals_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [p] text does not equal the given text.');
+
+        new AssertableElement($this->getFixtureElement('<div><p>Hello, <strong>World!</strong></p></div>'), 'p')
+            ->assertTextEquals('Foo, Bar!');
+    }
+
+    public function test_assert_text_doesnt_equal_passes(): void
+    {
+        $html = $this->getFixtureElement('<div><p>Hello, <strong>World!</strong></p></div>');
+
+        new AssertableElement($html, 'p')->assertTextDoesntEqual('Foo, Bar!');
+        new AssertableElement($html, 'p')->assertTextDoesntEqual('Foo, Bar!', false);
+    }
+
+    public function test_assert_text_doesnt_equals_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [p] text equals the given text.');
+
+        new AssertableElement($this->getFixtureElement('<div><p>Hello, <strong>World!</strong></p></div>'), 'p')
+            ->assertTextDoesntEqual('Hello, World!');
+    }
+
     public function test_assert_text_contains_passes(): void
     {
         $html = $this->getFixtureElement(<<<'HTML'
