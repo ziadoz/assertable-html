@@ -169,6 +169,12 @@ class AssertableElement implements AssertableElementInterface
         );
     }
 
+    /** Alias for assertTextContains() */
+    public function assertSeeIn(string $text, bool $stripWhitespace = true): void
+    {
+        $this->assertTextContains($text, $stripWhitespace);
+    }
+
     /** Assert the element's text doesn't contain the given text. */
     public function assertTextDoesntContain(string $text, bool $stripWhitespace = true): void
     {
@@ -182,6 +188,12 @@ class AssertableElement implements AssertableElementInterface
                 Utilities::selectorFromElement($this->root),
             ),
         );
+    }
+
+    /** Alias for assertTextDoesntContain() */
+    public function assertDontSeeIn(string $text, bool $stripWhitespace = true): void
+    {
+        $this->assertTextDoesntContain($text, $stripWhitespace);
     }
 
     /** Assert the element's classes contains the given class. */
