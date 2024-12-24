@@ -2,6 +2,8 @@
 
 namespace Ziadoz\AssertableHtml;
 
+use Dom\Document;
+use Dom\HTMLDocument;
 use Dom\HtmlElement;
 
 class Utilities
@@ -27,6 +29,7 @@ class Utilities
 
     /**
      * Normalise the whitespace of the given string.
+     *
      * @link: https://github.com/symfony/symfony/pull/48940
      */
     public static function normaliseWhitespace(string $string): string
