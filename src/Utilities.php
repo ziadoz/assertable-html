@@ -31,13 +31,7 @@ class Utilities
 
     public static function formatClasses(HTMLDocument|Document|HtmlElement $element): string
     {
-        $formatted = '';
-
-        foreach ($element->classList as $class) {
-            $formatted .= '.' . $class;
-        }
-
-        return $formatted;
+        return implode('', array_map(fn (string $class): string => '.' . $class, iterator_to_array($element->classList)));
     }
 
     /** Normalise the whitespace of the given string. @link: https://github.com/symfony/symfony/pull/48940 */
