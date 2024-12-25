@@ -83,7 +83,7 @@ class AssertableElement implements AssertableElementInterface
         PHPUnit::assertTrue(
             $callback($this->root),
             sprintf(
-                'The element [%s] does not pass the given callback.',
+                "The element [%s] doesn't pass the given callback.",
                 Utilities::selectorFromElement($this->root),
             ),
         );
@@ -101,7 +101,7 @@ class AssertableElement implements AssertableElementInterface
         PHPUnit::assertTrue(
             $this->root->matches($selector),
             sprintf(
-                'The element [%s] does not match the given selector [%s].',
+                "The element [%s] doesn't match the given selector [%s].",
                 Utilities::selectorFromElement($this->root),
                 $selector,
             ),
@@ -137,7 +137,7 @@ class AssertableElement implements AssertableElementInterface
                     : $this->root->textContent
             ),
             sprintf(
-                'The element [%s] text does not pass the given callback.',
+                "The element [%s] text doesn't pass the given callback.",
                 Utilities::selectorFromElement($this->root),
             ),
         );
@@ -158,7 +158,7 @@ class AssertableElement implements AssertableElementInterface
                 ? Utilities::normaliseWhitespace($this->root->textContent)
                 : $this->root->textContent,
             sprintf(
-                'The element [%s] text does not equal the given text.',
+                "The element [%s] text doesn't equal the given text.",
                 Utilities::selectorFromElement($this->root),
             ),
         );
@@ -193,7 +193,7 @@ class AssertableElement implements AssertableElementInterface
                 ? Utilities::normaliseWhitespace($this->root->textContent)
                 : $this->root->textContent,
             sprintf(
-                'The element [%s] text does not contain the given text.',
+                "The element [%s] text doesn't contain the given text.",
                 Utilities::selectorFromElement($this->root),
             ),
         );
@@ -237,7 +237,7 @@ class AssertableElement implements AssertableElementInterface
         PHPUnit::assertTrue(
             $callback(iterator_to_array($this->root->classList)),
             sprintf(
-                'The element [%s] class does not pass the given callback.',
+                "The element [%s] class doesn't pass the given callback.",
                 Utilities::selectorFromElement($this->root),
             ),
         );
@@ -255,7 +255,7 @@ class AssertableElement implements AssertableElementInterface
         PHPUnit::assertTrue(
             $this->root->classList->contains($class),
             sprintf(
-                'The element [%s] class does not match the given class [%s].',
+                "The element [%s] class doesn't match the given class [%s].",
                 Utilities::selectorFromElement($this->root),
                 '.' . $class,
             ),
