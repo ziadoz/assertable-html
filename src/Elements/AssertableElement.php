@@ -259,6 +259,42 @@ class AssertableElement implements AssertableElementInterface
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Class Equals
+    |--------------------------------------------------------------------------
+    */
+
+    public function assertClassEquals(string $class, bool $normaliseWhitespace = true): void
+    {
+        PHPUnit::assertSame(
+            $class,
+            $normaliseWhitespace
+                ? implode(' ', iterator_to_array($this->root->classList))
+                : $this->root->classList->value,
+            sprintf(
+                "The element [%s] class doesn't equal the given class [%s].",
+                Utilities::selectorFromElement($this->root),
+                $class,
+            ),
+        );
+    }
+
+    public function assertClassDoesntEqual(string $class, bool $normaliseWhitespace = true): void
+    {
+        PHPUnit::assertNotSame(
+            $class,
+            $normaliseWhitespace
+                ? implode(' ', iterator_to_array($this->root->classList))
+                : $this->root->classList->value,
+            sprintf(
+                'The element [%s] class equals the given class [%s].',
+                Utilities::selectorFromElement($this->root),
+                $class,
+            ),
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Class Contains
     |--------------------------------------------------------------------------
     */
@@ -271,7 +307,7 @@ class AssertableElement implements AssertableElementInterface
             sprintf(
                 "The element [%s] class doesn't match the given class [%s].",
                 Utilities::selectorFromElement($this->root),
-                '.' . $class,
+                $class,
             ),
         );
     }
@@ -284,7 +320,7 @@ class AssertableElement implements AssertableElementInterface
             sprintf(
                 'The element [%s] class matches the given class [%s].',
                 Utilities::selectorFromElement($this->root),
-                '.' . $class,
+                $class,
             ),
         );
     }
