@@ -264,6 +264,27 @@ class AssertableElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Class
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_class_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo bar">Foo</li></ul>'), 'li')
+            ->assertClass(fn (array $classes): bool => in_array('foo', $classes));
+    }
+
+    public function test_assert_class_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [li.foo.bar] class does not pass the given callback.');
+
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo bar">Foo</li></ul>'), 'li')
+            ->assertClass(fn (array $classes): bool => in_array('baz', $classes));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Class Contains
     |--------------------------------------------------------------------------
     */

@@ -228,6 +228,23 @@ class AssertableElement implements AssertableElementInterface
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Class
+    |--------------------------------------------------------------------------
+    */
+
+    public function assertClass(callable $callback): void
+    {
+        PHPUnit::assertTrue(
+            $callback(iterator_to_array($this->root->classList)),
+            sprintf(
+                'The element [%s] class does not pass the given callback.',
+                Utilities::selectorFromElement($this->root),
+            ),
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Class Contains
     |--------------------------------------------------------------------------
     */
