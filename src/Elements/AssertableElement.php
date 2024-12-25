@@ -77,7 +77,11 @@ class AssertableElement implements AssertableElementInterface
     |--------------------------------------------------------------------------
     */
 
-    /** Assert the element passes the given callback. */
+    /**
+     * Assert the element passes the given callback.
+     *
+     * @param  callable(HtmlElement $element): bool  $callback
+     */
     public function assertElement(callable $callback): void
     {
         PHPUnit::assertTrue(
@@ -127,7 +131,11 @@ class AssertableElement implements AssertableElementInterface
     |--------------------------------------------------------------------------
     */
 
-    /** Assert the element's text passes the given callback. */
+    /**
+     * Assert the element's text passes the given callback.
+     *
+     * @param  callable(string $text): bool  $callback
+     */
     public function assertText(callable $callback, bool $stripWhitespace = true): void
     {
         PHPUnit::assertTrue(
@@ -164,6 +172,7 @@ class AssertableElement implements AssertableElementInterface
         );
     }
 
+    /** Assert the element's text doesn't equal the given text. */
     public function assertTextDoesntEqual(string $text, bool $stripWhitespace = true): void
     {
         PHPUnit::assertNotSame(
@@ -232,6 +241,11 @@ class AssertableElement implements AssertableElementInterface
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Assert the element's class passes the given callback.
+     *
+     * @param  callable(array $classes): bool  $callback
+     */
     public function assertClass(callable $callback): void
     {
         PHPUnit::assertTrue(
