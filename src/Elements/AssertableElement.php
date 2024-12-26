@@ -417,7 +417,7 @@ class AssertableElement implements AssertableElementInterface
     /**
      * Assert the element's attribute passes the given callback.
      *
-     * @param  callable(string|null $value): bool  $callback
+     * @param  callable(?string $value): bool  $callback
      */
     public function assertAttribute(string $attribute, callable $callback): void
     {

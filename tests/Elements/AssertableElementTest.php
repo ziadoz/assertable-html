@@ -463,7 +463,7 @@ class AssertableElementTest extends TestCase
     public function test_assert_attribute_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li id="foo">Foo</li></ul>'), 'li')
-            ->assertAttribute('id', fn (string $value): bool => $value === 'foo');
+            ->assertAttribute('id', fn (?string $value): bool => $value === 'foo');
     }
 
     public function test_assert_attribute_fails(): void
@@ -472,7 +472,7 @@ class AssertableElementTest extends TestCase
         $this->expectExceptionMessage("The element [li#foo] attribute [id] doesn't pass the given callback.");
 
         new AssertableElement($this->getFixtureElement('<ul><li id="foo">Foo</li></ul>'), 'li')
-            ->assertAttribute('id', fn (string $value): bool => $value === 'bar');
+            ->assertAttribute('id', fn (?string $value): bool => $value === 'bar');
     }
 
     /*
@@ -598,7 +598,7 @@ class AssertableElementTest extends TestCase
     public function test_assert_data_attribute_aliases_pass(): void
     {
         $assertable = new AssertableElement($this->getFixtureElement('<ul><li data-foo="foo-bar">Foo</li></ul>'), 'li');
-        $assertable->assertDataAttribute('foo', fn (string $value) => $value === 'foo-bar');
+        $assertable->assertDataAttribute('foo', fn (?string $value) => $value === 'foo-bar');
         $assertable->assertDataAttributeEquals('foo', 'foo-bar');
         $assertable->assertDataAttributeDoesntEqual('foo', 'baz-qux');
         $assertable->assertDataAttributeContains('foo', 'bar');
@@ -614,7 +614,7 @@ class AssertableElementTest extends TestCase
     public function test_assert_aria_attribute_aliases_pass(): void
     {
         $assertable = new AssertableElement($this->getFixtureElement('<ul><li aria-foo="foo-bar">Foo</li></ul>'), 'li');
-        $assertable->assertAriaAttribute('foo', fn (string $value) => $value === 'foo-bar');
+        $assertable->assertAriaAttribute('foo', fn (?string $value) => $value === 'foo-bar');
         $assertable->assertAriaAttributeEquals('foo', 'foo-bar');
         $assertable->assertAriaAttributeDoesntEqual('foo', 'baz-qux');
         $assertable->assertAriaAttributeContains('foo', 'bar');
