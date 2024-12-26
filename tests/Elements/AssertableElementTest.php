@@ -340,7 +340,7 @@ class AssertableElementTest extends TestCase
     public function test_assert_class_contains_fails(): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage("The element [li.foo.bar] class doesn't match the given class [baz]");
+        $this->expectExceptionMessage("The element [li.foo.bar] class doesn't contain the given class [baz]");
 
         new AssertableElement($this->getFixtureElement('<ul><li class="foo bar">Foo</li></ul>'), 'li')
             ->assertClassContains('baz');
@@ -355,7 +355,7 @@ class AssertableElementTest extends TestCase
     public function test_assert_class_doesnt_contain_fails(): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('The element [li.foo.bar] class matches the given class [foo]');
+        $this->expectExceptionMessage('The element [li.foo.bar] class contains the given class [foo]');
 
         new AssertableElement($this->getFixtureElement('<ul><li class="foo bar">Foo</li></ul>'), 'li')
             ->assertClassDoesntContain('foo');

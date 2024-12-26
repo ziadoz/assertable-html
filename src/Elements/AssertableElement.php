@@ -305,7 +305,7 @@ class AssertableElement implements AssertableElementInterface
         PHPUnit::assertTrue(
             $this->root->classList->contains($class),
             sprintf(
-                "The element [%s] class doesn't match the given class [%s].",
+                "The element [%s] class doesn't contain the given class [%s].",
                 Utilities::selectorFromElement($this->root),
                 $class,
             ),
@@ -318,7 +318,7 @@ class AssertableElement implements AssertableElementInterface
         PHPUnit::assertFalse(
             $this->root->classList->contains($class),
             sprintf(
-                'The element [%s] class matches the given class [%s].',
+                'The element [%s] class contains the given class [%s].',
                 Utilities::selectorFromElement($this->root),
                 $class,
             ),
