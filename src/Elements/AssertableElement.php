@@ -462,4 +462,44 @@ class AssertableElement implements AssertableElementInterface
             ),
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Attribute Equals
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the given element's attribute equals the given value. */
+    public function assertAttributeEquals(string $attribute, string $value, bool $normaliseWhitespace = true): void
+    {
+        PHPUnit::assertSame(
+            $value,
+            $normaliseWhitespace
+                ? Utilities::normaliseWhitespace($this->root->getAttribute($attribute))
+                : $this->root->getAttribute($attribute),
+            sprintf(
+                "The element [%s] attribute [%s] doesn't equal the given value [%s].",
+                Utilities::selectorFromElement($this->root),
+                $attribute,
+                $value,
+            ),
+        );
+    }
+
+    /** Assert the given element's attribute doesn't equal the given value. */
+    public function assertAttributeDoesntEqual(string $attribute, string $value, bool $normaliseWhitespace = true): void
+    {
+        PHPUnit::assertNotSame(
+            $value,
+            $normaliseWhitespace
+                ? Utilities::normaliseWhitespace($this->root->getAttribute($attribute))
+                : $this->root->getAttribute($attribute),
+            sprintf(
+                'The element [%s] attribute [%s] equals the given value [%s].',
+                Utilities::selectorFromElement($this->root),
+                $attribute,
+                $value,
+            ),
+        );
+    }
 }

@@ -510,4 +510,46 @@ class AssertableElementTest extends TestCase
         new AssertableElement($this->getFixtureElement('<div><p id="foo">Hello, <strong>World!</strong></p></div>'), 'p')
             ->assertAttributeMissing('id');
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Attribute Equals
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_attribute_equals_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<ul><li id="foo">Foo</li></ul>'), 'li')
+            ->assertAttributeEquals('id', 'foo');
+
+        new AssertableElement($this->getFixtureElement('<ul><li id="  foo  ">Foo</li></ul>'), 'li')
+            ->assertAttributeEquals('id', '  foo  ', false);
+    }
+
+    public function test_assert_attribute_equals_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("The element [li#foo] attribute [id] doesn't equal the given value [bar].");
+
+        new AssertableElement($this->getFixtureElement('<ul><li id="foo">Foo</li></ul>'), 'li')
+            ->assertAttributeEquals('id', 'bar');
+    }
+
+    public function test_assert_attribute_doesnt_equal_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<ul><li id="foo">Foo</li></ul>'), 'li')
+            ->assertAttributeDoesntEqual('id', 'bar');
+
+        new AssertableElement($this->getFixtureElement('<ul><li id="  foo  ">Foo</li></ul>'), 'li')
+            ->assertAttributeDoesntEqual('id', '  bar  ', false);
+    }
+
+    public function test_assert_attribute_doesnt_equal_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [li#foo] attribute [id] equals the given value [foo].');
+
+        new AssertableElement($this->getFixtureElement('<ul><li id="foo">Foo</li></ul>'), 'li')
+            ->assertAttributeDoesntEqual('id', 'foo');
+    }
 }
