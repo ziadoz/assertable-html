@@ -324,4 +324,38 @@ class AssertableElement implements AssertableElementInterface
             ),
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Class Contains All
+    |--------------------------------------------------------------------------
+    */
+
+    public function assertClassContainsAll(array $classes): void
+    {
+        $classes = array_values($classes);
+
+        PHPUnit::assertTrue(
+            array_intersect(iterator_to_array($this->root->classList), $classes) === $classes,
+            sprintf(
+                "The element [%s] class doesn't contain all the given classes [%s].",
+                Utilities::selectorFromElement($this->root),
+                implode(' ', $classes),
+            ),
+        );
+    }
+
+    public function assertClassDoesntContainAll(array $classes): void
+    {
+        $classes = array_values($classes);
+
+        PHPUnit::assertFalse(
+            array_intersect(iterator_to_array($this->root->classList), $classes) === $classes,
+            sprintf(
+                'The element [%s] class contains all the given classes [%s].',
+                Utilities::selectorFromElement($this->root),
+                implode(' ', $classes),
+            ),
+        );
+    }
 }
