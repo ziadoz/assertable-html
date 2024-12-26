@@ -263,6 +263,7 @@ class AssertableElement implements AssertableElementInterface
     |--------------------------------------------------------------------------
     */
 
+    /** Assert the element's class equals the given class. */
     public function assertClassEquals(string $class, bool $normaliseWhitespace = true): void
     {
         PHPUnit::assertSame(
@@ -278,6 +279,7 @@ class AssertableElement implements AssertableElementInterface
         );
     }
 
+    /** Assert the element's class doesn't equal the given class. */
     public function assertClassDoesntEqual(string $class, bool $normaliseWhitespace = true): void
     {
         PHPUnit::assertNotSame(
@@ -299,7 +301,7 @@ class AssertableElement implements AssertableElementInterface
     |--------------------------------------------------------------------------
     */
 
-    /** Assert the element's classes contains the given class. */
+    /** Assert the element's class contains the given class. */
     public function assertClassContains(string $class): void
     {
         PHPUnit::assertTrue(
@@ -312,7 +314,7 @@ class AssertableElement implements AssertableElementInterface
         );
     }
 
-    /** Assert the element's classes doesn't contain the given class. */
+    /** Assert the element's class doesn't contain the given class. */
     public function assertClassDoesntContain(string $class): void
     {
         PHPUnit::assertFalse(
@@ -331,6 +333,7 @@ class AssertableElement implements AssertableElementInterface
     |--------------------------------------------------------------------------
     */
 
+    /** Assert the element's class contains all the given classes. */
     public function assertClassContainsAll(array $classes): void
     {
         $classes = array_values($classes);
@@ -345,6 +348,7 @@ class AssertableElement implements AssertableElementInterface
         );
     }
 
+    /** Assert the element's class doesn't contain all the given classes. */
     public function assertClassDoesntContainAll(array $classes): void
     {
         $classes = array_values($classes);
