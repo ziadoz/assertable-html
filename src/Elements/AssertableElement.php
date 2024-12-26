@@ -538,4 +538,120 @@ class AssertableElement implements AssertableElementInterface
             ),
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Data Attribute
+    |--------------------------------------------------------------------------
+    */
+
+    /** Prefix the given attribute name with "data-" if applicable. */
+    protected function prefixDataAttribute(string $attribute): string
+    {
+        return (! str_starts_with($attribute, 'data-') ? 'data-' : '') . $attribute;
+    }
+
+    /**
+     * Assert the element's data attribute passes the given callback.
+     *
+     * @param  callable(string|null $value): bool  $callback
+     */
+    public function assertDataAttribute(string $attribute, callable $callback): void
+    {
+        $this->assertAttribute($this->prefixDataAttribute($attribute), $callback);
+    }
+
+    /** Assert the element has the given data attribute. */
+    public function assertDataAttributePresent(string $attribute): void
+    {
+        $this->assertAttributePresent($this->prefixDataAttribute($attribute));
+    }
+
+    /** Assert the element is missing the given data attribute. */
+    public function assertDataAttributeMissing(string $attribute): void
+    {
+        $this->assertAttributeMissing($this->prefixDataAttribute($attribute));
+    }
+
+    /** Assert the given element's data attribute equals the given value. */
+    public function assertDataAttributeEquals(string $attribute, string $value): void
+    {
+        $this->assertAttributeEquals($this->prefixDataAttribute($attribute), $value);
+    }
+
+    /** Assert the given element's attribute doesn't equal the given value. */
+    public function assertDataAttributeDoesntEqual(string $attribute, string $value): void
+    {
+        $this->assertAttributeDoesntEqual($this->prefixDataAttribute($attribute), $value);
+    }
+
+    /** Assert the given element's data attribute contains the given value. */
+    public function assertDataAttributeContains(string $attribute, string $value): void
+    {
+        $this->assertAttributeContains($this->prefixDataAttribute($attribute), $value);
+    }
+
+    /** Assert the given element's data attribute doesn't contain the given value. */
+    public function assertDataAttributeDoesntContain(string $attribute, string $value): void
+    {
+        $this->assertAttributeDoesntContain($this->prefixDataAttribute($attribute), $value);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Aria Attribute
+    |--------------------------------------------------------------------------
+    */
+
+    /** Prefix the given attribute name with "aria-" if applicable. */
+    protected function prefixAriaAttribute(string $attribute): string
+    {
+        return (! str_starts_with($attribute, 'aria-') ? 'aria-' : '') . $attribute;
+    }
+
+    /**
+     * Assert the element's data attribute passes the given callback.
+     *
+     * @param  callable(string|null $value): bool  $callback
+     */
+    public function assertAriaAttribute(string $attribute, callable $callback): void
+    {
+        $this->assertAttribute($this->prefixAriaAttribute($attribute), $callback);
+    }
+
+    /** Assert the element has the given data attribute. */
+    public function assertAriaAttributePresent(string $attribute): void
+    {
+        $this->assertAttributePresent($this->prefixAriaAttribute($attribute));
+    }
+
+    /** Assert the element is missing the given data attribute. */
+    public function assertAriaAttributeMissing(string $attribute): void
+    {
+        $this->assertAttributeMissing($this->prefixAriaAttribute($attribute));
+    }
+
+    /** Assert the given element's data attribute equals the given value. */
+    public function assertAriaAttributeEquals(string $attribute, string $value): void
+    {
+        $this->assertAttributeEquals($this->prefixAriaAttribute($attribute), $value);
+    }
+
+    /** Assert the given element's attribute doesn't equal the given value. */
+    public function assertAriaAttributeDoesntEqual(string $attribute, string $value): void
+    {
+        $this->assertAttributeDoesntEqual($this->prefixAriaAttribute($attribute), $value);
+    }
+
+    /** Assert the given element's data attribute contains the given value. */
+    public function assertAriaAttributeContains(string $attribute, string $value): void
+    {
+        $this->assertAttributeContains($this->prefixAriaAttribute($attribute), $value);
+    }
+
+    /** Assert the given element's data attribute doesn't contain the given value. */
+    public function assertAriaAttributeDoesntContain(string $attribute, string $value): void
+    {
+        $this->assertAttributeDoesntContain($this->prefixAriaAttribute($attribute), $value);
+    }
 }

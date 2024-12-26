@@ -588,4 +588,36 @@ class AssertableElementTest extends TestCase
         new AssertableElement($this->getFixtureElement('<ul><li id="foo-bar-baz">Foo</li></ul>'), 'li')
             ->assertAttributeDoesntContain('id', '-bar-');
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Data Attribute
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_data_attribute_aliases_pass(): void
+    {
+        $assertable = new AssertableElement($this->getFixtureElement('<ul><li data-foo="foo-bar">Foo</li></ul>'), 'li');
+        $assertable->assertDataAttribute('foo', fn (string $value) => $value === 'foo-bar');
+        $assertable->assertDataAttributeEquals('foo', 'foo-bar');
+        $assertable->assertDataAttributeDoesntEqual('foo', 'baz-qux');
+        $assertable->assertDataAttributeContains('foo', 'bar');
+        $assertable->assertDataAttributeDoesntContain('foo', 'qux');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Aria Attribute
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_aria_attribute_aliases_pass(): void
+    {
+        $assertable = new AssertableElement($this->getFixtureElement('<ul><li aria-foo="foo-bar">Foo</li></ul>'), 'li');
+        $assertable->assertAriaAttribute('foo', fn (string $value) => $value === 'foo-bar');
+        $assertable->assertAriaAttributeEquals('foo', 'foo-bar');
+        $assertable->assertAriaAttributeDoesntEqual('foo', 'baz-qux');
+        $assertable->assertAriaAttributeContains('foo', 'bar');
+        $assertable->assertAriaAttributeDoesntContain('foo', 'qux');
+    }
 }
