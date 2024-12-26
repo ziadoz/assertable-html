@@ -417,7 +417,7 @@ class AssertableElement implements AssertableElementInterface
     /**
      * Assert the element's attribute passes the given callback.
      *
-     * @param  callable(string $value): bool  $callback
+     * @param  callable(string|null $value): bool  $callback
      */
     public function assertAttribute(string $attribute, callable $callback): void
     {
@@ -475,8 +475,8 @@ class AssertableElement implements AssertableElementInterface
         PHPUnit::assertSame(
             $value,
             $normaliseWhitespace
-                ? Utilities::normaliseWhitespace($this->root->getAttribute($attribute))
-                : $this->root->getAttribute($attribute),
+                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
+                : (string) $this->root->getAttribute($attribute),
             sprintf(
                 "The element [%s] attribute [%s] doesn't equal the given value [%s].",
                 Utilities::selectorFromElement($this->root),
@@ -492,8 +492,8 @@ class AssertableElement implements AssertableElementInterface
         PHPUnit::assertNotSame(
             $value,
             $normaliseWhitespace
-                ? Utilities::normaliseWhitespace($this->root->getAttribute($attribute))
-                : $this->root->getAttribute($attribute),
+                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
+                : (string) $this->root->getAttribute($attribute),
             sprintf(
                 'The element [%s] attribute [%s] equals the given value [%s].',
                 Utilities::selectorFromElement($this->root),
