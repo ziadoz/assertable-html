@@ -362,4 +362,34 @@ class AssertableElement implements AssertableElementInterface
             ),
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Attribute Present/Missing
+    |--------------------------------------------------------------------------
+    */
+
+    public function assertAttributePresent(string $attribute): void
+    {
+        PHPUnit::assertNotNull(
+            $this->root->getAttribute($attribute),
+            sprintf(
+                'The element [%s] is missing the given attribute [%s].',
+                Utilities::selectorFromElement($this->root),
+                $attribute,
+            ),
+        );
+    }
+
+    public function assertAttributeMissing(string $attribute): void
+    {
+        PHPUnit::assertNull(
+            $this->root->getAttribute($attribute),
+            sprintf(
+                'The element [%s] has the given attribute [%s].',
+                Utilities::selectorFromElement($this->root),
+                $attribute,
+            ),
+        );
+    }
 }

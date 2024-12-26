@@ -396,4 +396,40 @@ class AssertableElementTest extends TestCase
         new AssertableElement($this->getFixtureElement('<ul><li class="foo bar">Foo</li></ul>'), 'li')
             ->assertClassDoesntContainAll(['foo', 'bar']);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Attribute Present/Missing
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_attribute_present_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<div><p id="foo">Hello, <strong>World!</strong></p></div>'), 'p')
+            ->assertAttributePresent('id');
+    }
+
+    public function test_assert_attribute_present_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [p#foo] is missing the given attribute [foo].');
+
+        new AssertableElement($this->getFixtureElement('<div><p id="foo">Hello, <strong>World!</strong></p></div>'), 'p')
+            ->assertAttributePresent('foo');
+    }
+
+    public function test_assert_attribute_missing_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<div><p id="foo">Hello, <strong>World!</strong></p></div>'), 'p')
+            ->assertAttributeMissing('foo');
+    }
+
+    public function test_assert_attribute_missing_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [p#foo] has the given attribute [id].');
+
+        new AssertableElement($this->getFixtureElement('<div><p id="foo">Hello, <strong>World!</strong></p></div>'), 'p')
+            ->assertAttributeMissing('id');
+    }
 }
