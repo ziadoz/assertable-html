@@ -435,6 +435,27 @@ class AssertableElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Attribute
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_attribute_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<ul><li id="foo">Foo</li></ul>'), 'li')
+            ->assertAttribute('id', fn (string $value): bool => $value === 'foo');
+    }
+
+    public function test_assert_attribute_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("The element [li#foo] attribute [id] doesn't pass the given callback.");
+
+        new AssertableElement($this->getFixtureElement('<ul><li id="foo">Foo</li></ul>'), 'li')
+            ->assertAttribute('id', fn (string $value): bool => $value === 'bar');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Attribute Present/Missing
     |--------------------------------------------------------------------------
     */

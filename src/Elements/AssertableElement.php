@@ -389,6 +389,29 @@ class AssertableElement implements AssertableElementInterface
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Attribute
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Assert the element's attribute passes the given callback.
+     *
+     * @param  callable(string $value): bool  $callback
+     */
+    public function assertAttribute(string $attribute, callable $callback): void
+    {
+        PHPUnit::assertTrue(
+            $callback($this->root->getAttribute($attribute)),
+            sprintf(
+                "The element [%s] attribute [%s] doesn't pass the given callback.",
+                Utilities::selectorFromElement($this->root),
+                $attribute,
+            ),
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Attribute Present/Missing
     |--------------------------------------------------------------------------
     */
