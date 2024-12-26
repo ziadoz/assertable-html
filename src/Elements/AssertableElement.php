@@ -157,11 +157,11 @@ class AssertableElement implements AssertableElementInterface
      *
      * @param  callable(string $text): bool  $callback
      */
-    public function assertText(callable $callback, bool $stripWhitespace = true): void
+    public function assertText(callable $callback, bool $normaliseWhitespace = true): void
     {
         PHPUnit::assertTrue(
             $callback(
-                $stripWhitespace
+                $normaliseWhitespace
                     ? Utilities::normaliseWhitespace($this->root->textContent)
                     : $this->root->textContent
             ),
@@ -179,11 +179,11 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the element's text equals the given text. */
-    public function assertTextEquals(string $text, bool $stripWhitespace = true): void
+    public function assertTextEquals(string $text, bool $normaliseWhitespace = true): void
     {
         PHPUnit::assertSame(
             $text,
-            $stripWhitespace
+            $normaliseWhitespace
                 ? Utilities::normaliseWhitespace($this->root->textContent)
                 : $this->root->textContent,
             sprintf(
@@ -194,11 +194,11 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element's text doesn't equal the given text. */
-    public function assertTextDoesntEqual(string $text, bool $stripWhitespace = true): void
+    public function assertTextDoesntEqual(string $text, bool $normaliseWhitespace = true): void
     {
         PHPUnit::assertNotSame(
             $text,
-            $stripWhitespace
+            $normaliseWhitespace
                 ? Utilities::normaliseWhitespace($this->root->textContent)
                 : $this->root->textContent,
             sprintf(
@@ -215,11 +215,11 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the element's text contains the given text. */
-    public function assertTextContains(string $text, bool $stripWhitespace = true): void
+    public function assertTextContains(string $text, bool $normaliseWhitespace = true): void
     {
         PHPUnit::assertStringContainsString(
             $text,
-            $stripWhitespace
+            $normaliseWhitespace
                 ? Utilities::normaliseWhitespace($this->root->textContent)
                 : $this->root->textContent,
             sprintf(
@@ -230,17 +230,17 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Alias for assertTextContains() */
-    public function assertSeeIn(string $text, bool $stripWhitespace = true): void
+    public function assertSeeIn(string $text, bool $normaliseWhitespace = true): void
     {
-        $this->assertTextContains($text, $stripWhitespace);
+        $this->assertTextContains($text, $normaliseWhitespace);
     }
 
     /** Assert the element's text doesn't contain the given text. */
-    public function assertTextDoesntContain(string $text, bool $stripWhitespace = true): void
+    public function assertTextDoesntContain(string $text, bool $normaliseWhitespace = true): void
     {
         PHPUnit::assertStringNotContainsString(
             $text,
-            $stripWhitespace
+            $normaliseWhitespace
                 ? Utilities::normaliseWhitespace($this->root->textContent)
                 : $this->root->textContent,
             sprintf(
@@ -251,9 +251,9 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Alias for assertTextDoesntContain() */
-    public function assertDontSeeIn(string $text, bool $stripWhitespace = true): void
+    public function assertDontSeeIn(string $text, bool $normaliseWhitespace = true): void
     {
-        $this->assertTextDoesntContain($text, $stripWhitespace);
+        $this->assertTextDoesntContain($text, $normaliseWhitespace);
     }
 
     /*
