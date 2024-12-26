@@ -285,6 +285,42 @@ class AssertableElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Class Present/Missing
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_class_present_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
+            ->assertClassPresent();
+    }
+
+    public function test_assert_class_present_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [li] is missing the class attribute.');
+
+        new AssertableElement($this->getFixtureElement('<ul><li>Foo</li></ul>'), 'li')
+            ->assertClassPresent();
+    }
+
+    public function test_assert_class_missing_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<ul><li>Foo</li></ul>'), 'li')
+            ->assertClassMissing();
+    }
+
+    public function test_assert_class_missing_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [li.foo] has the class attribute.');
+
+        new AssertableElement($this->getFixtureElement('<ul><li class="foo">Foo</li></ul>'), 'li')
+            ->assertClassMissing();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Class Equals
     |--------------------------------------------------------------------------
     */

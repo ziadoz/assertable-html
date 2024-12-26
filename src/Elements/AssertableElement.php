@@ -259,6 +259,30 @@ class AssertableElement implements AssertableElementInterface
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Class Present/Missing
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element has a class. */
+    public function assertClassPresent(): void
+    {
+        $this->assertAttributePresent('class', sprintf(
+            'The element [%s] is missing the class attribute.',
+            Utilities::selectorFromElement($this->root),
+        ));
+    }
+
+    /** Assert the element is missing a class. */
+    public function assertClassMissing(): void
+    {
+        $this->assertAttributeMissing('class', sprintf(
+            'The element [%s] has the class attribute.',
+            Utilities::selectorFromElement($this->root),
+        ));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Class Equals
     |--------------------------------------------------------------------------
     */
@@ -369,11 +393,12 @@ class AssertableElement implements AssertableElementInterface
     |--------------------------------------------------------------------------
     */
 
-    public function assertAttributePresent(string $attribute): void
+    /** Assert the element has the given attribute. */
+    public function assertAttributePresent(string $attribute, ?string $message = null): void
     {
         PHPUnit::assertNotNull(
             $this->root->getAttribute($attribute),
-            sprintf(
+            $message ?? sprintf(
                 'The element [%s] is missing the given attribute [%s].',
                 Utilities::selectorFromElement($this->root),
                 $attribute,
@@ -381,11 +406,12 @@ class AssertableElement implements AssertableElementInterface
         );
     }
 
-    public function assertAttributeMissing(string $attribute): void
+    /** Assert the element is missing the given attribute. */
+    public function assertAttributeMissing(string $attribute, ?string $message = null): void
     {
         PHPUnit::assertNull(
             $this->root->getAttribute($attribute),
-            sprintf(
+            $message ?? sprintf(
                 'The element [%s] has the given attribute [%s].',
                 Utilities::selectorFromElement($this->root),
                 $attribute,
