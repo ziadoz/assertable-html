@@ -301,7 +301,7 @@ class AssertableElementTest extends TestCase
     public function test_assert_class_equals_fails(): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage("The element [li.foo.bar] class doesn't equal the given class [baz qux]");
+        $this->expectExceptionMessage("The element [li.foo.bar] class doesn't equal the given class [baz qux].");
 
         new AssertableElement($this->getFixtureElement('<ul><li class="foo bar">Foo</li></ul>'), 'li')
             ->assertClassEquals('baz qux');
@@ -319,7 +319,7 @@ class AssertableElementTest extends TestCase
     public function test_assert_class_doesnt_equal_fails(): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('The element [li.foo.bar] class equals the given class [foo bar]');
+        $this->expectExceptionMessage('The element [li.foo.bar] class equals the given class [foo bar].');
 
         new AssertableElement($this->getFixtureElement('<ul><li class="foo bar">Foo</li></ul>'), 'li')
             ->assertClassDoesntEqual('foo bar');
@@ -340,7 +340,7 @@ class AssertableElementTest extends TestCase
     public function test_assert_class_contains_fails(): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage("The element [li.foo.bar] class doesn't contain the given class [baz]");
+        $this->expectExceptionMessage("The element [li.foo.bar] class doesn't contain the given class [baz].");
 
         new AssertableElement($this->getFixtureElement('<ul><li class="foo bar">Foo</li></ul>'), 'li')
             ->assertClassContains('baz');
@@ -355,7 +355,7 @@ class AssertableElementTest extends TestCase
     public function test_assert_class_doesnt_contain_fails(): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('The element [li.foo.bar] class contains the given class [foo]');
+        $this->expectExceptionMessage('The element [li.foo.bar] class contains the given class [foo].');
 
         new AssertableElement($this->getFixtureElement('<ul><li class="foo bar">Foo</li></ul>'), 'li')
             ->assertClassDoesntContain('foo');
@@ -376,7 +376,7 @@ class AssertableElementTest extends TestCase
     public function test_assert_class_contains_all_fails(): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage("The element [li.foo.bar.baz] class doesn't contain all the given classes [foo qux]");
+        $this->expectExceptionMessage("The element [li.foo.bar.baz] class doesn't contain all the given classes [foo qux].");
 
         new AssertableElement($this->getFixtureElement('<ul><li class="foo bar baz">Foo</li></ul>'), 'li')
             ->assertClassContainsAll(['foo', 'qux']);
