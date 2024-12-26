@@ -112,6 +112,27 @@ class AssertableElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Count
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_count_elements_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<div><ul><li>Foo</li><li>Bar</li></ul></div>'), 'ul')
+            ->assertCountElements(2, 'li');
+    }
+
+    public function test_assert_count_elements_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("The element [ul] doesn't have exactly [1] elements matching the selector [li].");
+
+        new AssertableElement($this->getFixtureElement('<div><ul><li>Foo</li><li>Bar</li></ul></div>'), 'ul')
+            ->assertCountElements(1, 'li');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Text
     |--------------------------------------------------------------------------
     */

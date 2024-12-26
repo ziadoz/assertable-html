@@ -127,6 +127,27 @@ class AssertableElement implements AssertableElementInterface
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Count
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element contains the exact number of elements matching the given selector. */
+    public function assertCountElements(int $expected, string $selector): void
+    {
+        PHPUnit::assertCount(
+            $expected,
+            $this->root->querySelectorAll($selector),
+            sprintf(
+                "The element [%s] doesn't have exactly [%d] elements matching the selector [%s].",
+                Utilities::selectorFromElement($this->root),
+                $expected,
+                $selector,
+            ),
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Text
     |--------------------------------------------------------------------------
     */
