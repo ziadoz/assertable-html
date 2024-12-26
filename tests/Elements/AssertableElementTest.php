@@ -552,4 +552,40 @@ class AssertableElementTest extends TestCase
         new AssertableElement($this->getFixtureElement('<ul><li id="foo">Foo</li></ul>'), 'li')
             ->assertAttributeDoesntEqual('id', 'foo');
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Attribute Contains
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_attribute_contains_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<ul><li id="foo-bar-baz">Foo</li></ul>'), 'li')
+            ->assertAttributeContains('id', '-bar-');
+    }
+
+    public function test_assert_attribute_contains_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("The element [li#foo-bar-baz] attribute [id] doesn't contain the given value [-qux-]");
+
+        new AssertableElement($this->getFixtureElement('<ul><li id="foo-bar-baz">Foo</li></ul>'), 'li')
+            ->assertAttributeContains('id', '-qux-');
+    }
+
+    public function test_assert_attribute_doesnt_contain_passes(): void
+    {
+        new AssertableElement($this->getFixtureElement('<ul><li id="foo-bar-baz">Foo</li></ul>'), 'li')
+            ->assertAttributeDoesntContain('id', '-qux-');
+    }
+
+    public function test_assert_attribute_doesnt_contain_fails(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('The element [li#foo-bar-baz] attribute [id] contains the given value [-bar-].');
+
+        new AssertableElement($this->getFixtureElement('<ul><li id="foo-bar-baz">Foo</li></ul>'), 'li')
+            ->assertAttributeDoesntContain('id', '-bar-');
+    }
 }

@@ -502,4 +502,40 @@ class AssertableElement implements AssertableElementInterface
             ),
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Attribute Contains
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the given element's attribute contains the given value. */
+    public function assertAttributeContains(string $attribute, string $value): void
+    {
+        PHPUnit::assertStringContainsString(
+            $value,
+            (string) $this->root->getAttribute($attribute),
+            sprintf(
+                "The element [%s] attribute [%s] doesn't contain the given value [%s].",
+                Utilities::selectorFromElement($this->root),
+                $attribute,
+                $value,
+            ),
+        );
+    }
+
+    /** Assert the given element's class doesn't contain the given value. */
+    public function assertAttributeDoesntContain(string $attribute, string $value): void
+    {
+        PHPUnit::assertStringNotContainsString(
+            $value,
+            (string) $this->root->getAttribute($attribute),
+            sprintf(
+                'The element [%s] attribute [%s] contains the given value [%s].',
+                Utilities::selectorFromElement($this->root),
+                $attribute,
+                $value,
+            ),
+        );
+    }
 }
