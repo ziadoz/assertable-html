@@ -65,9 +65,6 @@ class AssertableHtml
     {
         $element = new AssertableElement($this->root, $this->selector . ' ' . $selector);
 
-        // @todo: Assert the element is valid (e.g. $element->assertValid())?
-        // @todo: Need a map of elements to assertables (e.g. "form" => AssertableForm::class).
-
         if ($callback) {
             $callback($element);
         }
