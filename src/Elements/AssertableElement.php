@@ -82,11 +82,11 @@ class AssertableElement implements AssertableElementInterface
      *
      * @param  callable(HtmlElement $element): bool  $callback
      */
-    public function assertElement(callable $callback): void
+    public function assertElement(callable $callback, ?string $message = null): void
     {
         PHPUnit::assertTrue(
             $callback($this->root),
-            sprintf(
+            $message ?? sprintf(
                 "The element [%s] doesn't pass the given callback.",
                 Utilities::selectorFromElement($this->root),
             ),
@@ -100,11 +100,11 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the element matches the given selector. */
-    public function assertMatchesSelector(string $selector): void
+    public function assertMatchesSelector(string $selector, ?string $message = null): void
     {
         PHPUnit::assertTrue(
             $this->root->matches($selector),
-            sprintf(
+            $message ?? sprintf(
                 "The element [%s] doesn't match the given selector [%s].",
                 Utilities::selectorFromElement($this->root),
                 $selector,
@@ -113,11 +113,11 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element doesn't match the given selector. */
-    public function assertDoesntMatchSelector(string $selector): void
+    public function assertDoesntMatchSelector(string $selector, ?string $message = null): void
     {
         PHPUnit::assertFalse(
             $this->root->matches($selector),
-            sprintf(
+            $message ?? sprintf(
                 'The element [%s] matches the given selector [%s].',
                 Utilities::selectorFromElement($this->root),
                 $selector,
@@ -132,12 +132,12 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the element contains the exact number of elements matching the given selector. */
-    public function assertCountElements(int $expected, string $selector): void
+    public function assertCountElements(int $expected, string $selector, ?string $message = null): void
     {
         PHPUnit::assertCount(
             $expected,
             $this->root->querySelectorAll($selector),
-            sprintf(
+            $message ?? sprintf(
                 "The element [%s] doesn't have exactly [%d] elements matching the selector [%s].",
                 Utilities::selectorFromElement($this->root),
                 $expected,
@@ -157,7 +157,7 @@ class AssertableElement implements AssertableElementInterface
      *
      * @param  callable(string $text): bool  $callback
      */
-    public function assertText(callable $callback, bool $normaliseWhitespace = true): void
+    public function assertText(callable $callback, bool $normaliseWhitespace = true, ?string $message = null): void
     {
         PHPUnit::assertTrue(
             $callback(
@@ -165,7 +165,7 @@ class AssertableElement implements AssertableElementInterface
                     ? Utilities::normaliseWhitespace($this->root->textContent)
                     : $this->root->textContent
             ),
-            sprintf(
+            $message ?? sprintf(
                 "The element [%s] text doesn't pass the given callback.",
                 Utilities::selectorFromElement($this->root),
             ),
@@ -179,14 +179,14 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the element's text equals the given text. */
-    public function assertTextEquals(string $text, bool $normaliseWhitespace = true): void
+    public function assertTextEquals(string $text, bool $normaliseWhitespace = true, ?string $message = null): void
     {
         PHPUnit::assertSame(
             $text,
             $normaliseWhitespace
                 ? Utilities::normaliseWhitespace($this->root->textContent)
                 : $this->root->textContent,
-            sprintf(
+            $message ?? sprintf(
                 "The element [%s] text doesn't equal the given text.",
                 Utilities::selectorFromElement($this->root),
             ),
@@ -194,14 +194,14 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element's text doesn't equal the given text. */
-    public function assertTextDoesntEqual(string $text, bool $normaliseWhitespace = true): void
+    public function assertTextDoesntEqual(string $text, bool $normaliseWhitespace = true, ?string $message = null): void
     {
         PHPUnit::assertNotSame(
             $text,
             $normaliseWhitespace
                 ? Utilities::normaliseWhitespace($this->root->textContent)
                 : $this->root->textContent,
-            sprintf(
+            $message ?? sprintf(
                 'The element [%s] text equals the given text.',
                 Utilities::selectorFromElement($this->root),
             ),
@@ -215,14 +215,14 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the element's text contains the given text. */
-    public function assertTextContains(string $text, bool $normaliseWhitespace = true): void
+    public function assertTextContains(string $text, bool $normaliseWhitespace = true, ?string $message = null): void
     {
         PHPUnit::assertStringContainsString(
             $text,
             $normaliseWhitespace
                 ? Utilities::normaliseWhitespace($this->root->textContent)
                 : $this->root->textContent,
-            sprintf(
+            $message ?? sprintf(
                 "The element [%s] text doesn't contain the given text.",
                 Utilities::selectorFromElement($this->root),
             ),
@@ -230,20 +230,20 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Alias for assertTextContains() */
-    public function assertSeeIn(string $text, bool $normaliseWhitespace = true): void
+    public function assertSeeIn(string $text, bool $normaliseWhitespace = true, ?string $message = null): void
     {
-        $this->assertTextContains($text, $normaliseWhitespace);
+        $this->assertTextContains($text, $normaliseWhitespace, $message);
     }
 
     /** Assert the element's text doesn't contain the given text. */
-    public function assertTextDoesntContain(string $text, bool $normaliseWhitespace = true): void
+    public function assertTextDoesntContain(string $text, bool $normaliseWhitespace = true, ?string $message = null): void
     {
         PHPUnit::assertStringNotContainsString(
             $text,
             $normaliseWhitespace
                 ? Utilities::normaliseWhitespace($this->root->textContent)
                 : $this->root->textContent,
-            sprintf(
+            $message ?? sprintf(
                 'The element [%s] text contains the given text.',
                 Utilities::selectorFromElement($this->root),
             ),
@@ -251,9 +251,9 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Alias for assertTextDoesntContain() */
-    public function assertDontSeeIn(string $text, bool $normaliseWhitespace = true): void
+    public function assertDontSeeIn(string $text, bool $normaliseWhitespace = true, ?string $message = null): void
     {
-        $this->assertTextDoesntContain($text, $normaliseWhitespace);
+        $this->assertTextDoesntContain($text, $normaliseWhitespace, $message);
     }
 
     /*
@@ -267,11 +267,11 @@ class AssertableElement implements AssertableElementInterface
      *
      * @param  callable(array $classes): bool  $callback
      */
-    public function assertClass(callable $callback): void
+    public function assertClass(callable $callback, ?string $message = null): void
     {
         PHPUnit::assertTrue(
             $callback(iterator_to_array($this->root->classList)),
-            sprintf(
+            $message ?? sprintf(
                 "The element [%s] class doesn't pass the given callback.",
                 Utilities::selectorFromElement($this->root),
             ),
@@ -309,14 +309,14 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the element's class equals the given class. */
-    public function assertClassEquals(string $class, bool $normaliseWhitespace = true): void
+    public function assertClassEquals(string $class, bool $normaliseWhitespace = true, ?string $message = null): void
     {
         PHPUnit::assertSame(
             $class,
             $normaliseWhitespace
                 ? implode(' ', iterator_to_array($this->root->classList))
                 : $this->root->classList->value,
-            sprintf(
+            $message ?? sprintf(
                 "The element [%s] class doesn't equal the given class [%s].",
                 Utilities::selectorFromElement($this->root),
                 $class,
@@ -325,14 +325,14 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element's class doesn't equal the given class. */
-    public function assertClassDoesntEqual(string $class, bool $normaliseWhitespace = true): void
+    public function assertClassDoesntEqual(string $class, bool $normaliseWhitespace = true, ?string $message = null): void
     {
         PHPUnit::assertNotSame(
             $class,
             $normaliseWhitespace
                 ? implode(' ', iterator_to_array($this->root->classList))
                 : $this->root->classList->value,
-            sprintf(
+            $message ?? sprintf(
                 'The element [%s] class equals the given class [%s].',
                 Utilities::selectorFromElement($this->root),
                 $class,
@@ -347,11 +347,11 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the element's class contains the given class. */
-    public function assertClassContains(string $class): void
+    public function assertClassContains(string $class, ?string $message = null): void
     {
         PHPUnit::assertTrue(
             $this->root->classList->contains($class),
-            sprintf(
+            $message ?? sprintf(
                 "The element [%s] class doesn't contain the given class [%s].",
                 Utilities::selectorFromElement($this->root),
                 $class,
@@ -360,11 +360,11 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element's class doesn't contain the given class. */
-    public function assertClassDoesntContain(string $class): void
+    public function assertClassDoesntContain(string $class, ?string $message = null): void
     {
         PHPUnit::assertFalse(
             $this->root->classList->contains($class),
-            sprintf(
+            $message ?? sprintf(
                 'The element [%s] class contains the given class [%s].',
                 Utilities::selectorFromElement($this->root),
                 $class,
@@ -379,13 +379,13 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the element's class contains all the given classes. */
-    public function assertClassContainsAll(array $classes): void
+    public function assertClassContainsAll(array $classes, ?string $message = null): void
     {
         $classes = array_values($classes);
 
         PHPUnit::assertTrue(
             array_intersect(iterator_to_array($this->root->classList), $classes) === $classes,
-            sprintf(
+            $message ?? sprintf(
                 "The element [%s] class doesn't contain all the given classes [%s].",
                 Utilities::selectorFromElement($this->root),
                 implode(' ', $classes),
@@ -394,13 +394,13 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element's class doesn't contain all the given classes. */
-    public function assertClassDoesntContainAll(array $classes): void
+    public function assertClassDoesntContainAll(array $classes, ?string $message = null): void
     {
         $classes = array_values($classes);
 
         PHPUnit::assertFalse(
             array_intersect(iterator_to_array($this->root->classList), $classes) === $classes,
-            sprintf(
+            $message ?? sprintf(
                 'The element [%s] class contains all the given classes [%s].',
                 Utilities::selectorFromElement($this->root),
                 implode(' ', $classes),
@@ -419,11 +419,11 @@ class AssertableElement implements AssertableElementInterface
      *
      * @param  callable(?string $value): bool  $callback
      */
-    public function assertAttribute(string $attribute, callable $callback): void
+    public function assertAttribute(string $attribute, callable $callback, ?string $message = null): void
     {
         PHPUnit::assertTrue(
             $callback($this->root->getAttribute($attribute)),
-            sprintf(
+            $message ?? sprintf(
                 "The element [%s] attribute [%s] doesn't pass the given callback.",
                 Utilities::selectorFromElement($this->root),
                 $attribute,
@@ -470,14 +470,14 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the given element's attribute equals the given value. */
-    public function assertAttributeEquals(string $attribute, string $value, bool $normaliseWhitespace = true): void
+    public function assertAttributeEquals(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
     {
         PHPUnit::assertSame(
             $value,
             $normaliseWhitespace
                 ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
                 : (string) $this->root->getAttribute($attribute),
-            sprintf(
+            $message ?? sprintf(
                 "The element [%s] attribute [%s] doesn't equal the given value [%s].",
                 Utilities::selectorFromElement($this->root),
                 $attribute,
@@ -487,14 +487,14 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the given element's attribute doesn't equal the given value. */
-    public function assertAttributeDoesntEqual(string $attribute, string $value, bool $normaliseWhitespace = true): void
+    public function assertAttributeDoesntEqual(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
     {
         PHPUnit::assertNotSame(
             $value,
             $normaliseWhitespace
                 ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
                 : (string) $this->root->getAttribute($attribute),
-            sprintf(
+            $message ?? sprintf(
                 'The element [%s] attribute [%s] equals the given value [%s].',
                 Utilities::selectorFromElement($this->root),
                 $attribute,
@@ -510,12 +510,14 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the given element's attribute contains the given value. */
-    public function assertAttributeContains(string $attribute, string $value): void
+    public function assertAttributeContains(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
     {
         PHPUnit::assertStringContainsString(
             $value,
-            (string) $this->root->getAttribute($attribute),
-            sprintf(
+            $normaliseWhitespace
+                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
+                : (string) $this->root->getAttribute($attribute),
+            $message ?? sprintf(
                 "The element [%s] attribute [%s] doesn't contain the given value [%s].",
                 Utilities::selectorFromElement($this->root),
                 $attribute,
@@ -525,12 +527,14 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the given element's class doesn't contain the given value. */
-    public function assertAttributeDoesntContain(string $attribute, string $value): void
+    public function assertAttributeDoesntContain(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
     {
         PHPUnit::assertStringNotContainsString(
             $value,
-            (string) $this->root->getAttribute($attribute),
-            sprintf(
+            $normaliseWhitespace
+                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
+                : (string) $this->root->getAttribute($attribute),
+            $message ?? sprintf(
                 'The element [%s] attribute [%s] contains the given value [%s].',
                 Utilities::selectorFromElement($this->root),
                 $attribute,
@@ -556,45 +560,45 @@ class AssertableElement implements AssertableElementInterface
      *
      * @param  callable(string|null $value): bool  $callback
      */
-    public function assertDataAttribute(string $attribute, callable $callback): void
+    public function assertDataAttribute(string $attribute, callable $callback, ?string $message = null): void
     {
-        $this->assertAttribute($this->prefixDataAttribute($attribute), $callback);
+        $this->assertAttribute($this->prefixDataAttribute($attribute), $callback, $message);
     }
 
     /** Assert the element has the given data attribute. */
-    public function assertDataAttributePresent(string $attribute): void
+    public function assertDataAttributePresent(string $attribute, ?string $message = null): void
     {
-        $this->assertAttributePresent($this->prefixDataAttribute($attribute));
+        $this->assertAttributePresent($this->prefixDataAttribute($attribute), $message);
     }
 
     /** Assert the element is missing the given data attribute. */
-    public function assertDataAttributeMissing(string $attribute): void
+    public function assertDataAttributeMissing(string $attribute, ?string $message = null): void
     {
-        $this->assertAttributeMissing($this->prefixDataAttribute($attribute));
+        $this->assertAttributeMissing($this->prefixDataAttribute($attribute), $message);
     }
 
     /** Assert the given element's data attribute equals the given value. */
-    public function assertDataAttributeEquals(string $attribute, string $value): void
+    public function assertDataAttributeEquals(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
     {
-        $this->assertAttributeEquals($this->prefixDataAttribute($attribute), $value);
+        $this->assertAttributeEquals($this->prefixDataAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /** Assert the given element's attribute doesn't equal the given value. */
-    public function assertDataAttributeDoesntEqual(string $attribute, string $value): void
+    public function assertDataAttributeDoesntEqual(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
     {
-        $this->assertAttributeDoesntEqual($this->prefixDataAttribute($attribute), $value);
+        $this->assertAttributeDoesntEqual($this->prefixDataAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /** Assert the given element's data attribute contains the given value. */
-    public function assertDataAttributeContains(string $attribute, string $value): void
+    public function assertDataAttributeContains(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
     {
-        $this->assertAttributeContains($this->prefixDataAttribute($attribute), $value);
+        $this->assertAttributeContains($this->prefixDataAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /** Assert the given element's data attribute doesn't contain the given value. */
-    public function assertDataAttributeDoesntContain(string $attribute, string $value): void
+    public function assertDataAttributeDoesntContain(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
     {
-        $this->assertAttributeDoesntContain($this->prefixDataAttribute($attribute), $value);
+        $this->assertAttributeDoesntContain($this->prefixDataAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /*
@@ -614,44 +618,44 @@ class AssertableElement implements AssertableElementInterface
      *
      * @param  callable(string|null $value): bool  $callback
      */
-    public function assertAriaAttribute(string $attribute, callable $callback): void
+    public function assertAriaAttribute(string $attribute, callable $callback, ?string $message = null): void
     {
-        $this->assertAttribute($this->prefixAriaAttribute($attribute), $callback);
+        $this->assertAttribute($this->prefixAriaAttribute($attribute), $callback, $message);
     }
 
     /** Assert the element has the given data attribute. */
-    public function assertAriaAttributePresent(string $attribute): void
+    public function assertAriaAttributePresent(string $attribute, ?string $message = null): void
     {
-        $this->assertAttributePresent($this->prefixAriaAttribute($attribute));
+        $this->assertAttributePresent($this->prefixAriaAttribute($attribute), $message);
     }
 
     /** Assert the element is missing the given data attribute. */
-    public function assertAriaAttributeMissing(string $attribute): void
+    public function assertAriaAttributeMissing(string $attribute, ?string $message = null): void
     {
-        $this->assertAttributeMissing($this->prefixAriaAttribute($attribute));
+        $this->assertAttributeMissing($this->prefixAriaAttribute($attribute), $message);
     }
 
     /** Assert the given element's data attribute equals the given value. */
-    public function assertAriaAttributeEquals(string $attribute, string $value): void
+    public function assertAriaAttributeEquals(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
     {
-        $this->assertAttributeEquals($this->prefixAriaAttribute($attribute), $value);
+        $this->assertAttributeEquals($this->prefixAriaAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /** Assert the given element's attribute doesn't equal the given value. */
-    public function assertAriaAttributeDoesntEqual(string $attribute, string $value): void
+    public function assertAriaAttributeDoesntEqual(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
     {
-        $this->assertAttributeDoesntEqual($this->prefixAriaAttribute($attribute), $value);
+        $this->assertAttributeDoesntEqual($this->prefixAriaAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /** Assert the given element's data attribute contains the given value. */
-    public function assertAriaAttributeContains(string $attribute, string $value): void
+    public function assertAriaAttributeContains(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
     {
-        $this->assertAttributeContains($this->prefixAriaAttribute($attribute), $value);
+        $this->assertAttributeContains($this->prefixAriaAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /** Assert the given element's data attribute doesn't contain the given value. */
-    public function assertAriaAttributeDoesntContain(string $attribute, string $value): void
+    public function assertAriaAttributeDoesntContain(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
     {
-        $this->assertAttributeDoesntContain($this->prefixAriaAttribute($attribute), $value);
+        $this->assertAttributeDoesntContain($this->prefixAriaAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 }
