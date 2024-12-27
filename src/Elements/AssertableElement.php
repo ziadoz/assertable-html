@@ -157,14 +157,10 @@ class AssertableElement implements AssertableElementInterface
      *
      * @param  callable(string $text): bool  $callback
      */
-    public function assertText(callable $callback, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertText(callable $callback, ?string $message = null): void
     {
         PHPUnit::assertTrue(
-            $callback(
-                $normaliseWhitespace
-                    ? Utilities::normaliseWhitespace($this->root->textContent)
-                    : $this->root->textContent
-            ),
+            $callback($this->root->textContent),
             $message ?? sprintf(
                 "The element [%s] text doesn't pass the given callback.",
                 Utilities::selectorFromElement($this->root),

@@ -149,10 +149,7 @@ class AssertableElementTest extends TestCase
         HTML);
 
         new AssertableElement($html, 'p')
-            ->assertText(fn (string $text): bool => $text === 'Hello, World!');
-
-        new AssertableElement($html, 'p')
-            ->assertText(fn (string $text): bool => str_contains($text, 'Hello') && str_contains($text, 'World!'), false);
+            ->assertText(fn (string $text): bool => str_contains($text, 'Hello') && str_contains($text, 'World!'));
     }
 
     public function test_assert_text_fails(): void
@@ -170,7 +167,7 @@ class AssertableElementTest extends TestCase
         HTML);
 
         new AssertableElement($html, 'p')
-            ->assertText(fn (string $text): bool => $text !== 'Hello, World!');
+            ->assertText(fn (string $text): bool => $text === 'Hello, World!');
     }
 
     /*
