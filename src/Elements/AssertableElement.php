@@ -175,7 +175,7 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the element's text equals the given text. */
-    public function assertTextEquals(string $text, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertTextEquals(string $text, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         PHPUnit::assertSame(
             $text,
@@ -190,7 +190,7 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element's text doesn't equal the given text. */
-    public function assertTextDoesntEqual(string $text, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertTextDoesntEqual(string $text, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         PHPUnit::assertNotSame(
             $text,
@@ -211,7 +211,7 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the element's text contains the given text. */
-    public function assertTextContains(string $text, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertTextContains(string $text, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         PHPUnit::assertStringContainsString(
             $text,
@@ -226,13 +226,13 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Alias for assertTextContains() */
-    public function assertSeeIn(string $text, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertSeeIn(string $text, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         $this->assertTextContains($text, $normaliseWhitespace, $message);
     }
 
     /** Assert the element's text doesn't contain the given text. */
-    public function assertTextDoesntContain(string $text, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertTextDoesntContain(string $text, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         PHPUnit::assertStringNotContainsString(
             $text,
@@ -247,7 +247,7 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Alias for assertTextDoesntContain() */
-    public function assertDontSeeIn(string $text, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertDontSeeIn(string $text, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         $this->assertTextDoesntContain($text, $normaliseWhitespace, $message);
     }
@@ -305,7 +305,7 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the element's class equals the given class. */
-    public function assertClassEquals(string $class, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertClassEquals(string $class, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         PHPUnit::assertSame(
             $class,
@@ -321,7 +321,7 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the element's class doesn't equal the given class. */
-    public function assertClassDoesntEqual(string $class, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertClassDoesntEqual(string $class, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         PHPUnit::assertNotSame(
             $class,
@@ -466,7 +466,7 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the given element's attribute equals the given value. */
-    public function assertAttributeEquals(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertAttributeEquals(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         PHPUnit::assertSame(
             $value,
@@ -483,7 +483,7 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the given element's attribute doesn't equal the given value. */
-    public function assertAttributeDoesntEqual(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertAttributeDoesntEqual(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         PHPUnit::assertNotSame(
             $value,
@@ -506,7 +506,7 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /** Assert the given element's attribute contains the given value. */
-    public function assertAttributeContains(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertAttributeContains(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         PHPUnit::assertStringContainsString(
             $value,
@@ -523,7 +523,7 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the given element's class doesn't contain the given value. */
-    public function assertAttributeDoesntContain(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertAttributeDoesntContain(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         PHPUnit::assertStringNotContainsString(
             $value,
@@ -574,25 +574,25 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the given element's data attribute equals the given value. */
-    public function assertDataAttributeEquals(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertDataAttributeEquals(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         $this->assertAttributeEquals($this->prefixDataAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /** Assert the given element's attribute doesn't equal the given value. */
-    public function assertDataAttributeDoesntEqual(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertDataAttributeDoesntEqual(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         $this->assertAttributeDoesntEqual($this->prefixDataAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /** Assert the given element's data attribute contains the given value. */
-    public function assertDataAttributeContains(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertDataAttributeContains(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         $this->assertAttributeContains($this->prefixDataAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /** Assert the given element's data attribute doesn't contain the given value. */
-    public function assertDataAttributeDoesntContain(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertDataAttributeDoesntContain(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         $this->assertAttributeDoesntContain($this->prefixDataAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
@@ -632,25 +632,25 @@ class AssertableElement implements AssertableElementInterface
     }
 
     /** Assert the given element's data attribute equals the given value. */
-    public function assertAriaAttributeEquals(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertAriaAttributeEquals(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         $this->assertAttributeEquals($this->prefixAriaAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /** Assert the given element's attribute doesn't equal the given value. */
-    public function assertAriaAttributeDoesntEqual(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertAriaAttributeDoesntEqual(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         $this->assertAttributeDoesntEqual($this->prefixAriaAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /** Assert the given element's data attribute contains the given value. */
-    public function assertAriaAttributeContains(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertAriaAttributeContains(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         $this->assertAttributeContains($this->prefixAriaAttribute($attribute), $value, $normaliseWhitespace, $message);
     }
 
     /** Assert the given element's data attribute doesn't contain the given value. */
-    public function assertAriaAttributeDoesntContain(string $attribute, string $value, bool $normaliseWhitespace = true, ?string $message = null): void
+    public function assertAriaAttributeDoesntContain(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): void
     {
         $this->assertAttributeDoesntContain($this->prefixAriaAttribute($attribute), $value, $normaliseWhitespace, $message);
     }

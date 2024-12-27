@@ -180,8 +180,8 @@ class AssertableElementTest extends TestCase
     {
         $html = $this->getFixtureElement('<div><p>  Hello, <strong>World!</strong>  </p></div>');
 
-        new AssertableElement($html, 'p')->assertTextEquals('Hello, World!');
-        new AssertableElement($html, 'p')->assertTextEquals('  Hello, World!  ', false);
+        new AssertableElement($html, 'p')->assertTextEquals('Hello, World!', true);
+        new AssertableElement($html, 'p')->assertTextEquals('  Hello, World!  ');
     }
 
     public function test_assert_text_equals_fails(): void
@@ -197,8 +197,8 @@ class AssertableElementTest extends TestCase
     {
         $html = $this->getFixtureElement('<div><p>  Hello, <strong>World!</strong>  </p></div>');
 
+        new AssertableElement($html, 'p')->assertTextDoesntEqual('Foo, Bar!', true);
         new AssertableElement($html, 'p')->assertTextDoesntEqual('Foo, Bar!');
-        new AssertableElement($html, 'p')->assertTextDoesntEqual('Foo, Bar!', false);
     }
 
     public function test_assert_text_doesnt_equal_fails(): void
@@ -227,8 +227,8 @@ class AssertableElementTest extends TestCase
         </div>
         HTML);
 
-        new AssertableElement($html, 'p')->assertTextContains('Hello');
-        new AssertableElement($html, 'p')->assertTextContains('World', false);
+        new AssertableElement($html, 'p')->assertTextContains('Hello', true);
+        new AssertableElement($html, 'p')->assertTextContains('World');
     }
 
     public function test_assert_text_contains_fails(): void
@@ -236,16 +236,8 @@ class AssertableElementTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("The element [p] text doesn't contain the given text.");
 
-        $html = $this->getFixtureElement(<<<'HTML'
-        <div>
-            <p>
-                Hello,
-                <strong>World!</strong>
-            </p>
-        </div>
-        HTML);
-
-        new AssertableElement($html, 'p')->assertTextContains('Foo, Bar!');
+        new AssertableElement($this->getFixtureElement('<div><p>Hello, <strong>World!</strong></p></div>'), 'p')
+            ->assertTextContains('Foo, Bar!');
     }
 
     public function test_assert_text_doesnt_contain_passes(): void
@@ -259,8 +251,8 @@ class AssertableElementTest extends TestCase
         </div>
         HTML);
 
-        new AssertableElement($html, 'p')->assertTextDoesntContain('Foo');
-        new AssertableElement($html, 'p')->assertTextDoesntContain('Bar', false);
+        new AssertableElement($html, 'p')->assertTextDoesntContain('Foo', true);
+        new AssertableElement($html, 'p')->assertTextDoesntContain('Bar');
     }
 
     public function test_assert_text_doesnt_contain_fails(): void
@@ -268,16 +260,8 @@ class AssertableElementTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The element [p] text contains the given text.');
 
-        $html = $this->getFixtureElement(<<<'HTML'
-        <div>
-            <p>
-                Hello,
-                <strong>World!</strong>
-            </p>
-        </div>
-        HTML);
-
-        new AssertableElement($html, 'p')->assertTextDoesntContain('Hello, World');
+        new AssertableElement($this->getFixtureElement('<div><p>Hello, <strong>World!</strong></p></div>'), 'p')
+            ->assertTextDoesntContain('Hello, World!');
     }
 
     /*
@@ -345,11 +329,11 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_class_equals_passes(): void
     {
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo bar">Foo</li></ul>'), 'li')
-            ->assertClassEquals('foo bar');
+        new AssertableElement($this->getFixtureElement('<ul><li class="  foo bar  ">Foo</li></ul>'), 'li')
+            ->assertClassEquals('foo bar', true);
 
         new AssertableElement($this->getFixtureElement('<ul><li class="  foo  bar  ">Foo</li></ul>'), 'li')
-            ->assertClassEquals('  foo  bar  ', false);
+            ->assertClassEquals('  foo  bar  ');
     }
 
     public function test_assert_class_equals_fails(): void
@@ -363,11 +347,11 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_class_doesnt_equal_passes(): void
     {
-        new AssertableElement($this->getFixtureElement('<ul><li class="foo bar">Foo</li></ul>'), 'li')
-            ->assertClassDoesntEqual('baz qux');
+        new AssertableElement($this->getFixtureElement('<ul><li class="  foo bar  ">Foo</li></ul>'), 'li')
+            ->assertClassDoesntEqual('baz qux', true);
 
         new AssertableElement($this->getFixtureElement('<ul><li class="  foo  bar  ">Foo</li></ul>'), 'li')
-            ->assertClassDoesntEqual('  baz  qux  ', false);
+            ->assertClassDoesntEqual('  baz  qux  ');
     }
 
     public function test_assert_class_doesnt_equal_fails(): void
@@ -517,10 +501,10 @@ class AssertableElementTest extends TestCase
     public function test_assert_attribute_equals_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li id="  foo  ">Foo</li></ul>'), 'li')
-            ->assertAttributeEquals('id', 'foo');
+            ->assertAttributeEquals('id', 'foo', true);
 
         new AssertableElement($this->getFixtureElement('<ul><li id="  foo  ">Foo</li></ul>'), 'li')
-            ->assertAttributeEquals('id', '  foo  ', false);
+            ->assertAttributeEquals('id', '  foo  ');
     }
 
     public function test_assert_attribute_equals_fails(): void
@@ -535,10 +519,10 @@ class AssertableElementTest extends TestCase
     public function test_assert_attribute_doesnt_equal_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li id="  foo  ">Foo</li></ul>'), 'li')
-            ->assertAttributeDoesntEqual('id', 'bar');
+            ->assertAttributeDoesntEqual('id', 'bar', true);
 
         new AssertableElement($this->getFixtureElement('<ul><li id="  foo  ">Foo</li></ul>'), 'li')
-            ->assertAttributeDoesntEqual('id', '  bar  ', false);
+            ->assertAttributeDoesntEqual('id', '  bar  ');
     }
 
     public function test_assert_attribute_doesnt_equal_fails(): void
@@ -559,10 +543,10 @@ class AssertableElementTest extends TestCase
     public function test_assert_attribute_contains_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li id="  foo-bar-baz  ">Foo</li></ul>'), 'li')
-            ->assertAttributeContains('id', '-bar-');
+            ->assertAttributeContains('id', 'foo-bar-', true);
 
         new AssertableElement($this->getFixtureElement('<ul><li id="  foo-bar-baz  ">Foo</li></ul>'), 'li')
-            ->assertAttributeContains('id', 'foo-bar-baz', false);
+            ->assertAttributeContains('id', '  foo-bar-');
     }
 
     public function test_assert_attribute_contains_fails(): void
@@ -577,7 +561,7 @@ class AssertableElementTest extends TestCase
     public function test_assert_attribute_doesnt_contain_passes(): void
     {
         new AssertableElement($this->getFixtureElement('<ul><li id="  foo-bar-baz  ">Foo</li></ul>'), 'li')
-            ->assertAttributeDoesntContain('id', '-qux-');
+            ->assertAttributeDoesntContain('id', '-qux-', true);
 
         new AssertableElement($this->getFixtureElement('<ul><li id="  foo-bar-baz  ">Foo</li></ul>'), 'li')
             ->assertAttributeDoesntContain('id', '-qux-');
