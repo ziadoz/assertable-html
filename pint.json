@@ -5,6 +5,11 @@
         "concat_space": {
             "spacing": "one"
         },
+        "binary_operator_spaces": {
+            "operators": {
+                "=>": "align_single_space_minimal"
+            }
+        },
         "class_attributes_separation": {
             "elements": {
                 "method": "one"
