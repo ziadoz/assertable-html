@@ -237,8 +237,9 @@ class AssertableElementTest extends TestCase
     {
         $html = $this->getFixtureElement('<div><p>  Hello, <strong>World!</strong>  </p></div>');
 
-        new AssertableElement($html, 'p')->assertTextEquals('Hello, World!', true);
-        new AssertableElement($html, 'p')->assertTextEquals('  Hello, World!  ');
+        $assertable = new AssertableElement($html, 'p');
+        $assertable->assertTextEquals('Hello, World!', true);
+        $assertable->assertTextEquals('  Hello, World!  ');
     }
 
     public function test_assert_text_equals_fails(): void
@@ -254,8 +255,9 @@ class AssertableElementTest extends TestCase
     {
         $html = $this->getFixtureElement('<div><p>  Hello, <strong>World!</strong>  </p></div>');
 
-        new AssertableElement($html, 'p')->assertTextDoesntEqual('Foo, Bar!', true);
-        new AssertableElement($html, 'p')->assertTextDoesntEqual('Foo, Bar!');
+        $assertable = new AssertableElement($html, 'p');
+        $assertable->assertTextDoesntEqual('Foo, Bar!', true);
+        $assertable->assertTextDoesntEqual('Foo, Bar!');
     }
 
     public function test_assert_text_doesnt_equal_fails(): void
@@ -284,8 +286,12 @@ class AssertableElementTest extends TestCase
         </div>
         HTML);
 
-        new AssertableElement($html, 'p')->assertTextContains('Hello', true);
-        new AssertableElement($html, 'p')->assertTextContains('World');
+        $assertable = new AssertableElement($html, 'p');
+        $assertable->assertTextContains('Hello', true);
+        $assertable->assertTextContains('World');
+
+        $assertable->assertSeeIn('Hello', true);
+        $assertable->assertSeeIn('World');
     }
 
     public function test_assert_text_contains_fails(): void
@@ -308,8 +314,12 @@ class AssertableElementTest extends TestCase
         </div>
         HTML);
 
-        new AssertableElement($html, 'p')->assertTextDoesntContain('Foo', true);
-        new AssertableElement($html, 'p')->assertTextDoesntContain('Bar');
+        $assertable = new AssertableElement($html, 'p');
+        $assertable->assertTextDoesntContain('Foo', true);
+        $assertable->assertTextDoesntContain('Bar');
+
+        $assertable->assertDontSeeIn('Foo', true);
+        $assertable->assertDontSeeIn('Bar');
     }
 
     public function test_assert_text_doesnt_contain_fails(): void
