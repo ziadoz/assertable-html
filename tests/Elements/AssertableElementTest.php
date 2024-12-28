@@ -136,6 +136,12 @@ class AssertableElementTest extends TestCase
         $assertable->assertNumberOfElements('li', '>=', 4);
         $assertable->assertNumberOfElements('li', '<', 5);
         $assertable->assertNumberOfElements('li', '<=', 4);
+
+        $assertable->assertElementsCount('li', 4);
+        $assertable->assertElementsGreaterThan('li', 1);
+        $assertable->assertElementsGreaterThanOrEqual('li', 4);
+        $assertable->assertElementsLessThan('li', 5);
+        $assertable->assertElementsLessThanOrEqual('li', 4);
     }
 
     #[DataProvider('assert_number_of_elements_fails_data_provider')]

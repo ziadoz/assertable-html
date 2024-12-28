@@ -134,7 +134,7 @@ class AssertableElement implements AssertableElementInterface
     */
 
     /**
-     * Assert the number of elements matching the given selector compares to the given amount.
+     * Assert the element the expected number of elements matching the given selector.
      *
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
@@ -170,6 +170,36 @@ class AssertableElement implements AssertableElementInterface
             '<='    => PHPUnit::assertLessThanOrEqual($expected, count($elements), $message),
             default => throw new OutOfBoundsException('Invalid comparison operator: ' . $comparison),
         };
+    }
+
+    /** Assert the element contains the exact number of elements matching the given selector. */
+    public function assertElementsCount(string $selector, int $expected, ?string $message = null): void
+    {
+        $this->assertNumberOfElements($selector, '=', $expected, $message);
+    }
+
+    /** Assert the element contains greater than the number of elements matching the given selector. */
+    public function assertElementsGreaterThan(string $selector, int $expected, ?string $message = null): void
+    {
+        $this->assertNumberOfElements($selector, '>', $expected, $message);
+    }
+
+    /** Assert the element contains greater than or equal the number of elements matching the given selector. */
+    public function assertElementsGreaterThanOrEqual(string $selector, int $expected, ?string $message = null): void
+    {
+        $this->assertNumberOfElements($selector, '>=', $expected, $message);
+    }
+
+    /** Assert the element contains less than the number of elements matching the given selector. */
+    public function assertElementsLessThan(string $selector, int $expected, ?string $message = null): void
+    {
+        $this->assertNumberOfElements($selector, '<', $expected, $message);
+    }
+
+    /** Assert the element contains less than or equal the number of elements matching the given selector. */
+    public function assertElementsLessThanOrEqual(string $selector, int $expected, ?string $message = null): void
+    {
+        $this->assertNumberOfElements($selector, '<=', $expected, $message);
     }
 
     /*
