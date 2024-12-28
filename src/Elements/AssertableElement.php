@@ -4,6 +4,8 @@ namespace Ziadoz\AssertableHtml\Elements;
 
 use Dom\Document;
 use Dom\HtmlElement;
+use InvalidArgumentException;
+use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Utilities;
 
@@ -131,19 +133,43 @@ class AssertableElement implements AssertableElementInterface
     |--------------------------------------------------------------------------
     */
 
-    /** Assert the element contains the exact number of elements matching the given selector. */
-    public function assertCountElements(int $expected, string $selector, ?string $message = null): void
+    /**
+     * Assert the number of elements matching the given selector compares to the given amount.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
+    public function assertNumberOfElements(string $selector, string $comparison, int $expected, ?string $message = null): void
     {
-        PHPUnit::assertCount(
+        if ($expected < 0) {
+            throw new InvalidArgumentException('Expected count of elements cannot be less than zero');
+        }
+
+        $elements = $this->root->querySelectorAll($selector);
+
+        $message ??= sprintf(
+            "The element [%s] doesn't have %s [%d] elements matching the selector [%s].",
+            Utilities::selectorFromElement($this->root),
+            match ($comparison) {
+                '='     => 'exactly',
+                '>'     => 'greater than',
+                '>='    => 'greater than or equal to',
+                '<'     => 'less than',
+                '<='    => 'less than or equal to',
+                default => throw new OutOfBoundsException('Invalid comparison operator: ' . $comparison),
+            },
             $expected,
-            $this->root->querySelectorAll($selector),
-            $message ?? sprintf(
-                "The element [%s] doesn't have exactly [%d] elements matching the selector [%s].",
-                Utilities::selectorFromElement($this->root),
-                $expected,
-                $selector,
-            ),
+            $selector,
         );
+
+        match ($comparison) {
+            '='     => PHPUnit::assertCount($expected, $elements, $message),
+            '>'     => PHPUnit::assertGreaterThan($expected, count($elements), $message),
+            '>='    => PHPUnit::assertGreaterThanOrEqual($expected, count($elements), $message),
+            '<'     => PHPUnit::assertLessThan($expected, count($elements), $message),
+            '<='    => PHPUnit::assertLessThanOrEqual($expected, count($elements), $message),
+            default => throw new OutOfBoundsException('Invalid comparison operator: ' . $comparison),
+        };
     }
 
     /*

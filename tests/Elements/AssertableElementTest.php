@@ -4,6 +4,7 @@ namespace Ziadoz\AssertableHtml\Tests;
 
 use Dom\HTMLElement;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
 
 class AssertableElementTest extends TestCase
@@ -116,19 +117,69 @@ class AssertableElementTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_assert_count_elements_passes(): void
+    public function test_assert_number_of_elements_passes(): void
     {
-        new AssertableElement($this->getFixtureElement('<div><ul><li>Foo</li><li>Bar</li></ul></div>'), 'ul')
-            ->assertCountElements(2, 'li');
+        $html = $this->getFixtureElement(<<<'HTML'
+            <div>
+                <ul>
+                    <li>Foo</li>
+                    <li>Bar</li>
+                    <li>Baz</li>
+                    <li>Qux</li>
+                </ul>
+            </div>
+        HTML);
+
+        $assertable = new AssertableElement($html, 'ul');
+        $assertable->assertNumberOfElements('li', '=', 4);
+        $assertable->assertNumberOfElements('li', '>', 1);
+        $assertable->assertNumberOfElements('li', '>=', 4);
+        $assertable->assertNumberOfElements('li', '<', 5);
+        $assertable->assertNumberOfElements('li', '<=', 4);
     }
 
-    public function test_assert_count_elements_fails(): void
+    #[DataProvider('assert_number_of_elements_fails_data_provider')]
+    public function test_assert_number_of_elements_fails(string $selector, string $comparison, int $expected, string $message): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage("The element [ul] doesn't have exactly [1] elements matching the selector [li].");
+        $this->expectExceptionMessage($message);
 
-        new AssertableElement($this->getFixtureElement('<div><ul><li>Foo</li><li>Bar</li></ul></div>'), 'ul')
-            ->assertCountElements(1, 'li');
+        $html = $this->getFixtureElement(<<<'HTML'
+            <div>
+                <ul>
+                    <li>Foo</li>
+                    <li>Bar</li>
+                    <li>Baz</li>
+                    <li>Qux</li>
+                </ul>
+            </div>
+        HTML);
+
+        $assertable = new AssertableElement($html, 'ul');
+        $assertable->assertNumberOfElements($selector, $comparison, $expected);
+    }
+
+    public static function assert_number_of_elements_fails_data_provider(): iterable
+    {
+        yield 'equals' => [
+            'li', '=', 1, "The element [ul] doesn't have exactly [1] elements matching the selector [li].",
+        ];
+
+        yield 'greater than' => [
+            'li', '>', 5, "The element [ul] doesn't have greater than [5] elements matching the selector [li].",
+        ];
+
+        yield 'greater than or equal to' => [
+            'li', '>=', 5, "The element [ul] doesn't have greater than or equal to [5] elements matching the selector [li].",
+        ];
+
+        yield 'less than' => [
+            'li', '<', 1, "The element [ul] doesn't have less than [1] elements matching the selector [li].",
+        ];
+
+        yield 'less than or equal to' => [
+            'li', '<=', 1, "The element [ul] doesn't have less than or equal to [1] elements matching the selector [li].",
+        ];
     }
 
     /*
