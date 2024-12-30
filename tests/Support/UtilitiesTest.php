@@ -1,10 +1,11 @@
 <?php
 
-namespace Ziadoz\AssertableHtml\Tests;
+namespace Ziadoz\AssertableHtml\Tests\Support;
 
 use Dom\HTMLDocument;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Ziadoz\AssertableHtml\Utilities;
+use Ziadoz\AssertableHtml\Support\Utilities;
+use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class UtilitiesTest extends TestCase
 {

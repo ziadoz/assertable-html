@@ -8,7 +8,7 @@ use Dom\HtmlElement;
 use InvalidArgumentException;
 use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
-use Ziadoz\AssertableHtml\Utilities;
+use Ziadoz\AssertableHtml\Support\Utilities;
 
 class AssertableElement implements AssertableElementInterface
 {

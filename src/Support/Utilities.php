@@ -1,6 +1,6 @@
 <?php
 
-namespace Ziadoz\AssertableHtml;
+namespace Ziadoz\AssertableHtml\Support;
 
 use Dom\Document;
 use Dom\HTMLDocument;

@@ -7,7 +7,7 @@ use Dom\Element;
 use Dom\HTMLDocument;
 use Dom\HTMLElement;
 use PHPUnit\Framework\Assert as PHPUnit;
-use Ziadoz\AssertableHtml\Utilities;
+use Ziadoz\AssertableHtml\Support\Utilities;
 
 class RootElementMatcher
 {
