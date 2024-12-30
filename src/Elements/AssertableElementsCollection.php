@@ -4,8 +4,8 @@ namespace Ziadoz\AssertableHtml\Elements;
 
 use ArrayAccess;
 use Countable;
-use InvalidArgumentException;
 use IteratorAggregate;
+use RuntimeException;
 use Traversable;
 
 class AssertableElementsCollection implements ArrayAccess, Countable, IteratorAggregate
@@ -82,25 +82,13 @@ class AssertableElementsCollection implements ArrayAccess, Countable, IteratorAg
     /** Add an element to the collection. */
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        if (! $value instanceof AssertableElementInterface) {
-            throw new InvalidArgumentException(sprintf(
-                'Only instances of [%s] can be added to [%s]',
-                AssertableElementInterface::class,
-                static::class,
-            ));
-        }
-
-        if (is_null($offset)) {
-            $this->elements[] = $value;
-        } else {
-            $this->elements[$offset] = $value;
-        }
+        throw new RuntimeException('Unable to add or replace elements in the collection.');
     }
 
     /** Remove an element from the collection. */
     public function offsetUnset(mixed $offset): void
     {
-        unset($this->elements[$offset]);
+        throw new RuntimeException('Unable to remove elements from the collection.');
     }
 
     /*

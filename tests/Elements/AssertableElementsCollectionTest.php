@@ -4,6 +4,8 @@ namespace Ziadoz\AssertableHtml\Tests\Elements;
 
 use Dom\HTMLDocument;
 use Generator;
+use InvalidArgumentException;
+use RuntimeException;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
 use Ziadoz\AssertableHtml\Elements\AssertableElementInterface;
 use Ziadoz\AssertableHtml\Elements\AssertableElementsCollection;
@@ -83,25 +85,22 @@ class AssertableElementsCollectionTest extends TestCase
         }
     }
 
-    public function test_array_access_offset_set(): void
+    public function test_array_access_offset_set_fails(): void
     {
-        $collection = $this->getTestCollection();
-        $collection[] = new AssertableElement($this->getFixtureElement('<div><p>Foo</p></div>'), 'p');
-        $collection[42] = new AssertableElement($this->getFixtureElement('<div><p>Foo</p></div>'), 'p');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Unable to add or replace elements in the collection.');
 
-        $this->assertTrue(isset($collection[4]));
-        $this->assertTrue(isset($collection[42]));
-        $this->assertCount(6, $collection);
+        $collection = $this->getTestCollection();
+        $collection[] = 'foobar';
     }
 
-    public function test_array_access_offset_unset(): void
+    public function test_array_access_offset_unset_fails(): void
     {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Unable to remove elements from the collection.');
+
         $collection = $this->getTestCollection();
-
-        unset($collection[2]);
-        unset($collection[3]);
-
-        $this->assertCount(2, $collection);
+        unset($collection[0]);
     }
 
     /*
