@@ -4,7 +4,6 @@ namespace Ziadoz\AssertableHtml\Tests\Elements;
 
 use Dom\HTMLDocument;
 use Generator;
-use InvalidArgumentException;
 use RuntimeException;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
 use Ziadoz\AssertableHtml\Elements\AssertableElementInterface;
@@ -103,7 +102,7 @@ class AssertableElementsCollectionTest extends TestCase
             </ul>
         HTML, LIBXML_NOERROR)->querySelector('ul');
 
-        return new AssertableElementsCollection([
+        return new AssertableElementsCollection(...[
             new AssertableElement($ul, 'li.first'),
             new AssertableElement($ul, 'li.second'),
             new AssertableElement($ul, 'li.third'),

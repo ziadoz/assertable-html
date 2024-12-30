@@ -4,25 +4,20 @@ namespace Ziadoz\AssertableHtml\Elements;
 
 use ArrayAccess;
 use Countable;
+use Dom\NodeList;
 use IteratorAggregate;
 use RuntimeException;
 use Traversable;
 
 class AssertableElementsCollection implements ArrayAccess, Countable, IteratorAggregate
 {
-    /**
-     * Create a collection of AssertableElementInterface objects.
-     *
-     * @param  array<AssertableElementInterface>  $elements
-     */
-    public function __construct(protected array $elements = [])
+    /**  The assertable elements. */
+    protected array $elements = [];
+
+    /** Create a collection of AssertableElementInterface objects. */
+    public function __construct(AssertableElementInterface ...$elements)
     {
-        $this->elements = array_values(
-            array_filter(
-                $this->elements,
-                fn (mixed $element): bool => $element instanceof AssertableElementInterface,
-            ),
-        );
+        $this->elements = $elements;
     }
 
     /** Dump the collection. */
