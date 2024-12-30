@@ -2,7 +2,7 @@
 
 namespace Ziadoz\AssertableHtml\Tests\Unit\Matchers;
 
-use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\AssertionFailedError;
 use Ziadoz\AssertableHtml\Matchers\RootElementMatcher;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
@@ -20,7 +20,7 @@ class RootElementMatcherTest extends TestCase
 
     public function test_match_no_elements(): void
     {
-        $this->expectException(ExpectationFailedException::class);
+        $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The selector [foobar] matches 0 elements instead of exactly 1 element.');
 
         (new RootElementMatcher)->match($this->getTestElement('</div><p>Foo</p></div>'), 'foobar');
@@ -28,7 +28,7 @@ class RootElementMatcherTest extends TestCase
 
     public function test_determine_match_multiple_elements(): void
     {
-        $this->expectException(ExpectationFailedException::class);
+        $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage(<<<'MSG'
         The selector [p] matches 4 elements instead of exactly 1 element.
 

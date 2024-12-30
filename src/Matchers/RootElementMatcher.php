@@ -16,16 +16,16 @@ class RootElementMatcher
     {
         $nodes = $document->querySelectorAll($selector);
 
-        PHPUnit::assertCount(
-            1,
-            $nodes,
-            trim(sprintf(
-                "The selector [%s] matches %d elements instead of exactly 1 element.\n\n%s",
-                $selector,
-                count($nodes),
-                Utilities::nodesToMatchesHtml($nodes),
-            )),
-        );
+        if (count($nodes) !== 1) {
+            PHPUnit::fail(
+                trim(sprintf(
+                    "The selector [%s] matches %d elements instead of exactly 1 element.\n\n%s",
+                    $selector,
+                    count($nodes),
+                    Utilities::nodesToMatchesHtml($nodes),
+                )),
+            );
+        }
 
         return $nodes[0];
     }
