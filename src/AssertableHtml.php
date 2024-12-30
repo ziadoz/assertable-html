@@ -5,7 +5,7 @@ namespace Ziadoz\AssertableHtml;
 use Dom\Document;
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
-use Ziadoz\AssertableHtml\Elements\AssertableElement;
+use Ziadoz\AssertableHtml\Contracts\AssertableElementInterface;
 use Ziadoz\AssertableHtml\Matchers\AssertableElementMatcher;
 use Ziadoz\AssertableHtml\Matchers\RootElementMatcher;
 
@@ -42,17 +42,17 @@ class AssertableHtml
         return $this->with($selector, $callback, false);
     }
 
-    /** Perform assertions on an exact HTML element. */
-    public function element(string $selector, ?callable $callback = null): AssertableElement
+    /** Perform assertions on HTML element matching the given selector. */
+    public function element(string $selector, ?callable $callback = null): AssertableElementInterface
     {
         $root = (new RootElementMatcher)->match($this->root, $this->selector . ' ' . $selector);
-        $element = (new AssertableElementMatcher)->match($root);
+        $assertable = (new AssertableElementMatcher)->match($root);
 
         if ($callback) {
-            $callback($element);
+            $callback($assertable);
         }
 
-        return $element;
+        return $assertable;
     }
 
     /** Return the underlying HTML document instance. */
