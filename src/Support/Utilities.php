@@ -3,6 +3,7 @@
 namespace Ziadoz\AssertableHtml\Support;
 
 use Dom\Document;
+use Dom\Element;
 use Dom\HTMLDocument;
 use Dom\HtmlElement;
 use Dom\NodeList;
@@ -10,7 +11,7 @@ use Dom\NodeList;
 class Utilities
 {
     /** Return a simple selector for the given element (e.g. p#foo.bar.baz) */
-    public static function selectorFromElement(HtmlElement $element): string
+    public static function selectorFromElement(HtmlElement|Element $element): string
     {
         return implode('', array_filter([
             self::formatTag($element),
@@ -19,17 +20,17 @@ class Utilities
         ]));
     }
 
-    public static function formatTag(HTMLDocument|Document|HtmlElement $element): string
+    public static function formatTag(HTMLDocument|Document|HtmlElement|Element $element): string
     {
         return mb_strtolower($element->tagName);
     }
 
-    public static function formatId(HTMLDocument|Document|HtmlElement $element): string
+    public static function formatId(HTMLDocument|Document|HtmlElement|Element $element): string
     {
         return trim($id = $element->id) !== '' ? '#' . self::normaliseWhitespace(trim($id)) : '';
     }
 
-    public static function formatClasses(HTMLDocument|Document|HtmlElement $element): string
+    public static function formatClasses(HTMLDocument|Document|HtmlElement|Element $element): string
     {
         return implode('', array_map(fn (string $class): string => '.' . $class, iterator_to_array($element->classList)));
     }

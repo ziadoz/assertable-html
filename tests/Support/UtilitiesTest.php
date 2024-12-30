@@ -14,7 +14,7 @@ class UtilitiesTest extends TestCase
     {
         $this->assertSame(
             $expected,
-            Utilities::selectorFromElement($this->getFixtureElement($html, $selector)),
+            Utilities::selectorFromElement($this->getTestElement($html, 'p')),
         );
     }
 

@@ -10,7 +10,7 @@ class RootElementMatcherTest extends TestCase
 {
     public function test_match(): void
     {
-        $html = $this->getFixtureElement('<div><p>Foo</p></div>');
+        $html = $this->getTestElement('<div><p>Foo</p></div>');
 
         $this->assertSame(
             $html->querySelector('p'),
@@ -23,7 +23,7 @@ class RootElementMatcherTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('The selector [foobar] matches 0 elements instead of exactly 1 element.');
 
-        (new RootElementMatcher)->match($this->getFixtureElement('</div><p>Foo</p></div>'), 'foobar');
+        (new RootElementMatcher)->match($this->getTestElement('</div><p>Foo</p></div>'), 'foobar');
     }
 
     public function test_determine_match_multiple_elements(): void
@@ -45,6 +45,6 @@ class RootElementMatcherTest extends TestCase
         > <p>Baz</p>
         MSG);
 
-        (new RootElementMatcher)->match($this->getFixtureElement('<div><p>Foo</p><p>Bar</p><p>Baz</p><p>Qux</p></div>'), 'p');
+        (new RootElementMatcher)->match($this->getTestElement('<div><p>Foo</p><p>Bar</p><p>Baz</p><p>Qux</p></div>'), 'p');
     }
 }

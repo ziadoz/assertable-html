@@ -8,15 +8,9 @@ use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 class TestCase extends PHPUnitTestCase
 {
-    /** Get the contents of a fixture file as an HTML document. */
-    public function getFixtureHtml(string $file): HtmlDocument
-    {
-        return HtmlDocument::createFromString(file_get_contents(__DIR__ . '/Fixtures/' . $file));
-    }
-
     /** Get a string of HTML as an HTML document. */
-    public function getFixtureElement(string $html): Element
+    public function getTestElement(string $html, string $selector = 'body *:first-of-type'): Element
     {
-        return HtmlDocument::createFromString($html, LIBXML_NOERROR)->querySelector('body *:first-of-type');
+        return HtmlDocument::createFromString($html, LIBXML_NOERROR)->querySelector($selector);
     }
 }
