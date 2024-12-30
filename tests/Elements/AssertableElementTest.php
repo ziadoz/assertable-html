@@ -1,11 +1,12 @@
 <?php
 
-namespace Ziadoz\AssertableHtml\Tests;
+namespace Ziadoz\AssertableHtml\Tests\Elements;
 
 use Dom\HTMLElement;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
+use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class AssertableElementTest extends TestCase
 {
