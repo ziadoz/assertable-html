@@ -8,9 +8,11 @@ use Dom\HtmlElement;
 use InvalidArgumentException;
 use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Ziadoz\AssertableHtml\Contracts\AssertableElementInterface;
+use Ziadoz\AssertableHtml\Contracts\MatchableInterface;
 use Ziadoz\AssertableHtml\Support\Utilities;
 
-class AssertableElement implements AssertableElementInterface
+class AssertableElement implements AssertableElementInterface, MatchableInterface
 {
     /** Create an assertable HTML element. */
     public function __construct(protected HtmlElement|Element $root)
@@ -45,6 +47,12 @@ class AssertableElement implements AssertableElementInterface
     public function dd(): never
     {
         dd($this->getHtml());
+    }
+
+    /** Return if the given element matches. */
+    public static function matches(Element|HTMLElement $element): bool
+    {
+        return true;
     }
 
     /*

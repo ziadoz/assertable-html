@@ -1,6 +1,6 @@
 <?php
 
-namespace Ziadoz\AssertableHtml\Elements;
+namespace Ziadoz\AssertableHtml\Contracts;
 
 use Dom\Document;
 use Dom\HtmlElement;

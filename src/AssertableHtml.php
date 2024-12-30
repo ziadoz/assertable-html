@@ -6,6 +6,7 @@ use Dom\Document;
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
+use Ziadoz\AssertableHtml\Matchers\AssertableElementMatcher;
 use Ziadoz\AssertableHtml\Matchers\RootElementMatcher;
 
 class AssertableHtml
@@ -45,8 +46,7 @@ class AssertableHtml
     public function element(string $selector, ?callable $callback = null): AssertableElement
     {
         $root = (new RootElementMatcher)->match($this->root, $this->selector . ' ' . $selector);
-
-        $element = new AssertableElement($root);
+        $element = (new AssertableElementMatcher)->match($root);
 
         if ($callback) {
             $callback($element);

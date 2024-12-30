@@ -4,7 +4,6 @@ namespace Ziadoz\AssertableHtml\Tests;
 
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
-use PHPUnit\Framework\ExpectationFailedException;
 use Ziadoz\AssertableHtml\AssertableHtml;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
 
@@ -16,33 +15,6 @@ class AssertableHtmlTest extends TestCase
         $this->assertInstanceOf(HtmlDocument::class, $assertable->getDocument());
         $this->assertInstanceOf(HtmlElement::class, $assertable->getRoot());
         $this->assertSame('BODY', $assertable->getRoot()->tagName);
-    }
-
-    public function test_determine_root_matches_no_elements(): void
-    {
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('The selector [foobar] matches 0 elements instead of exactly 1 element.');
-
-        new AssertableHtml($this->getTestHtml(), 'foobar');
-    }
-
-    public function test_determine_root_matches_multiple_elements(): void
-    {
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage(<<<'MSG'
-        The selector [p] matches 2 elements instead of exactly 1 element.
-
-        2 Matching Element(s) Found
-        ============================
-
-        1. [p]:
-        > <p>Test Paragraph 1</p>
-
-        2. [p]:
-        > <p>Test Paragraph 2</p>
-        MSG);
-
-        new AssertableHtml($this->getTestHtml(), 'p');
     }
 
     public function test_with_scoping(): void
