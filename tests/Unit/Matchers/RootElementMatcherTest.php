@@ -1,6 +1,6 @@
 <?php
 
-namespace Ziadoz\AssertableHtml\Tests\Matchers;
+namespace Ziadoz\AssertableHtml\Tests\Unit\Matchers;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use Ziadoz\AssertableHtml\Matchers\RootElementMatcher;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ziadoz\AssertableHtml\Tests\Elements;
+namespace Ziadoz\AssertableHtml\Tests\Unit\Elements;
 
 use PHPUnit\Framework\AssertionFailedError;
 use Ziadoz\AssertableHtml\Elements\AssertableFormElement;

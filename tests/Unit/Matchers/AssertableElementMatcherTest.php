@@ -1,6 +1,6 @@
 <?php
 
-namespace Ziadoz\AssertableHtml\Tests\Matchers;
+namespace Ziadoz\AssertableHtml\Tests\Unit\Matchers;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ziadoz\AssertableHtml\Tests\Support;
+namespace Ziadoz\AssertableHtml\Tests\Unit\Support;
 
 use Dom\HTMLDocument;
 use PHPUnit\Framework\Attributes\DataProvider;

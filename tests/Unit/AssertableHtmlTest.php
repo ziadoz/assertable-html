@@ -1,11 +1,12 @@
 <?php
 
-namespace Ziadoz\AssertableHtml\Tests;
+namespace Ziadoz\AssertableHtml\Tests\Unit;
 
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
 use Ziadoz\AssertableHtml\AssertableHtml;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
+use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class AssertableHtmlTest extends TestCase
 {
