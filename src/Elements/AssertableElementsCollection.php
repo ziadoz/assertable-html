@@ -10,7 +10,11 @@ use Traversable;
 
 class AssertableElementsCollection implements ArrayAccess, Countable, IteratorAggregate
 {
-    /** Create a collection of AssertableElementInterface objects.  */
+    /**
+     * Create a collection of AssertableElementInterface objects.
+     *
+     * @param  array<AssertableElementInterface>  $elements
+     */
     public function __construct(protected array $elements = [])
     {
         $this->elements = array_values(
