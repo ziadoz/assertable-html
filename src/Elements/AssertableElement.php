@@ -10,7 +10,7 @@ use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Utilities;
 
-class AssertableElement
+class AssertableElement implements AssertableElementInterface
 {
     /** Create an assertable HTML element. */
     public function __construct(protected HtmlElement|Element $root)

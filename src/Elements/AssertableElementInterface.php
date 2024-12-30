@@ -8,7 +8,7 @@ use Dom\HtmlElement;
 interface AssertableElementInterface
 {
     /** Create an assertable HTML element. */
-    public function __construct(HtmlElement $element, string $selector);
+    public function __construct(HtmlElement $element);
 
     /** Return the underlying HTML document instance. */
     public function getDocument(): Document;
