@@ -3,6 +3,7 @@
 namespace Ziadoz\AssertableHtml\Elements;
 
 use Dom\Document;
+use Dom\Element;
 use Dom\HtmlElement;
 use InvalidArgumentException;
 use OutOfBoundsException;
@@ -12,13 +13,13 @@ use Ziadoz\AssertableHtml\Utilities;
 class AssertableElement implements AssertableElementInterface
 {
     /** The root element to perform assertions on.*/
-    protected HtmlElement $root;
+    protected HtmlElement|Element $root;
 
     /** The selector that was used to select the HTML element. */
     protected string $selector;
 
     /** Create an assertable HTML element. */
-    public function __construct(HtmlElement $element, string $selector)
+    public function __construct(HtmlElement|Element $element, string $selector)
     {
         $this->root = $this->determineRoot($element, $selector);
         $this->selector = $selector;

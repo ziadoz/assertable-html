@@ -2,8 +2,8 @@
 
 namespace Ziadoz\AssertableHtml\Tests;
 
+use Dom\Element;
 use Dom\HtmlDocument;
-use Dom\HtmlElement;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 class TestCase extends PHPUnitTestCase
@@ -15,7 +15,7 @@ class TestCase extends PHPUnitTestCase
     }
 
     /** Get a string of HTML as an HTML document. */
-    public function getFixtureElement(string $html): HtmlElement
+    public function getFixtureElement(string $html): Element
     {
         return HtmlDocument::createFromString($html, LIBXML_NOERROR)->querySelector('body *:first-of-type');
     }
