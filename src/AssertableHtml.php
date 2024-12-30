@@ -5,8 +5,8 @@ namespace Ziadoz\AssertableHtml;
 use Dom\Document;
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
-use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
+use Ziadoz\AssertableHtml\Matchers\RootElementMatcher;
 
 class AssertableHtml
 {
@@ -19,27 +19,8 @@ class AssertableHtml
     /** Create an assertable HTML instance. */
     public function __construct(HtmlDocument|Document|HtmlElement $document, string $selector)
     {
-        $this->root = $this->determineRoot($document, $selector);
+        $this->root = (new RootElementMatcher)->match($document, $selector);
         $this->selector = $selector;
-    }
-
-    /** Determine the root element to perform assertions on. The root can only ever be a single element. */
-    protected function determineRoot(HtmlDocument|HtmlElement $document, string $selector): HtmlElement
-    {
-        $nodes = $document->querySelectorAll($selector);
-
-        PHPUnit::assertCount(
-            1,
-            $nodes,
-            trim(sprintf(
-                "The root selector [%s] matches %d elements instead of exactly 1 element.\n\n%s",
-                $selector,
-                count($nodes),
-                Utilities::nodesToMatchesHtml($nodes),
-            )),
-        );
-
-        return $nodes[0];
     }
 
     /** Performs assertions on a scoped selection. */
@@ -63,7 +44,9 @@ class AssertableHtml
     /** Perform assertions on an exact HTML element. */
     public function element(string $selector, ?callable $callback = null): AssertableElement
     {
-        $element = new AssertableElement($this->root, $this->selector . ' ' . $selector);
+        $root = (new RootElementMatcher)->match($this->root, $this->selector . ' ' . $selector);
+
+        $element = new AssertableElement($root);
 
         if ($callback) {
             $callback($element);

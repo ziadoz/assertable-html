@@ -21,7 +21,7 @@ class AssertableHtmlTest extends TestCase
     public function test_determine_root_matches_no_elements(): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('The root selector [foobar] matches 0 elements instead of exactly 1 element.');
+        $this->expectExceptionMessage('The selector [foobar] matches 0 elements instead of exactly 1 element.');
 
         new AssertableHtml($this->getFixtureHtml('document.html'), 'foobar');
     }
@@ -30,7 +30,7 @@ class AssertableHtmlTest extends TestCase
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage(<<<'MSG'
-        The root selector [p] matches 2 elements instead of exactly 1 element.
+        The selector [p] matches 2 elements instead of exactly 1 element.
 
         2 Matching Element(s) Found
         ============================

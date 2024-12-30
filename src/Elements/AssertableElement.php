@@ -10,38 +10,11 @@ use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Utilities;
 
-class AssertableElement implements AssertableElementInterface
+class AssertableElement
 {
-    /** The root element to perform assertions on.*/
-    protected HtmlElement|Element $root;
-
-    /** The selector that was used to select the HTML element. */
-    protected string $selector;
-
     /** Create an assertable HTML element. */
-    public function __construct(HtmlElement|Element $element, string $selector)
+    public function __construct(protected HtmlElement|Element $root)
     {
-        $this->root = $this->determineRoot($element, $selector);
-        $this->selector = $selector;
-    }
-
-    /** Determine the root element to perform assertions on. The root can only ever be a single element. */
-    protected function determineRoot(HtmlElement $element, string $selector): HtmlElement
-    {
-        $nodes = $element->querySelectorAll($selector);
-
-        PHPUnit::assertCount(
-            1,
-            $nodes,
-            trim(sprintf(
-                "The element selector [%s] matches %d elements instead of exactly 1 element.\n\n%s",
-                $selector,
-                count($nodes),
-                Utilities::nodesToMatchesHtml($nodes),
-            )),
-        );
-
-        return $nodes[0];
     }
 
     /** Return the underlying HTML document instance. */
