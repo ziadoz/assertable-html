@@ -43,24 +43,6 @@ class AssertableElementsCollection implements ArrayAccess, Countable, IteratorAg
         return $this->offsetGet($position);
     }
 
-    /** Filter the elements in the collection. */
-    public function filter(callable $callback): static
-    {
-        return new static(array_filter($this->elements, $callback));
-    }
-
-    /** Perform a callback on each element in the collection. */
-    public function each(callable $callback): void
-    {
-        array_map($callback, $this->elements);
-    }
-
-    /** Slice elements from the collection. */
-    public function slice(int $offset = 0, ?int $length = null): static
-    {
-        return new static(array_slice($this->elements, $offset, $length));
-    }
-
     /*
     |--------------------------------------------------------------------------
     | Array Access
