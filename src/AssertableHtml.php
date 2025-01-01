@@ -15,10 +15,25 @@ class AssertableHtml
     use AssertsHtml;
 
     /** The root HTML document or HTML element to perform assertions on. */
-    protected HtmlDocument|HtmlElement $root;
+    public HtmlDocument|Document|HtmlElement|Element $root {
+        get {
+            return $this->root;
+        }
+    }
 
     /** The selector to identify the root element. */
-    protected string $selector;
+    public string $selector {
+        get {
+            return $this->selector;
+        }
+    }
+
+    /** The underlying HTML document instance. */
+    public HtmlDocument|Document $document {
+        get {
+            return $this->root->ownerDocument;
+        }
+    }
 
     /** Create an assertable HTML instance. */
     public function __construct(HtmlDocument|Document|HtmlElement|Element $document, string $selector, bool $match = true)
@@ -32,7 +47,7 @@ class AssertableHtml
     {
         // Determine the custom assertable class for the element (if any).
         $selector = ($append ? $this->selector . ' ' . $selector : $selector);
-        $element = (new RootElementMatcher)->match($this->getDocument(), $selector);
+        $element = (new RootElementMatcher)->match($this->document, $selector);
         $class = (new AssertableElementMatcher)->match($element);
 
         // Skip matching as we've found the element upfront in order to determine its custom assertable class.
@@ -69,34 +84,16 @@ class AssertableHtml
         return is_callable($default) ? $default($this) : $default;
     }
 
-    /** Return the underlying HTML document instance. */
-    public function getDocument(): Document
-    {
-        return $this->root->ownerDocument;
-    }
-
-    /** Return the root HTML document or element assertions are being performed on. */
-    public function getRoot(): HtmlDocument|HtmlElement
-    {
-        return $this->root;
-    }
-
-    /** Return the selector used to find the root element. */
-    public function getSelector(): string
-    {
-        return $this->selector;
-    }
-
     /** Return the document HTML. */
     public function getDocumentHtml(): string
     {
-        return $this->getDocument()->saveHtml();
+        return $this->document->saveHtml();
     }
 
     /** Return the root element HTML. */
     public function getRootHtml(): string
     {
-        return $this->getDocument()->saveHtml($this->getRoot());
+        return $this->document->saveHtml($this->root);
     }
 
     /** Dump the root element HTML. */
