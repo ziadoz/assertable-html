@@ -17,9 +17,9 @@ class IntegrationTest extends TestCase
             $body->assertTitleEquals('Test Page Title');
 
             $body->with('form', function (AssertableFormElement $form) {
-                $form->assertMethodGet();
-                $form->assertActionEquals('/foo/bar');
-                $form->assertAcceptsUploads();
+                $form->assertMethodGet()
+                    ->assertActionEquals('/foo/bar')
+                    ->assertAcceptsUploads();
             });
         });
     }

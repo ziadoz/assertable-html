@@ -16,7 +16,7 @@ class AssertableFormElement extends AssertableElement implements MatchableInterf
     }
 
     /** Assert the form's method is GET. */
-    public function assertMethodGet(): void
+    public function assertMethodGet(): static
     {
         $this->assertAttribute(
             'method',
@@ -26,10 +26,12 @@ class AssertableFormElement extends AssertableElement implements MatchableInterf
                 Utilities::selectorFromElement($this->root),
             ),
         );
+
+        return $this;
     }
 
     /** Assert the form's method is POST. */
-    public function assertMethodPost(): void
+    public function assertMethodPost(): static
     {
         $this->assertAttribute(
             'method',
@@ -39,16 +41,20 @@ class AssertableFormElement extends AssertableElement implements MatchableInterf
                 Utilities::selectorFromElement($this->root),
             ),
         );
+
+        return $this;
     }
 
     /** Assert the form's action equals the given value. */
-    public function assertActionEquals(string $action): void
+    public function assertActionEquals(string $action): static
     {
         $this->assertAttributeEquals('action', $action);
+
+        return $this;
     }
 
     /** Assert the form's accepts uploads. */
-    public function assertAcceptsUploads(): void
+    public function assertAcceptsUploads(): static
     {
         $this->assertAttribute(
             'enctype',
@@ -58,5 +64,7 @@ class AssertableFormElement extends AssertableElement implements MatchableInterf
                 Utilities::selectorFromElement($this->root),
             ),
         );
+
+        return $this;
     }
 }
