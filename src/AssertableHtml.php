@@ -7,6 +7,7 @@ use Dom\Element;
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
 use Ziadoz\AssertableHtml\Concerns\AssertsHtml;
+use Ziadoz\AssertableHtml\Elements\AssertableElement;
 use Ziadoz\AssertableHtml\Matchers\AssertableElementMatcher;
 use Ziadoz\AssertableHtml\Matchers\RootElementMatcher;
 
@@ -21,22 +22,16 @@ class AssertableHtml
     protected string $selector;
 
     /** Create an assertable HTML instance. */
-    public function __construct(HtmlDocument|Document|HtmlElement|Element $document, string $selector, bool $match = true)
+    public function __construct(HtmlDocument|Document|HtmlElement|Element $document, string $selector)
     {
-        $this->root = $match ? (new RootElementMatcher)->match($document, $selector) : $document;
+        $this->root = (new RootElementMatcher)->match($document, $selector);
         $this->selector = $selector;
     }
 
     /** Performs assertions on a scoped selection. */
     public function with(string $selector, ?callable $callback = null, bool $append = true): static
     {
-        // Determine the custom assertable class for the element (if any).
-        $selector = ($append ? $this->selector . ' ' . $selector : $selector);
-        $element = (new RootElementMatcher)->match($this->getDocument(), $selector);
-        $class = (new AssertableElementMatcher)->match($element);
-
-        // Skip matching as we've found the element upfront in order to determine its custom assertable class.
-        $instance = new $class($element, $selector, match: false);
+        $instance = new static($this->getDocument(), ($append ? $this->selector . ' ' . $selector : $selector))->toElement();
 
         if ($callback) {
             $callback($instance);
@@ -109,5 +104,13 @@ class AssertableHtml
     public function dd(): never
     {
         dd($this->getRootHtml());
+    }
+
+    /** Promote the root element to the matching assertable class. */
+    public function toElement(): AssertableElement
+    {
+        $class = (new AssertableElementMatcher)->match($this->root);
+
+        return new $class($this->getDocument(), $this->getSelector());
     }
 }

@@ -4,7 +4,11 @@ namespace Ziadoz\AssertableHtml\Tests\Unit;
 
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ziadoz\AssertableHtml\AssertableHtml;
+use Ziadoz\AssertableHtml\Elements\AssertableElement;
+use Ziadoz\AssertableHtml\Elements\AssertableFormElement;
+use Ziadoz\AssertableHtml\Elements\AssertableInputElement;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class AssertableHtmlTest extends TestCase
@@ -201,7 +205,22 @@ class AssertableHtmlTest extends TestCase
         $this->assertXmlStringEqualsXmlString($html, $assertable->getRootHtml());
     }
 
-    /** Get the contents of a fixture file as an HTML document. */
+    #[DataProvider('to_element_data_provider')]
+    public function test_to_element(string $html, string $class): void
+    {
+        $this->assertInstanceOf(
+            $class,
+            new AssertableHtml($this->getTestElement('<div>' . $html . '</div>'), 'div *:first-of-type')->toElement(),
+        );
+    }
+
+    public static function to_element_data_provider(): iterable
+    {
+        yield 'form' => ['<form></form>', AssertableFormElement::class];
+        yield 'input' => ['<input/>', AssertableInputElement::class];
+        yield 'fallback' => ['<p></p>', AssertableElement::class];
+    }
+
     public function getTestHtml(): HtmlDocument
     {
         return HtmlDocument::createFromString(<<<'HTML'
