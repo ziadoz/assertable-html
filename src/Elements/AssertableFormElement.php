@@ -11,7 +11,7 @@ use Ziadoz\AssertableHtml\Contracts\MatchableInterface;
 class AssertableFormElement extends AssertableElement implements MatchableInterface
 {
     /** Return if the given element matches. */
-    public static function matches(HTMLElement $element): bool
+    public static function matches(HTMLElement|Element $element): bool
     {
         return $element->tagName === 'FORM';
     }

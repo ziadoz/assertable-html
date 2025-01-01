@@ -10,5 +10,5 @@ use Dom\HTMLElement;
 interface MatchableInterface
 {
     /** Return if the given element matches. */
-    public static function matches(HTMLElement $element): bool;
+    public static function matches(HTMLElement|Element $element): bool;
 }
