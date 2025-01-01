@@ -4,6 +4,7 @@ namespace Ziadoz\AssertableHtml\Tests\Integration;
 
 use Dom\HTMLDocument;
 use Ziadoz\AssertableHtml\AssertableHtml;
+use Ziadoz\AssertableHtml\Elements\AssertableElement;
 use Ziadoz\AssertableHtml\Elements\AssertableFormElement;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
@@ -12,9 +13,13 @@ class IntegrationTest extends TestCase
     public function test_assertable_html(): void
     {
         $html = new AssertableHtml($this->getTestHtml(), 'html');
-        $html->with('form', function (AssertableFormElement $form) {
-            $form->assertMethodGet();
-            $form->assertAcceptsUploads();
+        $html->with('body', function (AssertableElement $body) {
+            $body->assertTitleEquals('Test Page Title');
+
+            $body->with('form', function (AssertableFormElement $form) {
+                $form->assertMethodGet();
+                $form->assertAcceptsUploads();
+            });
         });
     }
 
