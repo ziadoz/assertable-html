@@ -625,6 +625,27 @@ class AssertableElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Attribute Is Allowed
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_attribute_is_allowed_passes(): void
+    {
+        new AssertableElement($this->getTestElement('<div><form method="GET"></form></div>'), 'form')
+            ->assertAttributeIsAllowed('method', 'GET');
+    }
+
+    public function test_assert_attribute_is_allowed_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [form] attribute [method] isn't the allowed value [FOO].");
+
+        new AssertableElement($this->getTestElement('<div><form method="GET"></form></div>'), 'form')
+            ->assertAttributeIsAllowed('method', 'FOO');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Data Attribute
     |--------------------------------------------------------------------------
     */

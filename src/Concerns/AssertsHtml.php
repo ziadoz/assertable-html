@@ -608,6 +608,29 @@ trait AssertsHtml
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Attribute Is Allowed
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the given element's attribute is the allowed value. */
+    public function assertAttributeIsAllowed(string $attribute, string $value, ?string $message = null): static
+    {
+        PHPUnit::assertSame(
+            strtolower(trim($value)),
+            strtolower(trim((string) $this->root->getAttribute($attribute))),
+            $message ?? sprintf(
+                "The element [%s] attribute [%s] isn't the allowed value [%s].",
+                Utilities::selectorFromElement($this->root),
+                $attribute,
+                $value,
+            ),
+        );
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Data Attribute
     |--------------------------------------------------------------------------
     */

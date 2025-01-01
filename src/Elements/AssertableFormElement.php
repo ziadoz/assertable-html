@@ -5,7 +5,6 @@ namespace Ziadoz\AssertableHtml\Elements;
 use Dom\Element;
 use Dom\HTMLElement;
 use Ziadoz\AssertableHtml\Contracts\MatchableInterface;
-use Ziadoz\AssertableHtml\Support\Utilities;
 
 class AssertableFormElement extends AssertableElement implements MatchableInterface
 {
@@ -18,14 +17,7 @@ class AssertableFormElement extends AssertableElement implements MatchableInterf
     /** Assert the form's method is GET. */
     public function assertMethodGet(): static
     {
-        $this->assertAttribute(
-            'method',
-            fn (string $value): bool => strtolower(trim($value)) === 'get',
-            sprintf(
-                "The element [%s] attribute [method] doesn't equal GET.",
-                Utilities::selectorFromElement($this->root),
-            ),
-        );
+        $this->assertAttributeIsAllowed('method', 'get');
 
         return $this;
     }
@@ -33,14 +25,7 @@ class AssertableFormElement extends AssertableElement implements MatchableInterf
     /** Assert the form's method is POST. */
     public function assertMethodPost(): static
     {
-        $this->assertAttribute(
-            'method',
-            fn (string $value): bool => strtolower(trim($value)) === 'post',
-            sprintf(
-                "The element [%s] attribute [method] doesn't equal POST.",
-                Utilities::selectorFromElement($this->root),
-            ),
-        );
+        $this->assertAttributeIsAllowed('method', 'post');
 
         return $this;
     }
@@ -56,14 +41,7 @@ class AssertableFormElement extends AssertableElement implements MatchableInterf
     /** Assert the form's accepts uploads. */
     public function assertAcceptsUploads(): static
     {
-        $this->assertAttribute(
-            'enctype',
-            fn (string $value): bool => strtolower(trim($value)) === 'multipart/form-data',
-            sprintf(
-                "The element [%s] attribute [enctype] doesn't equal multipart/form-data.",
-                Utilities::selectorFromElement($this->root),
-            ),
-        );
+        $this->assertAttributeIsAllowed('enctype', 'multipart/form-data');
 
         return $this;
     }
