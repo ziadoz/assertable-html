@@ -845,13 +845,17 @@ trait AssertsHtml
     /** Normalise the given element's text content. */
     protected function normaliseTextContent(HTMLDocument|Document|HTMLElement|Element $element, bool $normaliseWhitespace = false): string
     {
-        return $normaliseWhitespace ? Utilities::normaliseWhitespace($element->textContent) : $element->textContent;
+        return $normaliseWhitespace
+            ? Utilities::normaliseWhitespace($element->textContent)
+            : $element->textContent;
     }
 
     /** Normalise the given element's classes. */
     protected function normaliseClasses(HTMLDocument|Document|HTMLElement|Element $element, bool $normaliseWhitespace = false): string
     {
-        return $normaliseWhitespace ? implode(' ', iterator_to_array($element->classList)) : $element->classList->value;
+        return $normaliseWhitespace
+            ? implode(' ', iterator_to_array($element->classList))
+            : $element->classList->value;
     }
 
     /** Normalise the given element's attribute. */
