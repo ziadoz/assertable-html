@@ -652,6 +652,50 @@ trait AssertsHtml
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Attribute Ends With
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the attribute ends with the given prefix. */
+    public function assertAttributeEndsWith(string $attribute, string $suffix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        PHPUnit::assertStringEndsWith(
+            $suffix,
+            $normaliseWhitespace
+                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
+                : (string) $this->root->getAttribute($attribute),
+            $message ?? sprintf(
+                "The element [%s] attribute [%s] doesn't end with the given suffix [%s].",
+                Utilities::selectorFromElement($this->root),
+                $attribute,
+                $suffix,
+            ),
+        );
+
+        return $this;
+    }
+
+    /** Assert the attribute doesn't start with the given prefix. */
+    public function assertAttributeDoesntEndWith(string $attribute, string $suffix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        PHPUnit::assertStringEndsNotWith(
+            $suffix,
+            $normaliseWhitespace
+                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
+                : (string) $this->root->getAttribute($attribute),
+            $message ?? sprintf(
+                'The element [%s] attribute [%s] ends with the given suffix [%s].',
+                Utilities::selectorFromElement($this->root),
+                $attribute,
+                $suffix,
+            ),
+        );
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Attribute Is Allowed
     |--------------------------------------------------------------------------
     */

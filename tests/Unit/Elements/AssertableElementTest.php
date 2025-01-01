@@ -667,6 +667,48 @@ class AssertableElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Attribute Ends With
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_attribute_ends_with_passes(): void
+    {
+        new AssertableElement($this->getTestElement('<div><p id="  foo-bar  "></div>'), 'p')
+            ->assertAttributeEndsWith('id', '-bar', true);
+
+        new AssertableElement($this->getTestElement('<div><p id="  foo-bar  "></div>'), 'p')
+            ->assertAttributeEndsWith('id', '-bar  ');
+    }
+
+    public function test_assert_attribute_ends_with_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [p#foo-bar] attribute [id] doesn't end with the given suffix [-baz]");
+
+        new AssertableElement($this->getTestElement('<div><p id="foo-bar"></div>'), 'p')
+            ->assertAttributeEndsWith('id', '-baz');
+    }
+
+    public function test_assert_attribute_doesnt_end_with_passes(): void
+    {
+        new AssertableElement($this->getTestElement('<div><p id="  foo-bar  "></div>'), 'p')
+            ->assertAttributeDoesntEndWith('id', '-baz', true);
+
+        new AssertableElement($this->getTestElement('<div><p id="  foo-bar  "></div>'), 'p')
+            ->assertAttributeDoesntEndWith('id', '-baz  ');
+    }
+
+    public function test_assert_attribute_doesnt_end_with_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [p#foo-bar] attribute [id] ends with the given suffix [-bar]');
+
+        new AssertableElement($this->getTestElement('<div><p id="foo-bar"></div>'), 'p')
+            ->assertAttributeDoesntEndWith('id', '-bar');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Attribute Is Allowed
     |--------------------------------------------------------------------------
     */
