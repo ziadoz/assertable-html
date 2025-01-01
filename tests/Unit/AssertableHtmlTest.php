@@ -77,6 +77,17 @@ class AssertableHtmlTest extends TestCase
         });
     }
 
+    public function test_when(): void
+    {
+        $assertable = new AssertableHtml($this->getTestHtml(), 'body');
+        $this->assertSame('Foo', $assertable->when(true, 'Foo', 'Bar'));
+        $this->assertSame('Bar', $assertable->when(false, 'Foo', 'Bar'));
+        $this->assertSame('Foo', $assertable->when(fn () => true, 'Foo', 'Bar'));
+        $this->assertSame('Bar', $assertable->when(fn () => false, 'Foo', 'Bar'));
+        $this->assertSame($assertable, $assertable->when(true, fn (AssertableHtml $assertable): AssertableHtml => $assertable), 'Bar');
+        $this->assertSame($assertable, $assertable->when(false, 'Foo', fn (AssertableHtml $assertable): AssertableHtml => $assertable));
+    }
+
     public function test_get_document(): void
     {
         $assertable = new AssertableHtml($document = $this->getTestHtml(), 'body');
