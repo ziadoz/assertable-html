@@ -723,12 +723,6 @@ trait AssertsHtml
     |--------------------------------------------------------------------------
     */
 
-    /** Prefix the given attribute name with "data-" if applicable. */
-    protected function prefixDataAttribute(string $attribute): string
-    {
-        return (! str_starts_with($attribute, 'data-') ? 'data-' : '') . $attribute;
-    }
-
     /**
      * Assert the element's data attribute passes the given callback.
      *
@@ -795,12 +789,6 @@ trait AssertsHtml
     |--------------------------------------------------------------------------
     */
 
-    /** Prefix the given attribute name with "aria-" if applicable. */
-    protected function prefixAriaAttribute(string $attribute): string
-    {
-        return (! str_starts_with($attribute, 'aria-') ? 'aria-' : '') . $attribute;
-    }
-
     /**
      * Assert the element's data attribute passes the given callback.
      *
@@ -859,5 +847,23 @@ trait AssertsHtml
         $this->assertAttributeDoesntContain($this->prefixAriaAttribute($attribute), $value, $normaliseWhitespace, $message);
 
         return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Internal
+    |--------------------------------------------------------------------------
+    */
+
+    /** Prefix the given attribute name with "data-" if applicable. */
+    protected function prefixDataAttribute(string $attribute): string
+    {
+        return (! str_starts_with($attribute, 'data-') ? 'data-' : '') . $attribute;
+    }
+
+    /** Prefix the given attribute name with "aria-" if applicable. */
+    protected function prefixAriaAttribute(string $attribute): string
+    {
+        return (! str_starts_with($attribute, 'aria-') ? 'aria-' : '') . $attribute;
     }
 }
