@@ -2,7 +2,9 @@
 
 namespace Ziadoz\AssertableHtml\Tests\Unit\Elements;
 
+use Dom\HTMLDocument;
 use Dom\HTMLElement;
+use PHPUnit\Framework\Assert as PHPUnit;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
@@ -10,6 +12,29 @@ use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class AssertableElementTest extends TestCase
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Title
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_title_equals(): void
+    {
+        $html = HTMLDocument::createFromString(<<<'HTML'
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>  Foo - Bar  </title>
+            </head>
+            <body>
+                <p>Foo Bar</p>
+            </body>
+            </html>
+        HTML);
+
+        new AssertableElement($html, 'body')->assertTitleEquals('Foo - Bar');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Assert Element

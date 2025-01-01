@@ -22,17 +22,17 @@ class IntegrationTest extends TestCase
     public function getTestHtml(): HtmlDocument
     {
         return HtmlDocument::createFromString(<<<'HTML'
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Test Page Title</title>
-        </head>
-        <body>
-            <form method="get" enctype="multipart/form-data">
-                <button type="submit">Save</button>
-            </form>
-        </body>
-        </html>
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Test Page Title</title>
+            </head>
+            <body>
+                <form method="get" enctype="multipart/form-data">
+                    <button type="submit">Save</button>
+                </form>
+            </body>
+            </html>
         HTML);
     }
 }

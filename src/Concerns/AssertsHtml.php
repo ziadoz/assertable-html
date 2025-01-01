@@ -8,6 +8,21 @@ use Ziadoz\AssertableHtml\Support\Utilities;
 
 trait AssertsHtml
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Title
+    |--------------------------------------------------------------------------
+    */
+
+    public function assertTitleEquals(string $title, ?string $message = null): void
+    {
+        PHPUnit::assertSame(
+            $title,
+            $this->root->ownerDocument->title,
+            $message ?? "The page title doesn't equal the given title.",
+        );
+    }
+
     /**
      * Assert the element passes the given callback.
      *
