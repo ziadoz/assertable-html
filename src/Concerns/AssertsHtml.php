@@ -2,6 +2,9 @@
 
 namespace Ziadoz\AssertableHtml\Concerns;
 
+use Dom\Document;
+use Dom\Element;
+use Dom\HTMLDocument;
 use Dom\HTMLElement;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Support\Utilities;
@@ -202,9 +205,7 @@ trait AssertsHtml
     {
         PHPUnit::assertSame(
             $text,
-            $normaliseWhitespace
-                ? Utilities::normaliseWhitespace($this->root->textContent)
-                : $this->root->textContent,
+            $this->normaliseTextContent($this->root, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] text doesn't equal the given text.",
                 Utilities::selectorFromElement($this->root),
@@ -219,9 +220,7 @@ trait AssertsHtml
     {
         PHPUnit::assertNotSame(
             $text,
-            $normaliseWhitespace
-                ? Utilities::normaliseWhitespace($this->root->textContent)
-                : $this->root->textContent,
+            $this->normaliseTextContent($this->root, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] text equals the given text.',
                 Utilities::selectorFromElement($this->root),
@@ -242,9 +241,7 @@ trait AssertsHtml
     {
         PHPUnit::assertStringContainsString(
             $text,
-            $normaliseWhitespace
-                ? Utilities::normaliseWhitespace($this->root->textContent)
-                : $this->root->textContent,
+            $this->normaliseTextContent($this->root, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] text doesn't contain the given text.",
                 Utilities::selectorFromElement($this->root),
@@ -267,9 +264,7 @@ trait AssertsHtml
     {
         PHPUnit::assertStringNotContainsString(
             $text,
-            $normaliseWhitespace
-                ? Utilities::normaliseWhitespace($this->root->textContent)
-                : $this->root->textContent,
+            $this->normaliseTextContent($this->root, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] text contains the given text.',
                 Utilities::selectorFromElement($this->root),
@@ -350,9 +345,7 @@ trait AssertsHtml
     {
         PHPUnit::assertSame(
             $class,
-            $normaliseWhitespace
-                ? implode(' ', iterator_to_array($this->root->classList))
-                : $this->root->classList->value,
+            $this->normaliseClasses($this->root, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] class doesn't equal the given class [%s].",
                 Utilities::selectorFromElement($this->root),
@@ -368,9 +361,7 @@ trait AssertsHtml
     {
         PHPUnit::assertNotSame(
             $class,
-            $normaliseWhitespace
-                ? implode(' ', iterator_to_array($this->root->classList))
-                : $this->root->classList->value,
+            $this->normaliseClasses($this->root, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] class equals the given class [%s].',
                 Utilities::selectorFromElement($this->root),
@@ -529,9 +520,7 @@ trait AssertsHtml
     {
         PHPUnit::assertSame(
             $value,
-            $normaliseWhitespace
-                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
-                : (string) $this->root->getAttribute($attribute),
+            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] attribute [%s] doesn't equal the given value [%s].",
                 Utilities::selectorFromElement($this->root),
@@ -548,9 +537,7 @@ trait AssertsHtml
     {
         PHPUnit::assertNotSame(
             $value,
-            $normaliseWhitespace
-                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
-                : (string) $this->root->getAttribute($attribute),
+            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] attribute [%s] equals the given value [%s].',
                 Utilities::selectorFromElement($this->root),
@@ -573,9 +560,7 @@ trait AssertsHtml
     {
         PHPUnit::assertStringContainsString(
             $value,
-            $normaliseWhitespace
-                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
-                : (string) $this->root->getAttribute($attribute),
+            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] attribute [%s] doesn't contain the given value [%s].",
                 Utilities::selectorFromElement($this->root),
@@ -592,9 +577,7 @@ trait AssertsHtml
     {
         PHPUnit::assertStringNotContainsString(
             $value,
-            $normaliseWhitespace
-                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
-                : (string) $this->root->getAttribute($attribute),
+            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] attribute [%s] contains the given value [%s].',
                 Utilities::selectorFromElement($this->root),
@@ -617,9 +600,7 @@ trait AssertsHtml
     {
         PHPUnit::assertStringStartsWith(
             $prefix,
-            $normaliseWhitespace
-                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
-                : (string) $this->root->getAttribute($attribute),
+            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] attribute [%s] doesn't start with the given prefix [%s].",
                 Utilities::selectorFromElement($this->root),
@@ -636,9 +617,7 @@ trait AssertsHtml
     {
         PHPUnit::assertStringStartsNotWith(
             $prefix,
-            $normaliseWhitespace
-                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
-                : (string) $this->root->getAttribute($attribute),
+            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] attribute [%s] starts with the given prefix [%s].',
                 Utilities::selectorFromElement($this->root),
@@ -661,9 +640,7 @@ trait AssertsHtml
     {
         PHPUnit::assertStringEndsWith(
             $suffix,
-            $normaliseWhitespace
-                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
-                : (string) $this->root->getAttribute($attribute),
+            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] attribute [%s] doesn't end with the given suffix [%s].",
                 Utilities::selectorFromElement($this->root),
@@ -680,9 +657,7 @@ trait AssertsHtml
     {
         PHPUnit::assertStringEndsNotWith(
             $suffix,
-            $normaliseWhitespace
-                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
-                : (string) $this->root->getAttribute($attribute),
+            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] attribute [%s] ends with the given suffix [%s].',
                 Utilities::selectorFromElement($this->root),
@@ -865,5 +840,25 @@ trait AssertsHtml
     protected function prefixAriaAttribute(string $attribute): string
     {
         return (! str_starts_with($attribute, 'aria-') ? 'aria-' : '') . $attribute;
+    }
+
+    /** Normalise the given element's text content. */
+    protected function normaliseTextContent(HTMLDocument|Document|HTMLElement|Element $element, bool $normaliseWhitespace = false): string
+    {
+        return $normaliseWhitespace ? Utilities::normaliseWhitespace($element->textContent) : $element->textContent;
+    }
+
+    /** Normalise the given element's classes. */
+    protected function normaliseClasses(HTMLDocument|Document|HTMLElement|Element $element, bool $normaliseWhitespace = false): string
+    {
+        return $normaliseWhitespace ? implode(' ', iterator_to_array($element->classList)) : $element->classList->value;
+    }
+
+    /** Normalise the given element's attribute. */
+    protected function normaliseAttribute(HTMLDocument|Document|HTMLElement|Element $element, string $attribute, bool $normaliseWhitespace = false): string
+    {
+        return $normaliseWhitespace
+            ? Utilities::normaliseWhitespace((string) $element->getAttribute($attribute))
+            : (string) $this->root->getAttribute($attribute);
     }
 }
