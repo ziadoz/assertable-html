@@ -100,4 +100,32 @@ class AssertableInputElement extends AssertableElement implements MatchableInter
 
         return $this;
     }
+
+    /** Check the given input is disabled. */
+    public function assertDisabled(): static
+    {
+        $this->assertAttributePresent(
+            'disabled',
+            sprintf(
+                "The element [%s] isn't disabled.",
+                Utilities::selectorFromElement($this->root),
+            ),
+        );
+
+        return $this;
+    }
+
+    /** Check the given input is enabled. */
+    public function assertEnabled(): static
+    {
+        $this->assertAttributeMissing(
+            'disabled',
+            sprintf(
+                "The element [%s] isn't enabled.",
+                Utilities::selectorFromElement($this->root),
+            ),
+        );
+
+        return $this;
+    }
 }

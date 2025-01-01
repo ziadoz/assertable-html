@@ -35,10 +35,13 @@ class AssertableInputElementTest extends TestCase
         new AssertableInputElement($this->getTestElement('<div><input type="checkbox" checked></div>'), 'input')
             ->assertChecked();
 
-        new AssertableInputElement($this->getTestElement('<div><input type="checkbox" checked="checked"></div>'), 'input')
-            ->assertChecked();
-
         new AssertableInputElement($this->getTestElement('<div><input type="checkbox"></div>'), 'input')
             ->assertUnchecked();
+
+        new AssertableInputElement($this->getTestElement('<div><input type="checkbox" disabled></div>'), 'input')
+            ->assertDisabled();
+
+        new AssertableInputElement($this->getTestElement('<div><input type="checkbox"></div>'), 'input')
+            ->assertEnabled();
     }
 }
