@@ -3,31 +3,37 @@
 namespace Ziadoz\AssertableHtml;
 
 use Dom\Document;
+use Dom\Element;
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
-use Ziadoz\AssertableHtml\Contracts\AssertableElementInterface;
+use Ziadoz\AssertableHtml\Concerns\AssertsHtml;
 use Ziadoz\AssertableHtml\Matchers\AssertableElementMatcher;
 use Ziadoz\AssertableHtml\Matchers\RootElementMatcher;
 
 class AssertableHtml
 {
-    /** The root HTML document or element to perform assertions on. */
+    use AssertsHtml;
+
+    /** The root HTML document or HTML element to perform assertions on. */
     protected HtmlDocument|HtmlElement $root;
 
     /** The selector to identify the root element. */
     protected string $selector;
 
     /** Create an assertable HTML instance. */
-    public function __construct(HtmlDocument|Document|HtmlElement $document, string $selector)
+    public function __construct(HtmlDocument|Document|HtmlElement|Element $document, string $selector, bool $match = true)
     {
-        $this->root = (new RootElementMatcher)->match($document, $selector);
+        $this->root = $match ? (new RootElementMatcher)->match($document, $selector) : $document;
         $this->selector = $selector;
     }
 
     /** Performs assertions on a scoped selection. */
-    public function with(string $selector, ?callable $callback = null, bool $prepend = true): static
+    public function with(string $selector, ?callable $callback = null, bool $append = true): static
     {
-        $instance = new static($this->getDocument(), ($prepend ? $this->selector . ' ' . $selector : $selector));
+        $selector = ($append ? $this->selector . ' ' . $selector : $selector);
+        $element = (new RootElementMatcher)->match($this->getDocument(), $selector);
+        $class = (new AssertableElementMatcher)->match($element);
+        $instance = new $class($element, $selector, false);
 
         if ($callback) {
             $callback($instance);
@@ -40,19 +46,6 @@ class AssertableHtml
     public function elsewhere(string $selector, ?callable $callback = null): static
     {
         return $this->with($selector, $callback, false);
-    }
-
-    /** Perform assertions on HTML element matching the given selector. */
-    public function element(string $selector, ?callable $callback = null): AssertableElementInterface
-    {
-        $root = (new RootElementMatcher)->match($this->root, $this->selector . ' ' . $selector);
-        $assertable = (new AssertableElementMatcher)->match($root);
-
-        if ($callback) {
-            $callback($assertable);
-        }
-
-        return $assertable;
     }
 
     /** Return the underlying HTML document instance. */

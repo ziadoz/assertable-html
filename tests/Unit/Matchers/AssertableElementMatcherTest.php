@@ -13,9 +13,9 @@ class AssertableElementMatcherTest extends TestCase
     #[DataProvider('match_data_provider')]
     public function test_match(string $html, string $assertable): void
     {
-        $this->assertInstanceOf(
+        $this->assertSame(
             $assertable,
-            (new AssertableElementMatcher)->match($html = $this->getTestElement($html)),
+            (new AssertableElementMatcher)->match($this->getTestElement($html)),
         );
     }
 

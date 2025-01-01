@@ -14,11 +14,6 @@ class RootElementMatcher
     /** Determine the root element to perform assertions on. The root can only ever be a single element. */
     public function match(HtmlDocument|Document|HtmlElement|Element $document, string $selector = ''): HtmlElement|Element
     {
-        // If the selector is empty then assume the current node is the one we're interested in.
-        if (trim($selector) === '' && $document instanceof Element) {
-            return $document;
-        }
-
         $nodes = $document->querySelectorAll($selector);
 
         if (count($nodes) !== 1) {

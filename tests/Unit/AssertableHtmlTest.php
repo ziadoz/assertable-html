@@ -5,7 +5,6 @@ namespace Ziadoz\AssertableHtml\Tests\Unit;
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
 use Ziadoz\AssertableHtml\AssertableHtml;
-use Ziadoz\AssertableHtml\Elements\AssertableElement;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class AssertableHtmlTest extends TestCase
@@ -76,13 +75,6 @@ class AssertableHtmlTest extends TestCase
                 $this->assertSame('outer', $assertable->getRoot()->classList->value);
             });
         });
-    }
-
-    public function test_element(): void
-    {
-        $element = new AssertableHtml($document = $this->getTestHtml(), 'body')->element('ul.inner');
-        $this->assertInstanceOf(AssertableElement::class, $element);
-        $this->assertSame($document->querySelector('body ul.inner'), $element->getRoot());
     }
 
     public function test_get_document(): void

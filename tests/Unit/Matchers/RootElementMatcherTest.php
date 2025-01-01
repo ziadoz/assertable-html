@@ -18,16 +18,6 @@ class RootElementMatcherTest extends TestCase
         );
     }
 
-    public function test_match_self(): void
-    {
-        $html = $this->getTestElement('<p>Foo</p>');
-
-        $this->assertSame(
-            $html,
-            (new RootElementMatcher)->match($html),
-        );
-    }
-
     public function test_match_no_elements(): void
     {
         $this->expectException(AssertionFailedError::class);

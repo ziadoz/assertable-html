@@ -10,24 +10,6 @@ use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class AssertableElementTest extends TestCase
 {
-    public function test_get_document(): void
-    {
-        $assertable = new AssertableElement($element = $this->getTestElement('<p>Foo</p>'));
-        $this->assertSame($element->ownerDocument, $assertable->getDocument());
-    }
-
-    public function test_get_root(): void
-    {
-        $assertable = new AssertableElement($element = $this->getTestElement('<p>Foo</p>'));
-        $this->assertSame($element, $assertable->getRoot());
-    }
-
-    public function test_get_html(): void
-    {
-        $assertable = new AssertableElement($this->getTestElement('<p>Foo</p>'));
-        $this->assertSame('<p>Foo</p>', $assertable->getHtml());
-    }
-
     /*
     |--------------------------------------------------------------------------
     | Assert Element
@@ -36,7 +18,7 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_element_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p class="foo">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo">Foo</p></div>'), 'p')
             ->assertElement(fn (HTMLElement $element): bool => $element->tagName === 'P' && $element->classList->value === 'foo');
     }
 
@@ -45,7 +27,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [p.foo] doesn't pass the given callback.");
 
-        new AssertableElement($this->getTestElement('<p class="foo">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo">Foo</p></div>'), 'p')
             ->assertElement(fn (HTMLElement $element): bool => $element->tagName === 'LI');
     }
 
@@ -57,32 +39,32 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_matches_selector_passes(): void
     {
-        new AssertableElement($this->getTestElement('<ul class="foo"><li>Foo</li></ul>'))
-            ->assertMatchesSelector('ul.foo');
+        new AssertableElement($this->getTestElement('<ul><li class="foo">Foo</li></ul>'), 'li')
+            ->assertMatchesSelector('li.foo');
     }
 
     public function test_assert_matches_selector_fails(): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage("The element [ul.foo] doesn't match the given selector [p.foo].");
+        $this->expectExceptionMessage("The element [li.foo] doesn't match the given selector [p.foo].");
 
-        new AssertableElement($this->getTestElement('<ul class="foo"><li">Foo</li></ul>'))
+        new AssertableElement($this->getTestElement('<ul><li class="foo">Foo</li></ul>'), 'li')
             ->assertMatchesSelector('p.foo');
     }
 
     public function test_assert_doesnt_match_selector_passes(): void
     {
-        new AssertableElement($this->getTestElement('<ul class="foo"><l>Foo</l></ul>'))
+        new AssertableElement($this->getTestElement('<ul><li class="foo">Foo</li></ul>'), 'li')
             ->assertDoesntMatchSelector('p');
     }
 
     public function test_assert_doesnt_match_selector_fails(): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage('The element [ul.foo] matches the given selector [ul.foo].');
+        $this->expectExceptionMessage('The element [li.foo] matches the given selector [li.foo].');
 
-        new AssertableElement($this->getTestElement('<ul class="foo"><li>Foo</li></ul>'))
-            ->assertDoesntMatchSelector('ul.foo');
+        new AssertableElement($this->getTestElement('<ul><li class="foo">Foo</li></ul>'), 'li')
+            ->assertDoesntMatchSelector('li.foo');
     }
 
     /*
@@ -94,15 +76,17 @@ class AssertableElementTest extends TestCase
     public function test_assert_number_of_elements_passes(): void
     {
         $html = $this->getTestElement(<<<'HTML'
-            <ul>
-                <li>Foo</li>
-                <li>Bar</li>
-                <li>Baz</li>
-                <li>Qux</li>
-            </ul>
+            <div>
+                <ul>
+                    <li>Foo</li>
+                    <li>Bar</li>
+                    <li>Baz</li>
+                    <li>Qux</li>
+                </ul>
+            </div>
         HTML);
 
-        $assertable = new AssertableElement($html);
+        $assertable = new AssertableElement($html, 'ul');
         $assertable->assertNumberOfElements('li', '=', 4);
         $assertable->assertNumberOfElements('li', '>', 1);
         $assertable->assertNumberOfElements('li', '>=', 4);
@@ -123,15 +107,17 @@ class AssertableElementTest extends TestCase
         $this->expectExceptionMessage($message);
 
         $html = $this->getTestElement(<<<'HTML'
-            <ul>
-                <li>Foo</li>
-                <li>Bar</li>
-                <li>Baz</li>
-                <li>Qux</li>
-            </ul>
+            <div>
+                <ul>
+                    <li>Foo</li>
+                    <li>Bar</li>
+                    <li>Baz</li>
+                    <li>Qux</li>
+                </ul>
+            </div>
         HTML);
 
-        $assertable = new AssertableElement($html);
+        $assertable = new AssertableElement($html, 'ul');
         $assertable->assertNumberOfElements($selector, $comparison, $expected);
     }
 
@@ -167,13 +153,15 @@ class AssertableElementTest extends TestCase
     public function test_assert_text_passes(): void
     {
         $html = $this->getTestElement(<<<'HTML'
-            <p>
-                Hello,
-                <strong>World!</strong>
-            </p>
+            <div>
+                <p>
+                    Hello,
+                    <strong>World!</strong>
+                </p>
+            </div>
         HTML);
 
-        new AssertableElement($html)
+        new AssertableElement($html, 'p')
             ->assertText(fn (string $text): bool => str_contains($text, 'Hello') && str_contains($text, 'World!'));
     }
 
@@ -183,13 +171,15 @@ class AssertableElementTest extends TestCase
         $this->expectExceptionMessage("The element [p] text doesn't pass the given callback.");
 
         $html = $this->getTestElement(<<<'HTML'
-        <p>
-            Hello,
-            <strong>World!</strong>
-        </p>
+            <div>
+                <p>
+                    Hello,
+                    <strong>World!</strong>
+                </p>
+            </div>
         HTML);
 
-        new AssertableElement($html)
+        new AssertableElement($html, 'p')
             ->assertText(fn (string $text): bool => $text === 'Hello, World!');
     }
 
@@ -201,9 +191,9 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_text_equals_passes(): void
     {
-        $html = $this->getTestElement('<p>  Hello, <strong>World!</strong>  </p>');
+        $html = $this->getTestElement('<div><p>  Hello, <strong>World!</strong>  </p></div>');
 
-        $assertable = new AssertableElement($html);
+        $assertable = new AssertableElement($html, 'p');
         $assertable->assertTextEquals('Hello, World!', true);
         $assertable->assertTextEquals('  Hello, World!  ');
     }
@@ -213,15 +203,15 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [p] text doesn't equal the given text.");
 
-        new AssertableElement($this->getTestElement('<p>Hello, <strong>World!</strong></p>'))
+        new AssertableElement($this->getTestElement('<div><p>Hello, <strong>World!</strong></p></div>'), 'p')
             ->assertTextEquals('Foo, Bar!');
     }
 
     public function test_assert_text_doesnt_equal_passes(): void
     {
-        $html = $this->getTestElement('<p>  Hello, <strong>World!</strong>  </p>');
+        $html = $this->getTestElement('<div><p>  Hello, <strong>World!</strong>  </p></div>');
 
-        $assertable = new AssertableElement($html);
+        $assertable = new AssertableElement($html, 'p');
         $assertable->assertTextDoesntEqual('Foo, Bar!', true);
         $assertable->assertTextDoesntEqual('Foo, Bar!');
     }
@@ -231,7 +221,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The element [p] text equals the given text.');
 
-        new AssertableElement($this->getTestElement('<p>Hello, <strong>World!</strong></p>'))
+        new AssertableElement($this->getTestElement('<div><p>Hello, <strong>World!</strong></p></div>'), 'p')
             ->assertTextDoesntEqual('Hello, World!');
     }
 
@@ -244,13 +234,15 @@ class AssertableElementTest extends TestCase
     public function test_assert_text_contains_passes(): void
     {
         $html = $this->getTestElement(<<<'HTML'
-            <p>
-                Hello,
-                <strong>World!</strong>
-            </p>
+            <div>
+                <p>
+                    Hello,
+                    <strong>World!</strong>
+                </p>
+            </div>
         HTML);
 
-        $assertable = new AssertableElement($html);
+        $assertable = new AssertableElement($html, 'p');
         $assertable->assertTextContains('Hello', true);
         $assertable->assertTextContains('World');
 
@@ -263,20 +255,22 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [p] text doesn't contain the given text.");
 
-        new AssertableElement($this->getTestElement('<p>Hello, <strong>World!</strong></p>'))
+        new AssertableElement($this->getTestElement('<div><p>Hello, <strong>World!</strong></p></div>'), 'p')
             ->assertTextContains('Foo, Bar!');
     }
 
     public function test_assert_text_doesnt_contain_passes(): void
     {
         $html = $this->getTestElement(<<<'HTML'
-            <p>
-                Hello,
-                <strong>World!</strong>
-            </p>
+            <div>
+                <p>
+                    Hello,
+                    <strong>World!</strong>
+                </p>
+            </div>
         HTML);
 
-        $assertable = new AssertableElement($html);
+        $assertable = new AssertableElement($html, 'p');
         $assertable->assertTextDoesntContain('Foo', true);
         $assertable->assertTextDoesntContain('Bar');
 
@@ -289,7 +283,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The element [p] text contains the given text.');
 
-        new AssertableElement($this->getTestElement('<p>Hello, <strong>World!</strong></p>'))
+        new AssertableElement($this->getTestElement('<div><p>Hello, <strong>World!</strong></p></div>'), 'p')
             ->assertTextDoesntContain('Hello, World!');
     }
 
@@ -301,7 +295,7 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_class_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p class="foo bar">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo bar">Foo</p></div>'), 'p')
             ->assertClass(fn (array $classes): bool => in_array('foo', $classes));
     }
 
@@ -310,7 +304,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [p.foo.bar] class doesn't pass the given callback.");
 
-        new AssertableElement($this->getTestElement('<p class="foo bar">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo bar">Foo</p></div>'), 'p')
             ->assertClass(fn (array $classes): bool => in_array('baz', $classes));
     }
 
@@ -322,7 +316,7 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_class_present_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p class="foo">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo">Foo</p></div>'), 'p')
             ->assertClassPresent();
     }
 
@@ -331,13 +325,13 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The element [p] is missing the class attribute.');
 
-        new AssertableElement($this->getTestElement('<p>Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p>Foo</p></div>'), 'p')
             ->assertClassPresent();
     }
 
     public function test_assert_class_missing_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p>Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p>Foo</p></div>'), 'p')
             ->assertClassMissing();
     }
 
@@ -346,7 +340,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The element [p.foo] has the class attribute.');
 
-        new AssertableElement($this->getTestElement('<p class="foo">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo">Foo</p></div>'), 'p')
             ->assertClassMissing();
     }
 
@@ -358,10 +352,10 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_class_equals_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p class="  foo bar  ">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="  foo bar  ">Foo</p></div>'), 'p')
             ->assertClassEquals('foo bar', true);
 
-        new AssertableElement($this->getTestElement('<p class="  foo  bar  ">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="  foo  bar  ">Foo</p></div>'), 'p')
             ->assertClassEquals('  foo  bar  ');
     }
 
@@ -370,16 +364,16 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [p.foo.bar] class doesn't equal the given class [baz qux].");
 
-        new AssertableElement($this->getTestElement('<p class="foo bar">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo bar">Foo</p></div>'), 'p')
             ->assertClassEquals('baz qux');
     }
 
     public function test_assert_class_doesnt_equal_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p class="  foo bar  ">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="  foo bar  ">Foo</p></div>'), 'p')
             ->assertClassDoesntEqual('baz qux', true);
 
-        new AssertableElement($this->getTestElement('<p class="  foo  bar  ">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="  foo  bar  ">Foo</p></div>'), 'p')
             ->assertClassDoesntEqual('  baz  qux  ');
     }
 
@@ -388,7 +382,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The element [p.foo.bar] class equals the given class [foo bar].');
 
-        new AssertableElement($this->getTestElement('<p class="foo bar">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo bar">Foo</p></div>'), 'p')
             ->assertClassDoesntEqual('foo bar');
     }
 
@@ -400,7 +394,7 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_class_contains_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p class="foo bar">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo bar">Foo</p></div>'), 'p')
             ->assertClassContains('foo');
     }
 
@@ -409,13 +403,13 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [p.foo.bar] class doesn't contain the given class [baz].");
 
-        new AssertableElement($this->getTestElement('<p class="foo bar">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo bar">Foo</p></div>'), 'p')
             ->assertClassContains('baz');
     }
 
     public function test_assert_class_doesnt_contain_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p class="foo bar">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo bar">Foo</p></div>'), 'p')
             ->assertClassDoesntContain('baz');
     }
 
@@ -424,7 +418,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The element [p.foo.bar] class contains the given class [foo].');
 
-        new AssertableElement($this->getTestElement('<p class="foo bar">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo bar">Foo</p></div>'), 'p')
             ->assertClassDoesntContain('foo');
     }
 
@@ -436,7 +430,7 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_class_contains_all_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p class="foo bar baz">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo bar baz">Foo</p></div>'), 'p')
             ->assertClassContainsAll(['foo', 'bar']);
     }
 
@@ -445,13 +439,13 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [p.foo.bar.baz] class doesn't contain all the given classes [foo qux].");
 
-        new AssertableElement($this->getTestElement('<p class="foo bar baz">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo bar baz">Foo</p></div>'), 'p')
             ->assertClassContainsAll(['foo', 'qux']);
     }
 
     public function test_assert_class_doesnt_contain_all_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p class="foo bar">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo bar">Foo</p></div>'), 'p')
             ->assertClassDoesntContainAll(['foo', 'bar', 'baz']);
     }
 
@@ -460,7 +454,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The element [p.foo.bar] class contains all the given classes [foo bar].');
 
-        new AssertableElement($this->getTestElement('<p class="foo bar">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p class="foo bar">Foo</p></div>'), 'p')
             ->assertClassDoesntContainAll(['foo', 'bar']);
     }
 
@@ -472,7 +466,7 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_attribute_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p id="foo">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="foo">Foo</p></div>'), 'p')
             ->assertAttribute('id', fn (?string $value): bool => $value === 'foo');
     }
 
@@ -481,7 +475,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [p#foo] attribute [id] doesn't pass the given callback.");
 
-        new AssertableElement($this->getTestElement('<p id="foo">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="foo">Foo</p></div>'), 'p')
             ->assertAttribute('id', fn (?string $value): bool => $value === 'bar');
     }
 
@@ -493,7 +487,7 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_attribute_present_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p id="foo">Hello, <strong>World!</strong></p>'))
+        new AssertableElement($this->getTestElement('<div><p id="foo">Hello, <strong>World!</strong></p></div>'), 'p')
             ->assertAttributePresent('id');
     }
 
@@ -502,13 +496,13 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The element [p#foo] is missing the given attribute [foo].');
 
-        new AssertableElement($this->getTestElement('<p id="foo">Hello, <strong>World!</strong></p>'))
+        new AssertableElement($this->getTestElement('<div><p id="foo">Hello, <strong>World!</strong></p></div>'), 'p')
             ->assertAttributePresent('foo');
     }
 
     public function test_assert_attribute_missing_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p id="foo">Hello, <strong>World!</strong></p>'))
+        new AssertableElement($this->getTestElement('<div><p id="foo">Hello, <strong>World!</strong></p></div>'), 'p')
             ->assertAttributeMissing('foo');
     }
 
@@ -517,7 +511,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The element [p#foo] has the given attribute [id].');
 
-        new AssertableElement($this->getTestElement('<p id="foo">Hello, <strong>World!</strong></p>'))
+        new AssertableElement($this->getTestElement('<div><p id="foo">Hello, <strong>World!</strong></p></div>'), 'p')
             ->assertAttributeMissing('id');
     }
 
@@ -529,10 +523,10 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_attribute_equals_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p id="  foo  ">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="  foo  ">Foo</p></div>'), 'p')
             ->assertAttributeEquals('id', 'foo', true);
 
-        new AssertableElement($this->getTestElement('<p id="  foo  ">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="  foo  ">Foo</p></div>'), 'p')
             ->assertAttributeEquals('id', '  foo  ');
     }
 
@@ -541,16 +535,16 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [p#foo] attribute [id] doesn't equal the given value [bar].");
 
-        new AssertableElement($this->getTestElement('<p id="foo">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="foo">Foo</p></div>'), 'p')
             ->assertAttributeEquals('id', 'bar');
     }
 
     public function test_assert_attribute_doesnt_equal_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p id="  foo  ">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="  foo  ">Foo</p></div>'), 'p')
             ->assertAttributeDoesntEqual('id', 'bar', true);
 
-        new AssertableElement($this->getTestElement('<p id="  foo  ">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="  foo  ">Foo</p></div>'), 'p')
             ->assertAttributeDoesntEqual('id', '  bar  ');
     }
 
@@ -559,7 +553,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The element [p#foo] attribute [id] equals the given value [foo].');
 
-        new AssertableElement($this->getTestElement('<p id="foo">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="foo">Foo</p></div>'), 'p')
             ->assertAttributeDoesntEqual('id', 'foo');
     }
 
@@ -571,10 +565,10 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_attribute_contains_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p id="  foo-bar-baz  ">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="  foo-bar-baz  ">Foo</p></div>'), 'p')
             ->assertAttributeContains('id', 'foo-bar-', true);
 
-        new AssertableElement($this->getTestElement('<p id="  foo-bar-baz  ">Foo</p><'))
+        new AssertableElement($this->getTestElement('<div><p id="  foo-bar-baz  ">Foo</p></div>'), 'p')
             ->assertAttributeContains('id', '  foo-bar-');
     }
 
@@ -583,16 +577,16 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [p#foo-bar-baz] attribute [id] doesn't contain the given value [-qux-]");
 
-        new AssertableElement($this->getTestElement('<p id="foo-bar-baz">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="foo-bar-baz">Foo</p></div>'), 'p')
             ->assertAttributeContains('id', '-qux-');
     }
 
     public function test_assert_attribute_doesnt_contain_passes(): void
     {
-        new AssertableElement($this->getTestElement('<p id="  foo-bar-baz  ">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="  foo-bar-baz  ">Foo</p></div>'), 'p')
             ->assertAttributeDoesntContain('id', '-qux-', true);
 
-        new AssertableElement($this->getTestElement('<p id="  foo-bar-baz  ">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="  foo-bar-baz  ">Foo</p></div>'), 'p')
             ->assertAttributeDoesntContain('id', '-qux-');
     }
 
@@ -601,7 +595,7 @@ class AssertableElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The element [p#foo-bar-baz] attribute [id] contains the given value [-bar-].');
 
-        new AssertableElement($this->getTestElement('<p id="foo-bar-baz">Foo</p>'))
+        new AssertableElement($this->getTestElement('<div><p id="foo-bar-baz">Foo</p></div>'), 'p')
             ->assertAttributeDoesntContain('id', '-bar-');
     }
 
@@ -613,7 +607,7 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_data_attribute_aliases_pass(): void
     {
-        $assertable = new AssertableElement($this->getTestElement('<p data-foo="foo-bar">Foo</p>'));
+        $assertable = new AssertableElement($this->getTestElement('<div><p data-foo="foo-bar">Foo</p></div>'), 'p');
         $assertable->assertDataAttribute('foo', fn (?string $value) => $value === 'foo-bar');
         $assertable->assertDataAttributeEquals('foo', 'foo-bar');
         $assertable->assertDataAttributeDoesntEqual('foo', 'baz-qux');
@@ -629,7 +623,7 @@ class AssertableElementTest extends TestCase
 
     public function test_assert_aria_attribute_aliases_pass(): void
     {
-        $assertable = new AssertableElement($this->getTestElement('<p aria-foo="foo-bar">Foo</p>'));
+        $assertable = new AssertableElement($this->getTestElement('<div><p aria-foo="foo-bar">Foo</p></div>'), 'p');
         $assertable->assertAriaAttribute('foo', fn (?string $value) => $value === 'foo-bar');
         $assertable->assertAriaAttributeEquals('foo', 'foo-bar');
         $assertable->assertAriaAttributeDoesntEqual('foo', 'baz-qux');

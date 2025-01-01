@@ -10,7 +10,8 @@ class AssertableFormElementTest extends TestCase
 {
     public function test_assert_method_get_passes(): void
     {
-        new AssertableFormElement($this->getTestElement('<form method="GET"></form>'))->assertMethodGet();
+        new AssertableFormElement($this->getTestElement('<div><form method="GET"></form></div>'), 'form')
+            ->assertMethodGet();
     }
 
     public function test_assert_method_get_fails(): void
@@ -18,12 +19,14 @@ class AssertableFormElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [form] attribute [method] doesn't equal GET.");
 
-        new AssertableFormElement($this->getTestElement('<form method="POST"></form>'))->assertMethodGet();
+        new AssertableFormElement($this->getTestElement('<div><form method="POST"></form></div>'), 'form')
+            ->assertMethodGet();
     }
 
     public function test_assert_method_post_passes(): void
     {
-        new AssertableFormElement($this->getTestElement('<form method="POST"></form>'))->assertMethodPost();
+        new AssertableFormElement($this->getTestElement('<div><form method="POST"></form></div>'), 'form')
+            ->assertMethodPost();
     }
 
     public function test_assert_method_post_fails(): void
@@ -31,12 +34,13 @@ class AssertableFormElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [form] attribute [method] doesn't equal POST.");
 
-        new AssertableFormElement($this->getTestElement('<form method="GET"></form>'))->assertMethodPost();
+        new AssertableFormElement($this->getTestElement('<div><form method="GET"></form></div>'), 'form')
+            ->assertMethodPost();
     }
 
     public function test_assert_method_accepts_uploads_passes(): void
     {
-        new AssertableFormElement($this->getTestElement('<form method="POST" enctype="multipart/form-data"></form>'))
+        new AssertableFormElement($this->getTestElement('<div><form method="POST" enctype="multipart/form-data"></form></div>'), 'form')
             ->assertAcceptsUploads();
     }
 
@@ -45,7 +49,7 @@ class AssertableFormElementTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [form] attribute [enctype] doesn't equal multipart/form-data.");
 
-        new AssertableFormElement($this->getTestElement('<form method="POST" enctype="text/plain"></form>'))
+        new AssertableFormElement($this->getTestElement('<div><form method="POST" enctype="text/plain"></form></div>'), 'form')
             ->assertAcceptsUploads();
     }
 }
