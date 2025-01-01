@@ -625,6 +625,48 @@ class AssertableElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Attribute Starts With
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_attribute_starts_with_passes(): void
+    {
+        new AssertableElement($this->getTestElement('<div><p id="  foo-bar  "></div>'), 'p')
+            ->assertAttributeStartsWith('id', 'foo-', true);
+
+        new AssertableElement($this->getTestElement('<div><p id="  foo-bar  "></div>'), 'p')
+            ->assertAttributeStartsWith('id', '  foo-');
+    }
+
+    public function test_assert_attribute_starts_with_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [p#foo-bar] attribute [id] doesn't start with the given prefix [baz-]");
+
+        new AssertableElement($this->getTestElement('<div><p id="foo-bar"></div>'), 'p')
+            ->assertAttributeStartsWith('id', 'baz-');
+    }
+
+    public function test_assert_attribute_doesnt_start_with_passes(): void
+    {
+        new AssertableElement($this->getTestElement('<div><p id="  foo-bar  "></div>'), 'p')
+            ->assertAttributeDoesntStartWith('id', 'baz-', true);
+
+        new AssertableElement($this->getTestElement('<div><p id="  foo-bar  "></div>'), 'p')
+            ->assertAttributeDoesntStartWith('id', '  baz-');
+    }
+
+    public function test_assert_attribute_doesnt_start_with_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [p#foo-bar] attribute [id] starts with the given prefix [foo-]');
+
+        new AssertableElement($this->getTestElement('<div><p id="foo-bar"></div>'), 'p')
+            ->assertAttributeDoesntStartWith('id', 'foo-');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Attribute Is Allowed
     |--------------------------------------------------------------------------
     */

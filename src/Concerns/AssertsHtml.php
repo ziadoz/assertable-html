@@ -608,6 +608,50 @@ trait AssertsHtml
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Attribute Starts With
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the attribute starts with the given prefix. */
+    public function assertAttributeStartsWith(string $attribute, string $prefix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        PHPUnit::assertStringStartsWith(
+            $prefix,
+            $normaliseWhitespace
+                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
+                : (string) $this->root->getAttribute($attribute),
+            $message ?? sprintf(
+                "The element [%s] attribute [%s] doesn't start with the given prefix [%s].",
+                Utilities::selectorFromElement($this->root),
+                $attribute,
+                $prefix,
+            ),
+        );
+
+        return $this;
+    }
+
+    /** Assert the attribute doesn't start with the given prefix. */
+    public function assertAttributeDoesntStartWith(string $attribute, string $prefix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        PHPUnit::assertStringStartsNotWith(
+            $prefix,
+            $normaliseWhitespace
+                ? Utilities::normaliseWhitespace((string) $this->root->getAttribute($attribute))
+                : (string) $this->root->getAttribute($attribute),
+            $message ?? sprintf(
+                'The element [%s] attribute [%s] starts with the given prefix [%s].',
+                Utilities::selectorFromElement($this->root),
+                $attribute,
+                $prefix,
+            ),
+        );
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Attribute Is Allowed
     |--------------------------------------------------------------------------
     */

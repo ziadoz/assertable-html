@@ -8,12 +8,14 @@ use Dom\HTMLDocument;
 use Dom\HTMLElement;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
 use Ziadoz\AssertableHtml\Elements\AssertableFormElement;
+use Ziadoz\AssertableHtml\Elements\AssertableInputElement;
 
 class AssertableElementMatcher
 {
     /** The assertable element classes. */
     protected const array ELEMENTS = [
         AssertableFormElement::class,
+        AssertableInputElement::class,
     ];
 
     /** Match the element to the applicable assertable element class. */
