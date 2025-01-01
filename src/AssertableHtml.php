@@ -30,10 +30,13 @@ class AssertableHtml
     /** Performs assertions on a scoped selection. */
     public function with(string $selector, ?callable $callback = null, bool $append = true): static
     {
+        // Determine the custom assertable class for the element (if any).
         $selector = ($append ? $this->selector . ' ' . $selector : $selector);
         $element = (new RootElementMatcher)->match($this->getDocument(), $selector);
         $class = (new AssertableElementMatcher)->match($element);
-        $instance = new $class($element, $selector, false);
+
+        // Skip matching as we've found the element upfront in order to determine its custom assertable class.
+        $instance = new $class($element, $selector, match: false);
 
         if ($callback) {
             $callback($instance);
