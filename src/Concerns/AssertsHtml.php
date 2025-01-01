@@ -14,6 +14,7 @@ trait AssertsHtml
     |--------------------------------------------------------------------------
     */
 
+    /** Assert the page title equals the given value. */
     public function assertTitleEquals(string $title, ?string $message = null): void
     {
         PHPUnit::assertSame(
