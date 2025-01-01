@@ -4,7 +4,6 @@ namespace Ziadoz\AssertableHtml\Tests\Unit\Elements;
 
 use Dom\HTMLDocument;
 use Dom\HTMLElement;
-use PHPUnit\Framework\Assert as PHPUnit;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
