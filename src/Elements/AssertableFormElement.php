@@ -4,12 +4,17 @@ namespace Ziadoz\AssertableHtml\Elements;
 
 use Dom\Element;
 use Dom\HTMLElement;
-use Ziadoz\AssertableHtml\Contracts\AssertableElementInterface;
 use Ziadoz\AssertableHtml\Contracts\MatchableInterface;
 use Ziadoz\AssertableHtml\Support\Utilities;
 
-class AssertableFormElement extends AssertableElement implements AssertableElementInterface, MatchableInterface
+class AssertableFormElement extends AssertableElement implements MatchableInterface
 {
+    /** Return if the given element matches. */
+    public static function matches(HTMLElement|Element $element): bool
+    {
+        return $element->tagName === 'FORM';
+    }
+
     /** Assert the form's method is GET. */
     public function assertMethodGet(): void
     {
@@ -47,11 +52,5 @@ class AssertableFormElement extends AssertableElement implements AssertableEleme
                 Utilities::selectorFromElement($this->root),
             ),
         );
-    }
-
-    /** Return if the given element matches. */
-    public static function matches(Element|HTMLElement $element): bool
-    {
-        return $element->tagName === 'FORM';
     }
 }

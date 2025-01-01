@@ -12,7 +12,7 @@ use Ziadoz\AssertableHtml\Support\Utilities;
 class RootElementMatcher
 {
     /** Determine the root element to perform assertions on. The root can only ever be a single element. */
-    public function match(HtmlDocument|Document|HtmlElement|Element $document, string $selector): HtmlElement|Element
+    public function match(HtmlDocument|Document|HtmlElement|Element $document, string $selector = ''): HtmlElement|Element
     {
         $nodes = $document->querySelectorAll($selector);
 
