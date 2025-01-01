@@ -2,9 +2,6 @@
     "cache-file": ".pint.cache",
     "preset": "laravel",
     "rules": {
-        "concat_space": {
-            "spacing": "one"
-        },
         "binary_operator_spaces": {
             "operators": {
                 "=>": "align_single_space_minimal"
@@ -15,6 +12,10 @@
                 "method": "one"
             }
         },
+        "concat_space": {
+            "spacing": "one"
+        },
+        "declare_strict_types": true,
         "single_line_empty_body" : false
     }
 }

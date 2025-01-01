@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ziadoz\AssertableHtml\Tests\Unit\Matchers;
 
 use PHPUnit\Framework\AssertionFailedError;
