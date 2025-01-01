@@ -12,7 +12,7 @@ use Ziadoz\AssertableHtml\Tests\TestCase;
 class UtilitiesTest extends TestCase
 {
     #[DataProvider('selectorFromElementDataProvider')]
-    public function test_selector_from_element(string $expected, string $html, string $selector): void
+    public function test_selector_from_element(string $expected, string $html): void
     {
         $this->assertSame(
             $expected,

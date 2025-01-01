@@ -12,7 +12,7 @@ use Ziadoz\AssertableHtml\Contracts\MatchableInterface;
 class AssertableElement extends AssertableHtml implements MatchableInterface
 {
     /** Return if the given element matches. */
-    public static function matches(Element|HTMLElement $element): bool
+    public static function matches(HTMLElement|Element $element): bool
     {
         return true;
     }

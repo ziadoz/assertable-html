@@ -67,13 +67,13 @@ class AssertableHtml
     }
 
     /** Return the underlying HTML document instance. */
-    public function getDocument(): Document
+    public function getDocument(): HtmlDocument|Document
     {
         return $this->root->ownerDocument;
     }
 
     /** Return the root HTML document or element assertions are being performed on. */
-    public function getRoot(): HtmlDocument|HtmlElement
+    public function getRoot(): HtmlDocument|Document|HtmlElement|Element
     {
         return $this->root;
     }
