@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Matchers;
 
-use Dom\Document;
 use Dom\Element;
 use Dom\HTMLDocument;
 use Dom\HTMLElement;
@@ -14,7 +13,7 @@ use Ziadoz\AssertableHtml\Support\Utilities;
 class RootElementMatcher
 {
     /** Determine the root element to perform assertions on. The root can only ever be a single element. */
-    public function match(HtmlDocument|Document|HtmlElement|Element $document, string $selector = ''): HtmlElement|Element
+    public function match(HtmlDocument|HtmlElement $document, string $selector = ''): HtmlElement
     {
         $nodes = $document->querySelectorAll($selector);
 

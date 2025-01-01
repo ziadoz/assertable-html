@@ -12,7 +12,7 @@ use Ziadoz\AssertableHtml\Support\Utilities;
 class AssertableInputElement extends AssertableElement implements MatchableInterface
 {
     /** Return if the given element matches. */
-    public static function matches(HTMLElement|Element $element): bool
+    public static function matches(HTMLElement $element): bool
     {
         return $element->tagName === 'INPUT';
     }

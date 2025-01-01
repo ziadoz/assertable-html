@@ -851,7 +851,7 @@ trait AssertsHtml
     }
 
     /** Normalise the given element's text content. */
-    protected function normaliseTextContent(HTMLDocument|Document|HTMLElement|Element $element, bool $normaliseWhitespace = false): string
+    protected function normaliseTextContent(HTMLDocument|HTMLElement $element, bool $normaliseWhitespace = false): string
     {
         return $normaliseWhitespace
             ? Utilities::normaliseWhitespace($element->textContent)
@@ -859,7 +859,7 @@ trait AssertsHtml
     }
 
     /** Normalise the given element's classes. */
-    protected function normaliseClasses(HTMLDocument|Document|HTMLElement|Element $element, bool $normaliseWhitespace = false): string
+    protected function normaliseClasses(HTMLDocument|HTMLElement $element, bool $normaliseWhitespace = false): string
     {
         return $normaliseWhitespace
             ? implode(' ', iterator_to_array($element->classList))
@@ -867,7 +867,7 @@ trait AssertsHtml
     }
 
     /** Normalise the given element's attribute. */
-    protected function normaliseAttribute(HTMLDocument|Document|HTMLElement|Element $element, string $attribute, bool $normaliseWhitespace = false): string
+    protected function normaliseAttribute(HTMLDocument|HTMLElement $element, string $attribute, bool $normaliseWhitespace = false): string
     {
         return $normaliseWhitespace
             ? Utilities::normaliseWhitespace((string) $element->getAttribute($attribute))

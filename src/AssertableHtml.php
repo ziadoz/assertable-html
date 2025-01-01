@@ -24,7 +24,7 @@ class AssertableHtml
     protected string $selector;
 
     /** Create an assertable HTML instance. */
-    public function __construct(HtmlDocument|Document|HtmlElement|Element $document, string $selector)
+    public function __construct(HtmlDocument|HtmlElement $document, string $selector)
     {
         $this->root = (new RootElementMatcher)->match($document, $selector);
         $this->selector = $selector;
@@ -67,7 +67,7 @@ class AssertableHtml
     }
 
     /** Return the underlying HTML document instance. */
-    public function getDocument(): Document
+    public function getDocument(): HtmlDocument
     {
         return $this->root->ownerDocument;
     }

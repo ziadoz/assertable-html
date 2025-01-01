@@ -21,7 +21,7 @@ class AssertableElementMatcher
     ];
 
     /** Match the element to the applicable assertable element class. */
-    public function match(HTMLDocument|Document|HTMLElement|Element $element): string
+    public function match(HTMLDocument|HTMLElement $element): string
     {
         foreach (static::ELEMENTS as $class) {
             if ($class::matches($element)) {
