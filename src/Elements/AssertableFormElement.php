@@ -20,7 +20,7 @@ class AssertableFormElement extends AssertableElement implements MatchableInterf
     {
         $this->assertAttribute(
             'method',
-            fn (string $value): bool => strtolower($value) === 'get',
+            fn (string $value): bool => strtolower(trim($value)) === 'get',
             sprintf(
                 "The element [%s] attribute [method] doesn't equal GET.",
                 Utilities::selectorFromElement($this->root),
@@ -33,7 +33,7 @@ class AssertableFormElement extends AssertableElement implements MatchableInterf
     {
         $this->assertAttribute(
             'method',
-            fn (string $value): bool => strtolower($value) === 'post',
+            fn (string $value): bool => strtolower(trim($value)) === 'post',
             sprintf(
                 "The element [%s] attribute [method] doesn't equal POST.",
                 Utilities::selectorFromElement($this->root),
@@ -41,12 +41,18 @@ class AssertableFormElement extends AssertableElement implements MatchableInterf
         );
     }
 
+    /** Assert the form's action equals the given value. */
+    public function assertActionEquals(string $action): void
+    {
+        $this->assertAttributeEquals('action', $action);
+    }
+
     /** Assert the form's accepts uploads. */
     public function assertAcceptsUploads(): void
     {
         $this->assertAttribute(
             'enctype',
-            fn (string $value): bool => strtolower($value) === 'multipart/form-data',
+            fn (string $value): bool => strtolower(trim($value)) === 'multipart/form-data',
             sprintf(
                 "The element [%s] attribute [enctype] doesn't equal multipart/form-data.",
                 Utilities::selectorFromElement($this->root),

@@ -18,6 +18,7 @@ class IntegrationTest extends TestCase
 
             $body->with('form', function (AssertableFormElement $form) {
                 $form->assertMethodGet();
+                $form->assertActionEquals('/foo/bar');
                 $form->assertAcceptsUploads();
             });
         });
@@ -33,7 +34,7 @@ class IntegrationTest extends TestCase
                 <title>Test Page Title</title>
             </head>
             <body>
-                <form method="get" enctype="multipart/form-data">
+                <form method="get" action="/foo/bar" enctype="multipart/form-data">
                     <button type="submit">Save</button>
                 </form>
             </body>

@@ -38,6 +38,21 @@ class AssertableFormElementTest extends TestCase
             ->assertMethodPost();
     }
 
+    public function test_assert_action_equals_passes(): void
+    {
+        new AssertableFormElement($this->getTestElement('<div><form action="/foo/bar"></form></div>'), 'form')
+            ->assertActionEquals('/foo/bar');
+    }
+
+    public function test_assert_action_equals_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [form] attribute [action] doesn't equal the given value [/baz/qux].");
+
+        new AssertableFormElement($this->getTestElement('<div><form action="/foo/bar"></form></div>'), 'form')
+            ->assertActionEquals('/baz/qux');
+    }
+
     public function test_assert_method_accepts_uploads_passes(): void
     {
         new AssertableFormElement($this->getTestElement('<div><form method="POST" enctype="multipart/form-data"></form></div>'), 'form')
