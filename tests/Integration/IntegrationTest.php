@@ -4,32 +4,14 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Integration;
 
-use Dom\HTMLDocument;
-use Ziadoz\AssertableHtml\AssertableHtml;
-use Ziadoz\AssertableHtml\Elements\AssertableElement;
-use Ziadoz\AssertableHtml\Elements\AssertableFormElement;
+use Ziadoz\AssertableHtml\Prototype\AssertableHtmlDocument;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class IntegrationTest extends TestCase
 {
     public function test_assertable_html(): void
     {
-        $html = new AssertableHtml($this->getTestHtml(), 'html');
-        $html->with('body', function (AssertableElement $body) {
-            $body->assertTitleEquals('Test Page Title');
-
-            $body->with('form', function (AssertableFormElement $form) {
-                $form->assertMethodGet()
-                    ->assertActionEquals('/foo/bar')
-                    ->assertAcceptsUploads();
-            });
-        });
-    }
-
-    /** Get the contents of a fixture file as an HTML document. */
-    public function getTestHtml(): HtmlDocument
-    {
-        return HtmlDocument::createFromString(<<<'HTML'
+        $html = AssertableHtmlDocument::createFromString(<<<'HTML'
             <!DOCTYPE html>
             <html>
             <head>
@@ -39,8 +21,24 @@ class IntegrationTest extends TestCase
                 <form method="get" action="/foo/bar" enctype="multipart/form-data">
                     <button type="submit">Save</button>
                 </form>
+                <ul id="list">
+                    <li>Foo</li>
+                    <li>Bar</li>
+                    <li>Baz</li>
+                </ul>
             </body>
             </html>
         HTML);
+
+        dump(
+            $html->querySelector('form'),
+            $html->querySelector('form')->querySelectorAll('button'),
+            $html->querySelector('form')->querySelector('button')->getElementsByTagName('li'),
+            $html->querySelectorAll('li'),
+            $html->getElementById('list'),
+            $html->getElementsByTagName('li'),
+        );
+
+        $html->querySelector('form')->assertAttributeEquals('method', 'get');
     }
 }
