@@ -60,13 +60,13 @@ readonly class AssertableHtmlElementsCollection implements ArrayAccess, Countabl
     /** Check an assertable element exists in the collection. */
     public function offsetExists(mixed $offset): bool
     {
-        return isset($this->elements[$offset]);
+        return isset($this->elements[(int) $offset]);
     }
 
     /** Get an assertable element in the collection. */
-    public function offsetGet(mixed $offset): mixed
+    public function offsetGet(mixed $offset): ?AssertableHtmlElement
     {
-        return $this->elements[$offset] ?? null;
+        return $this->elements[(int) $offset];
     }
 
     /** Unable to add an assertable element to the collection. */
