@@ -78,7 +78,7 @@ readonly class AssertableHtmlElementsCollection implements ArrayAccess, Countabl
     /** Unable to remove an assertable element from the collection. */
     public function offsetUnset(mixed $offset): void
     {
-        throw new RuntimeException('Unable to remove elements collection');
+        throw new RuntimeException('Unable to remove elements from collection');
     }
 
     /*
