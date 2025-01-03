@@ -40,5 +40,17 @@ class IntegrationTest extends TestCase
         );
 
         $html->querySelector('form')->assertAttributeEquals('method', 'get');
+
+        $html->with('form, ul', function ($els) {
+            dump($els->nth(1));
+            dump($els);
+        });
+
+        $html->with('form', function ($els) {
+            dump($els);
+        });
+
+        $html->querySelector('form')->dump();
+        dump($html->querySelector('form')->matches('form'));
     }
 }

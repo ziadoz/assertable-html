@@ -7,7 +7,6 @@ namespace Ziadoz\AssertableHtml\Prototype;
 use Dom\Element;
 use Dom\HTMLElement;
 use Ziadoz\AssertableHtml\Concerns\AssertsHtml;
-use Ziadoz\AssertableHtml\Support\Utilities;
 
 readonly class AssertableHtmlElement
 {
@@ -17,33 +16,55 @@ readonly class AssertableHtmlElement
     public string $className;
     public string $id;
     public string $textContent;
-    public string $normalisedTextContent;
 
+    /** Create an assertable element. */
     public function __construct(private HTMLElement|Element $root)
     {
-        dump($this->root->prefix);
-        dump($this->root->localName);
-
         $this->tagName = $this->root->tagName;
         $this->className = $this->root->className;
         $this->id = $this->root->id;
         $this->textContent = $this->root->textContent;
-        $this->normalisedTextContent = Utilities::normaliseWhitespace($this->root->textContent);
-        // classList wrapper with assertions, classes array.
     }
 
+    /** Get the assertable element HTML. */
+    public function getHtml(): string
+    {
+        return $this->root->ownerDocument->saveHtml($this->root);
+    }
+
+    /** Dump the assertable element. */
+    public function dump(): void
+    {
+        dump($this->getHtml());
+    }
+
+    /** Dump and die the assertable element. */
+    public function dd(): never
+    {
+        dd($this->getHtml());
+    }
+
+    /** Return whether the assertable element matches the given selectors. */
+    public function matches(string $selectors): bool
+    {
+        return $this->root->matches($selectors);
+    }
+
+    /** Return the assertable element matches the given selectors. */
     public function querySelector(string $selectors): ?AssertableHtmlElement
     {
         return new AssertableHtmlElement($this->root->querySelector($selectors));
     }
 
-    public function querySelectorAll(string $selectors): AssertableHtmlElementsList
+    /** Return assertable elements matches the given selectors. */
+    public function querySelectorAll(string $selectors): AssertableHtmlElementsCollection
     {
-        return new AssertableHtmlElementsList($this->root->querySelectorAll($selectors));
+        return new AssertableHtmlElementsCollection($this->root->querySelectorAll($selectors));
     }
 
-    public function getElementsByTagName(string $qualifiedName): AssertableHtmlElementsList
+    /** Return assertable elements matches the given tag. */
+    public function getElementsByTagName(string $qualifiedName): AssertableHtmlElementsCollection
     {
-        return new AssertableHtmlElementsList($this->root->getElementsByTagName($qualifiedName));
+        return new AssertableHtmlElementsCollection($this->root->getElementsByTagName($qualifiedName));
     }
 }
