@@ -44,6 +44,12 @@ readonly class AssertableHtmlElement
         dd($this->getHtml());
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Native
+    |--------------------------------------------------------------------------
+    */
+
     /** Return whether the assertable element matches the given selectors. */
     public function matches(string $selectors): bool
     {

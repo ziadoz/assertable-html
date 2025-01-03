@@ -46,6 +46,12 @@ readonly class AssertableHtmlDocument
         return $elements;
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Native
+    |--------------------------------------------------------------------------
+    */
+
     /** Create an empty assertable document. */
     public static function createEmpty(string $encoding = 'UTF-8'): static
     {
