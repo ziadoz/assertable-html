@@ -52,5 +52,11 @@ class IntegrationTest extends TestCase
 
         $html->querySelector('form')->dump();
         dump($html->querySelector('form')->matches('form'));
+
+        $html->querySelector('form')->when(true, function ($el) {
+           dump($el);
+        });
+
+        dump($html->querySelector('button')->closest('form'));
     }
 }
