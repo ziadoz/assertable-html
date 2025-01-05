@@ -38,40 +38,40 @@ class IntegrationTest extends TestCase
             </html>
         HTML);
 
-//        dump(
-//            $html->querySelector('form'),
-//            $html->querySelector('form')->querySelectorAll('button'),
-//            $html->querySelector('form')->querySelector('button')->getElementsByTagName('li'),
-//            $html->querySelectorAll('li'),
-//            $html->getElementById('list'),
-//            $html->getElementsByTagName('li'),
-//        );
-//
-//        $html->querySelector('form')->assertAttributeEquals('method', 'get');
-//
-//        $html->with('form, ul', function ($els) {
-//            dump($els->nth(1));
-//            dump($els);
-//        });
-//
-//        $html->with('form', function ($els) {
-//            dump($els);
-//        });
-//
-//        $html->querySelector('form')->dump();
-//        dump($html->querySelector('form')->matches('form'));
-//
-//        $html->querySelector('form')->when(true, function ($el) {
-//            dump($el);
-//        });
-//
-//        dump($html->querySelector('button')->closest('form'));
-//        dump($html->querySelector('ul#list')->parentElement->innerHtml);
-//
-//        $html->querySelectorAll('ul li')->dump();
-//
-//        dump($html->querySelector('ul li:nth-of-type(2)')->previousElementSibling->innerHtml);
-//
-//        dump($html->documentElement->contains($html->querySelector('form')));
+        //        dump(
+        //            $html->querySelector('form'),
+        //            $html->querySelector('form')->querySelectorAll('button'),
+        //            $html->querySelector('form')->querySelector('button')->getElementsByTagName('li'),
+        //            $html->querySelectorAll('li'),
+        //            $html->getElementById('list'),
+        //            $html->getElementsByTagName('li'),
+        //        );
+        //
+        //        $html->querySelector('form')->assertAttributeEquals('method', 'get');
+        //
+        //        $html->with('form, ul', function ($els) {
+        //            dump($els->nth(1));
+        //            dump($els);
+        //        });
+        //
+        //        $html->with('form', function ($els) {
+        //            dump($els);
+        //        });
+        //
+        //        $html->querySelector('form')->dump();
+        //        dump($html->querySelector('form')->matches('form'));
+        //
+        //        $html->querySelector('form')->when(true, function ($el) {
+        //            dump($el);
+        //        });
+        //
+        //        dump($html->querySelector('button')->closest('form'));
+        //        dump($html->querySelector('ul#list')->parentElement->innerHtml);
+        //
+        //        $html->querySelectorAll('ul li')->dump();
+        //
+        //        dump($html->querySelector('ul li:nth-of-type(2)')->previousElementSibling->innerHtml);
+        //
+        //        dump($html->documentElement->contains($html->querySelector('form')));
     }
 }
