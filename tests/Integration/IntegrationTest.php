@@ -70,6 +70,8 @@ class IntegrationTest extends TestCase
 //
 //        $html->querySelectorAll('ul li')->dump();
 //
-//        dump($html->querySelector('ul'));
+//        dump($html->querySelector('ul li:nth-of-type(2)')->previousElementSibling->innerHtml);
+//
+//        dump($html->documentElement->contains($html->querySelector('form')));
     }
 }

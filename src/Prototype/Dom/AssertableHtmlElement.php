@@ -45,6 +45,12 @@ readonly class AssertableHtmlElement
         $this->nextElementSibling = static::proxy($this->root->nextElementSibling);
     }
 
+    /** Get the underlying HTML element. */
+    private function getElement(): HTMLElement|Element
+    {
+        return $this->root;
+    }
+
     /** Get the assertable element HTML. */
     public function getHtml(): string
     {
@@ -123,6 +129,12 @@ readonly class AssertableHtmlElement
     public function hasAttribute(string $qualifiedName): bool
     {
         return $this->root->hasAttribute($qualifiedName);
+    }
+
+    /** Return whether the assertable element contains the given assertable element. */
+    public function contains(self $other): bool
+    {
+        return $this->root->contains($other->getElement());
     }
 
     /** Return the closest matching assertable element. */
