@@ -20,7 +20,7 @@ readonly class AssertableHtmlElementsCollection implements ArrayAccess, Countabl
     /** The assertable elements. */
     private array $elements;
 
-    /** Create a list of assertable elements. */
+    /** Create a collection of assertable elements. */
     public function __construct(NodeList|HTMLCollection $nodes)
     {
         $this->elements = array_values(
@@ -33,19 +33,28 @@ readonly class AssertableHtmlElementsCollection implements ArrayAccess, Countabl
         $this->length = count($this->elements);
     }
 
-    /** Dump the collection. */
+    /** Get the assertable collection HTML. */
+    public function getHtml(): string
+    {
+        return implode("\n", array_map(
+            fn (AssertableHtmlElement $element): string => $element->getHtml(),
+            $this->elements,
+        ));
+    }
+
+    /** Dump the assertable collection. */
     public function dump(): void
     {
-        dump($this->elements);
+        dump($this->getHtml());
     }
 
-    /** Dump and die the collection. */
+    /** Dump and die the assertable collection. */
     public function dd(): never
     {
-        dd($this->elements);
+        dd($this->getHtml());
     }
 
-    /** Get the assertable element at the nth position in the collection. */
+    /** Get the assertable element at the nth position in the assertable collection. */
     public function nth(int $index): ?AssertableHtmlElement
     {
         return $this->offsetGet($index);
@@ -57,25 +66,25 @@ readonly class AssertableHtmlElementsCollection implements ArrayAccess, Countabl
     |--------------------------------------------------------------------------
     */
 
-    /** Check an assertable element exists in the collection. */
+    /** Check an assertable element exists in the assertable collection. */
     public function offsetExists(mixed $offset): bool
     {
         return isset($this->elements[(int) $offset]);
     }
 
-    /** Get an assertable element in the collection. */
+    /** Get an assertable element in the assertable collection. */
     public function offsetGet(mixed $offset): ?AssertableHtmlElement
     {
         return $this->elements[(int) $offset];
     }
 
-    /** Unable to add an assertable element to the collection. */
+    /** Unable to add an assertable element to the assertable collection. */
     public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new RuntimeException('Unable to add elements to collection');
     }
 
-    /** Unable to remove an assertable element from the collection. */
+    /** Unable to remove an assertable element from the assertable collection. */
     public function offsetUnset(mixed $offset): void
     {
         throw new RuntimeException('Unable to remove elements from collection');
@@ -87,7 +96,7 @@ readonly class AssertableHtmlElementsCollection implements ArrayAccess, Countabl
     |--------------------------------------------------------------------------
     */
 
-    /** Return the number of assertable elements in the collection. */
+    /** Return the number of assertable elements in the assertable collection. */
     public function count(): int
     {
         return $this->length;
@@ -99,7 +108,7 @@ readonly class AssertableHtmlElementsCollection implements ArrayAccess, Countabl
     |--------------------------------------------------------------------------
     */
 
-    /** Get an iterator of the collection. */
+    /** Get an iterator of the assertable collection. */
     public function getIterator(): Traversable
     {
         yield from $this->elements;

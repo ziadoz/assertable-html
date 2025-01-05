@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Concerns;
+namespace Ziadoz\AssertableHtml\Prototype\Concerns;
 
 use Dom\Document;
 use Dom\Element;
 use Dom\HTMLDocument;
 use Dom\HTMLElement;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Ziadoz\AssertableHtml\Concerns\InvalidArgumentException;
+use Ziadoz\AssertableHtml\Concerns\OutOfBoundsException;
 use Ziadoz\AssertableHtml\Support\Utilities;
 
 trait AssertsHtml

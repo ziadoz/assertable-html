@@ -8,10 +8,10 @@ use Dom\Document;
 use Dom\Element;
 use Dom\HtmlDocument;
 use Dom\HtmlElement;
-use Ziadoz\AssertableHtml\Concerns\AssertsHtml;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
 use Ziadoz\AssertableHtml\Matchers\AssertableElementMatcher;
 use Ziadoz\AssertableHtml\Matchers\RootElementMatcher;
+use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsHtml;
 
 class AssertableHtml
 {

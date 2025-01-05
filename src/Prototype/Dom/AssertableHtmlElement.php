@@ -6,33 +6,43 @@ namespace Ziadoz\AssertableHtml\Prototype\Dom;
 
 use Dom\Element;
 use Dom\HTMLElement;
-use Ziadoz\AssertableHtml\Concerns\AssertsHtml;
+use ReflectionClass;
+use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsHtml;
 
 readonly class AssertableHtmlElement
 {
     use AssertsHtml;
 
+    public string $innerHtml;
     public string $tagName;
     public string $className;
     public string $id;
-    public string $textContent;
+    public ?string $nodeValue;
+    public ?string $textContent;
+
+    public ?self $parentElement;
+    public int $childElementCount;
+    public ?self $firstElementSibling;
+    public ?self $lastElementChild;
+    public ?self $previousElementSibling;
+    public ?self $nextElementSibling;
 
     /** Create an assertable element. */
     public function __construct(private HTMLElement|Element $root)
     {
+        $this->innerHtml = $this->root->innerHTML;
         $this->tagName = $this->root->tagName;
         $this->className = $this->root->className;
         $this->id = $this->root->id;
+        $this->nodeValue = $this->root->nodeValue;
         $this->textContent = $this->root->textContent;
 
-        //  public ?Element $firstElementChild;
-        //    public ?Element $lastElementChild;
-        //    public int $childElementCount;
-        //    public ?Element $previousElementSibling;
-        //    public ?Element $nextElementSibling;
-
-        // $classes array
-        // $attributes array
+        $this->parentElement = $this->root->parentElement ? static::proxy($this->root->parentElement) : null;
+        $this->childElementCount = $this->root->childElementCount;
+        $this->firstElementSibling = $this->root->firstElementChild ? static::proxy($this->root->firstElementChild) : null;
+        $this->lastElementChild = $this->root->lastElementChild ? static::proxy($this->root->lastElementChild) : null;
+        $this->previousElementSibling = $this->root->previousElementSibling ? static::proxy($this->root->previousElementSibling) : null;
+        $this->nextElementSibling = $this->root->nextElementSibling ? static::proxy($this->root->nextElementSibling) : null;
     }
 
     /** Get the assertable element HTML. */
@@ -73,30 +83,47 @@ readonly class AssertableHtmlElement
 
     /*
     |--------------------------------------------------------------------------
+    | Proxy
+    |--------------------------------------------------------------------------
+    */
+
+    /** Create a lazy proxy assertable element for the given element. */
+    public static function proxy(HTMLElement|Element $element): object
+    {
+        return new ReflectionClass(static::class)->newLazyProxy(fn () => new static($element));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Native
     |--------------------------------------------------------------------------
     */
 
+    /** Return the assertable element's attribute names. */
     public function getAttributeNames(): array
     {
         return $this->root->getAttributeNames();
     }
 
+    /** Return the assertable element's given attribute. */
     public function getAttribute(string $qualifiedName): ?string
     {
         return $this->root->getAttribute($qualifiedName);
     }
 
+    /** Return whether the assertable element has attributes. */
     public function hasAttributes(): bool
     {
         return $this->root->hasAttributes();
     }
 
+    /** Return whether the assertable element has the given attribute. */
     public function hasAttribute(string $qualifiedName): bool
     {
         return $this->root->hasAttribute($qualifiedName);
     }
 
+    /** Return the closest matching assertable element. */
     public function closest(string $selectors): ?static
     {
         return ($element = $this->root->closest($selectors)) !== null
