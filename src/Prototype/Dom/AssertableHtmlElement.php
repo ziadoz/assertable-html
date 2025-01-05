@@ -37,12 +37,12 @@ readonly class AssertableHtmlElement
         $this->nodeValue = $this->root->nodeValue;
         $this->textContent = $this->root->textContent;
 
-        $this->parentElement = $this->root->parentElement ? static::proxy($this->root->parentElement) : null;
+        $this->parentElement = static::proxy($this->root->parentElement);
         $this->childElementCount = $this->root->childElementCount;
-        $this->firstElementSibling = $this->root->firstElementChild ? static::proxy($this->root->firstElementChild) : null;
-        $this->lastElementChild = $this->root->lastElementChild ? static::proxy($this->root->lastElementChild) : null;
-        $this->previousElementSibling = $this->root->previousElementSibling ? static::proxy($this->root->previousElementSibling) : null;
-        $this->nextElementSibling = $this->root->nextElementSibling ? static::proxy($this->root->nextElementSibling) : null;
+        $this->firstElementSibling = static::proxy($this->root->firstElementChild);
+        $this->lastElementChild = static::proxy($this->root->lastElementChild);
+        $this->previousElementSibling = static::proxy($this->root->previousElementSibling);
+        $this->nextElementSibling = static::proxy($this->root->nextElementSibling);
     }
 
     /** Get the assertable element HTML. */
@@ -88,9 +88,11 @@ readonly class AssertableHtmlElement
     */
 
     /** Create a lazy proxy assertable element for the given element. */
-    public static function proxy(HTMLElement|Element $element): object
+    public static function proxy(HTMLElement|Element|null $element): ?object
     {
-        return new ReflectionClass(static::class)->newLazyProxy(fn () => new static($element));
+        return $element !== null
+            ? new ReflectionClass(static::class)->newLazyProxy(fn () => new static($element))
+            : null;
     }
 
     /*

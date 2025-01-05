@@ -23,9 +23,9 @@ class IntegrationTest extends TestCase
 
                 <!-- Unordered List -->
                 <ul id="list">
-                    <li>Foo</li>
-                    <li>Bar</li>
-                    <li>Baz</li>
+                    <li id="foo">Foo</li>
+                    <li id="bar">Bar</li>
+                    <li id="baz">Baz</li>
                 </ul>
 
                 <!-- Form -->
@@ -69,5 +69,7 @@ class IntegrationTest extends TestCase
 //        dump($html->querySelector('ul#list')->parentElement->innerHtml);
 //
 //        $html->querySelectorAll('ul li')->dump();
+//
+//        dump($html->querySelector('ul'));
     }
 }
