@@ -11,11 +11,11 @@ use Dom\HtmlElement;
 use Ziadoz\AssertableHtml\Elements\AssertableElement;
 use Ziadoz\AssertableHtml\Matchers\AssertableElementMatcher;
 use Ziadoz\AssertableHtml\Matchers\RootElementMatcher;
-use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsHtml;
+use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsHtmlElement;
 
 class AssertableHtml
 {
-    use AssertsHtml;
+    use AssertsHtmlElement;
 
     /** The root HTML document or HTML element to perform assertions on. */
     protected HtmlDocument|HtmlElement $root;

@@ -13,7 +13,7 @@ use Ziadoz\AssertableHtml\Concerns\InvalidArgumentException;
 use Ziadoz\AssertableHtml\Concerns\OutOfBoundsException;
 use Ziadoz\AssertableHtml\Support\Utilities;
 
-trait AssertsHtml
+trait AssertsHtmlElement
 {
     /*
     |--------------------------------------------------------------------------

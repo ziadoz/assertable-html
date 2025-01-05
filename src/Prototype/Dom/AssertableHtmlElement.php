@@ -7,11 +7,11 @@ namespace Ziadoz\AssertableHtml\Prototype\Dom;
 use Dom\Element;
 use Dom\HTMLElement;
 use ReflectionClass;
-use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsHtml;
+use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsHtmlElement;
 
 readonly class AssertableHtmlElement
 {
-    use AssertsHtml;
+    use AssertsHtmlElement;
 
     public string $innerHtml;
     public string $tagName;
