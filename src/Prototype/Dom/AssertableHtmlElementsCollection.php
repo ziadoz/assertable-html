@@ -1,6 +1,6 @@
 <?php
 
-namespace Ziadoz\AssertableHtml\Prototype;
+namespace Ziadoz\AssertableHtml\Prototype\Dom;
 
 use ArrayAccess;
 use Countable;

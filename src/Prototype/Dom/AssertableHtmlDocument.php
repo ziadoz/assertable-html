@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Prototype;
+namespace Ziadoz\AssertableHtml\Prototype\Dom;
 
 use Dom\Document;
 use Dom\HTMLDocument;
