@@ -13,9 +13,12 @@ use Dom\NodeList;
 use IteratorAggregate;
 use RuntimeException;
 use Traversable;
+use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsHtmlElementList;
 
 readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, IteratorAggregate
 {
+    use AssertsHtmlElementList;
+
     /** The assertable elements. */
     private array $elements;
 
@@ -104,7 +107,7 @@ readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, Ite
     /** Return the number of assertable elements in the assertable list. */
     public function count(): int
     {
-        return $this->length;
+        return count($this->elements);
     }
 
     /*
