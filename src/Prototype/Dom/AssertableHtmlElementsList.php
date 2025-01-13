@@ -16,9 +16,6 @@ use Traversable;
 
 readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, IteratorAggregate
 {
-    /** The length of the collection of elements. */
-    public int $length;
-
     /** The assertable elements. */
     private array $elements;
 
@@ -31,8 +28,6 @@ readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, Ite
                 iterator_to_array($nodes),
             ),
         );
-
-        $this->length = count($this->elements);
     }
 
     /** Get the assertable list HTML. */
@@ -60,6 +55,14 @@ readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, Ite
     public function nth(int $index): ?AssertableHtmlElement
     {
         return $this->offsetGet($index);
+    }
+
+    /** Perform a callback on each assert element in the list. */
+    public function each(callable $callback): static
+    {
+        array_map($callback, $this->elements);
+
+        return $this;
     }
 
     /*

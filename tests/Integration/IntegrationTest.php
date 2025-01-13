@@ -73,5 +73,9 @@ class IntegrationTest extends TestCase
         //        dump($html->querySelector('ul li:nth-of-type(2)')->previousElementSibling->innerHtml);
         //
         //        dump($html->documentElement->contains($html->querySelector('form')));
+        //
+        //        $html->querySelectorAll('ul li')->each(function ($el) {
+        //            $el->assertAttributePresent('id');
+        //        });
     }
 }
