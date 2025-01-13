@@ -78,6 +78,9 @@ class IntegrationTest extends TestCase
         //            $el->assertAttributePresent('id');
         //        });
         //
+        //        $lis = $html->querySelectorAll('ul li');
+        //        dump($lis->first(), $lis->last());
+        //
         //
         //        $html->querySelectorAll('ul li')
         //            ->assertCount(3)

@@ -33,7 +33,7 @@ readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, Ite
         );
     }
 
-    /** Get the  assertable element list HTML. */
+    /** Get the assertable element list HTML. */
     public function getHtml(): string
     {
         return implode("\n", array_map(
@@ -42,22 +42,34 @@ readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, Ite
         ));
     }
 
-    /** Dump the  assertable element list. */
+    /** Dump the assertable element list. */
     public function dump(): void
     {
         dump($this->getHtml());
     }
 
-    /** Dump and die the  assertable element list. */
+    /** Dump and die the assertable element list. */
     public function dd(): never
     {
         dd($this->getHtml());
     }
 
-    /** Get the assertable element at the nth position in the  assertable element list. */
+    /** Get the assertable element at the nth position in the assertable element list. */
     public function nth(int $index): ?AssertableHtmlElement
     {
         return $this->offsetGet($index);
+    }
+
+    /** Return the first assertable element in the assertable element list.  */
+    public function first(): ?AssertableHtmlElement
+    {
+        return $this->offsetGet(0);
+    }
+
+    /** Return the last assertable element in the assertable element list.  */
+    public function last(): ?AssertableHtmlElement
+    {
+        return $this->offsetGet(count($this) - 1);
     }
 
     /** Perform a callback on each assert element in the list. */
@@ -74,25 +86,25 @@ readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, Ite
     |--------------------------------------------------------------------------
     */
 
-    /** Check an assertable element exists in the  assertable element list. */
+    /** Check an assertable element exists in the assertable element list. */
     public function offsetExists(mixed $offset): bool
     {
         return isset($this->elements[(int) $offset]);
     }
 
-    /** Get an assertable element in the  assertable element list. */
+    /** Get an assertable element in the assertable element list. */
     public function offsetGet(mixed $offset): ?AssertableHtmlElement
     {
         return $this->elements[(int) $offset];
     }
 
-    /** Unable to add an assertable element to the  assertable element list. */
+    /** Unable to add an assertable element to the assertable element list. */
     public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new RuntimeException('Unable to add elements to list');
     }
 
-    /** Unable to remove an assertable element from the  assertable element list. */
+    /** Unable to remove an assertable element from the assertable element list. */
     public function offsetUnset(mixed $offset): void
     {
         throw new RuntimeException('Unable to remove elements from list');
@@ -104,7 +116,7 @@ readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, Ite
     |--------------------------------------------------------------------------
     */
 
-    /** Return the number of assertable elements in the  assertable element list. */
+    /** Return the number of assertable elements in the assertable element list. */
     public function count(): int
     {
         return count($this->elements);
@@ -116,7 +128,7 @@ readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, Ite
     |--------------------------------------------------------------------------
     */
 
-    /** Get an iterator of the  assertable element list. */
+    /** Get an iterator of the assertable element list. */
     public function getIterator(): Traversable
     {
         yield from $this->elements;
