@@ -9,26 +9,16 @@ use Dom\HTMLDocument;
 
 readonly class AssertableHtmlDocument
 {
-    public ?AssertableHtmlElement $documentElement;
     public ?AssertableHtmlElement $body;
     public ?AssertableHtmlElement $head;
     public string $title;
 
-    public int $childElementCount;
-    public ?AssertableHtmlElement $firstElementChild;
-    public ?AssertableHtmlElement $lastElementChild;
-
     /** Create a new assertable document. */
     public function __construct(private HTMLDocument|Document $document)
     {
-        $this->documentElement = AssertableHtmlElement::proxy($this->document->documentElement);
         $this->body = AssertableHtmlElement::proxy($this->document->body);
         $this->head = AssertableHtmlElement::proxy($this->document->head);
         $this->title = $this->document->title;
-
-        $this->childElementCount = $this->document->childElementCount;
-        $this->firstElementChild = AssertableHtmlElement::proxy($this->document->firstElementChild);
-        $this->lastElementChild = AssertableHtmlElement::proxy($this->document->lastElementChild);
     }
 
     /** Get the assertable document HTML. */
