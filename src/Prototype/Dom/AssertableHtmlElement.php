@@ -158,14 +158,14 @@ readonly class AssertableHtmlElement
     }
 
     /** Return assertable elements matches the given selectors. */
-    public function querySelectorAll(string $selectors): AssertableHtmlElementsCollection
+    public function querySelectorAll(string $selectors): AssertableHtmlElementsList
     {
-        return new AssertableHtmlElementsCollection($this->root->querySelectorAll($selectors));
+        return new AssertableHtmlElementsList($this->root->querySelectorAll($selectors));
     }
 
     /** Return assertable elements matches the given tag. */
-    public function getElementsByTagName(string $qualifiedName): AssertableHtmlElementsCollection
+    public function getElementsByTagName(string $qualifiedName): AssertableHtmlElementsList
     {
-        return new AssertableHtmlElementsCollection($this->root->getElementsByTagName($qualifiedName));
+        return new AssertableHtmlElementsList($this->root->getElementsByTagName($qualifiedName));
     }
 }
