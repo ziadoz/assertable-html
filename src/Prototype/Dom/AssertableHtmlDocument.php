@@ -50,7 +50,7 @@ readonly class AssertableHtmlDocument
     }
 
     /** Scope assertable elements matching the given selector. */
-    public function with(string $selectors, ?callable $callback): AssertableHtmlElement|AssertableHtmlElementsCollection
+    public function with(string $selectors, ?callable $callback): AssertableHtmlElement|AssertableHtmlElementsList
     {
         $elements = count($results = $this->querySelectorAll($selectors)) === 1
             ? $results[0]
@@ -94,9 +94,9 @@ readonly class AssertableHtmlDocument
     }
 
     /** Return assertable elements matching the given selectors. */
-    public function querySelectorAll(string $selectors): AssertableHtmlElementsCollection
+    public function querySelectorAll(string $selectors): AssertableHtmlElementsList
     {
-        return new AssertableHtmlElementsCollection($this->document->querySelectorAll($selectors));
+        return new AssertableHtmlElementsList($this->document->querySelectorAll($selectors));
     }
 
     /** Return an assertable element matching the given ID. */
@@ -108,8 +108,8 @@ readonly class AssertableHtmlDocument
     }
 
     /** Return assertable elements matching the given tag. */
-    public function getElementsByTagName(string $qualifiedName): AssertableHtmlElementsCollection
+    public function getElementsByTagName(string $qualifiedName): AssertableHtmlElementsList
     {
-        return new AssertableHtmlElementsCollection($this->document->getElementsByTagName($qualifiedName));
+        return new AssertableHtmlElementsList($this->document->getElementsByTagName($qualifiedName));
     }
 }

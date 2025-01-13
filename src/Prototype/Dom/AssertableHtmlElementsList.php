@@ -14,7 +14,7 @@ use IteratorAggregate;
 use RuntimeException;
 use Traversable;
 
-readonly class AssertableHtmlElementsCollection implements ArrayAccess, Countable, IteratorAggregate
+readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, IteratorAggregate
 {
     /** The length of the collection of elements. */
     public int $length;
