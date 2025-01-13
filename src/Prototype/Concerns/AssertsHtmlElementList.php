@@ -46,7 +46,7 @@ trait AssertsHtmlElementList
     public function assertNumberOfElements(string $comparison, int $expected, ?string $message = null): static
     {
         if ($expected < 0) {
-            throw new InvalidArgumentException('Expected number of elements cannot be less than zero');
+            throw new InvalidArgumentException('Expected number of elements in a list cannot be less than zero');
         }
 
         $message ??= sprintf(
