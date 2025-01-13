@@ -14,8 +14,9 @@ readonly class AssertableHtmlElement
 {
     use AssertsHtmlElement;
 
+    // @todo: Doc Blocks
     public string $html;
-    public string $class;
+    public AssertableClassList $classes;
     public NamedNodeMap $attributes;
     public string $tag;
     public string $id;
@@ -25,7 +26,7 @@ readonly class AssertableHtmlElement
     public function __construct(private HTMLElement|Element $root)
     {
         $this->html = $this->root->innerHTML;
-        $this->class = $this->root->className; // @todo: AssertableClassList (ArrayAccess, Stringable, Assertions)
+        $this->classes = new AssertableClassList($this->root->classList);
         $this->attributes = $this->root->attributes; // @todo: AssertableAttributesList (ArrayAccess, Stringable, Assertions)
         $this->tag = strtolower($this->root->tagName);
         $this->id = $this->root->id;

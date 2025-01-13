@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Integration;
 
+use Ziadoz\AssertableHtml\Prototype\Dom\AssertableClassList;
 use Ziadoz\AssertableHtml\Prototype\Dom\AssertableHtmlDocument;
+use Ziadoz\AssertableHtml\Prototype\Dom\AssertableHtmlElementsList;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class IntegrationTest extends TestCase
@@ -19,7 +21,7 @@ class IntegrationTest extends TestCase
             </head>
             <body>
                 <!-- Paragraph -->
-                <p class="qux" id="lux">I am a test paragraph.</p>
+                <p class="lux pux nux" id="qux">I am a test paragraph.</p>
 
                 <!-- Unordered List -->
                 <ul id="list">
@@ -82,18 +84,32 @@ class IntegrationTest extends TestCase
         //        dump($lis->first(), $lis->last());
         //
         //
-        //        $html->querySelectorAll('ul li')
-        //            ->assertCount(3)
-        //            ->assertLessThan(4)
-        //            ->assertLessThanOrEqual(4)
-        //            ->assertGreaterThan(1)
-        //            ->assertGreaterThanOrEqual(1)
-        //            ->assertAny(fn ($element) => $element->matches('li'))
-        //            ->assertAll(fn ($element) => $element->matches('li[id]'))
-        //            ->assertElements(function ($els) {
-        //                return $els[0]->matches('li[id="foo"]') && $els[1]->matches('li[id="bar"]') && $els[2]->matches('li[id="baz"]');
-        //            });
-        //
-        //        dump($html->querySelector('p'));
+
+        // Assertable Element List
+        $html->querySelectorAll('ul li')
+            ->assertCount(3)
+            ->assertLessThan(4)
+            ->assertLessThanOrEqual(4)
+            ->assertGreaterThan(1)
+            ->assertGreaterThanOrEqual(1)
+            ->assertAny(fn ($element) => $element->matches('li'))
+            ->assertAll(fn ($element) => $element->matches('li[id]'))
+            ->assertElements(function (AssertableHtmlElementsList $els): bool {
+                return $els[0]->matches('li[id="foo"]') && $els[1]->matches('li[id="bar"]') && $els[2]->matches('li[id="baz"]');
+            });
+
+        // Assertable Class List
+        $html->querySelector('p')
+            ->classes
+            ->assertNotEmpty()
+            ->assertContains('lux')
+            ->assertDoesntContain('tux')
+            ->assertAll(['pux', 'lux', 'nux'])
+            ->assertAny(['tux', 'wux', 'lux'])
+            ->assertValueEquals('lux pux nux')
+            ->assertValueDoesntEqual('tux wux lux')
+            ->assertClasses(function (AssertableClassList $classes): bool {
+                return $classes->contains('lux');
+            });
     }
 }
