@@ -14,7 +14,7 @@ readonly class AssertableHtmlElement
 {
     use AssertsHtmlElement;
 
-    /** The element inner HTML. */
+    /** The element's inner HTML. */
     public string $html;
 
     /** The element's classes. */
