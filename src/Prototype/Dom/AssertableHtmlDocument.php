@@ -9,15 +9,20 @@ use Dom\HTMLDocument;
 
 readonly class AssertableHtmlDocument
 {
-    public ?AssertableHtmlElement $body;
+    /** The document's head. */
     public ?AssertableHtmlElement $head;
+
+    /** The document's body. */
+    public ?AssertableHtmlElement $body;
+
+    /** The document's page title. */
     public string $title;
 
     /** Create a new assertable document. */
     public function __construct(private HTMLDocument|Document $document)
     {
-        $this->body = AssertableHtmlElement::proxy($this->document->body);
         $this->head = AssertableHtmlElement::proxy($this->document->head);
+        $this->body = AssertableHtmlElement::proxy($this->document->body);
         $this->title = $this->document->title;
     }
 

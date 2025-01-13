@@ -14,12 +14,22 @@ readonly class AssertableHtmlElement
 {
     use AssertsHtmlElement;
 
-    // @todo: Doc Blocks
+    /** The element inner HTML. */
     public string $html;
+
+    /** The element's classes. */
     public AssertableClassList $classes;
+
+    /** The element's attributes. */
     public NamedNodeMap $attributes;
+
+    /** The element's tag (lowercase). */
     public string $tag;
+
+    /** The element's ID. */
     public string $id;
+
+    /** The element's text. */
     public string $text;
 
     /** Create an assertable element. */
@@ -27,10 +37,10 @@ readonly class AssertableHtmlElement
     {
         $this->html = $this->root->innerHTML;
         $this->classes = new AssertableClassList($this->root->classList);
-        $this->attributes = $this->root->attributes; // @todo: AssertableAttributesList (ArrayAccess, Stringable, Assertions)
+        $this->attributes = $this->root->attributes; // @todo: AssertableAttributesList (ArrayAccess, Stringable, Assertions, Normalise)
         $this->tag = strtolower($this->root->tagName);
         $this->id = $this->root->id;
-        $this->text = (string) $this->root->textContent; // @todo: AssertableText (Stringable, Assertions)
+        $this->text = (string) $this->root->textContent; // @todo: AssertableText (Stringable, Assertions, Normalise)
 
         // @todo: Parent, Child, Next Sibling, Previous Sibling element proxies only.
     }
