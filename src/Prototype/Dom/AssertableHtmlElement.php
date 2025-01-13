@@ -6,6 +6,7 @@ namespace Ziadoz\AssertableHtml\Prototype\Dom;
 
 use Dom\Element;
 use Dom\HTMLElement;
+use Dom\NamedNodeMap;
 use ReflectionClass;
 use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsHtmlElement;
 
@@ -13,36 +14,24 @@ readonly class AssertableHtmlElement
 {
     use AssertsHtmlElement;
 
-    public string $innerHtml;
-    public string $tagName;
-    public string $className;
+    public string $html;
+    public string $class;
+    public NamedNodeMap $attributes;
+    public string $tag;
     public string $id;
-    public ?string $nodeValue;
-    public ?string $textContent;
-
-    public ?self $parentElement;
-    public int $childElementCount;
-    public ?self $firstElementSibling;
-    public ?self $lastElementChild;
-    public ?self $previousElementSibling;
-    public ?self $nextElementSibling;
+    public string $text;
 
     /** Create an assertable element. */
     public function __construct(private HTMLElement|Element $root)
     {
-        $this->innerHtml = $this->root->innerHTML;
-        $this->tagName = $this->root->tagName;
-        $this->className = $this->root->className;
+        $this->html = $this->root->innerHTML;
+        $this->class = $this->root->className; // @todo: AssertableClassList (ArrayAccess, Stringable, Assertions)
+        $this->attributes = $this->root->attributes; // @todo: AssertableAttributesList (ArrayAccess, Stringable, Assertions)
+        $this->tag = strtolower($this->root->tagName);
         $this->id = $this->root->id;
-        $this->nodeValue = $this->root->nodeValue;
-        $this->textContent = $this->root->textContent;
+        $this->text = (string) $this->root->textContent; // @todo: AssertableText (Stringable, Assertions)
 
-        $this->parentElement = static::proxy($this->root->parentElement);
-        $this->childElementCount = $this->root->childElementCount;
-        $this->firstElementSibling = static::proxy($this->root->firstElementChild);
-        $this->lastElementChild = static::proxy($this->root->lastElementChild);
-        $this->previousElementSibling = static::proxy($this->root->previousElementSibling);
-        $this->nextElementSibling = static::proxy($this->root->nextElementSibling);
+        // @todo: Parent, Child, Next Sibling, Previous Sibling element proxies only.
     }
 
     /** Get the underlying HTML element. */

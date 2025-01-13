@@ -19,7 +19,7 @@ class IntegrationTest extends TestCase
             </head>
             <body>
                 <!-- Paragraph -->
-                <p>I am a test paragraph.</p>
+                <p class="qux" id="lux">I am a test paragraph.</p>
 
                 <!-- Unordered List -->
                 <ul id="list">
@@ -90,5 +90,7 @@ class IntegrationTest extends TestCase
         //            ->assertElements(function ($els) {
         //                return $els[0]->matches('li[id="foo"]') && $els[1]->matches('li[id="bar"]') && $els[2]->matches('li[id="baz"]');
         //            });
+        //
+        //        dump($html->querySelector('p'));
     }
 }
