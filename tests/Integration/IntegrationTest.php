@@ -78,8 +78,13 @@ class IntegrationTest extends TestCase
         //            $el->assertAttributePresent('id');
         //        });
         //
+        //
         //        $html->querySelectorAll('ul li')
         //            ->assertCount(3)
+        //            ->assertLessThan(4)
+        //            ->assertLessThanOrEqual(4)
+        //            ->assertGreaterThan(1)
+        //            ->assertGreaterThanOrEqual(1)
         //            ->assertAny(fn ($element) => $element->matches('li'))
         //            ->assertAll(fn ($element) => $element->matches('li[id]'))
         //            ->assertElements(function ($els) {
