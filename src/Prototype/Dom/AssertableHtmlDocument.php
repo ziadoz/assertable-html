@@ -19,7 +19,7 @@ readonly class AssertableHtmlDocument
     public ?AssertableHtmlElement $lastElementChild;
 
     /** Create a new assertable document. */
-    private function __construct(private HTMLDocument|Document $document)
+    public function __construct(private HTMLDocument|Document $document)
     {
         $this->documentElement = AssertableHtmlElement::proxy($this->document->documentElement);
         $this->body = AssertableHtmlElement::proxy($this->document->body);
