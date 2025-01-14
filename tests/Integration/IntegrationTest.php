@@ -7,6 +7,7 @@ namespace Ziadoz\AssertableHtml\Tests\Integration;
 use Ziadoz\AssertableHtml\Prototype\Dom\AssertableClassList;
 use Ziadoz\AssertableHtml\Prototype\Dom\AssertableHtmlDocument;
 use Ziadoz\AssertableHtml\Prototype\Dom\AssertableHtmlElementsList;
+use Ziadoz\AssertableHtml\Prototype\Dom\AssertableText;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class IntegrationTest extends TestCase
@@ -110,6 +111,21 @@ class IntegrationTest extends TestCase
             ->assertValueDoesntEqual('tux wux lux')
             ->assertClasses(function (AssertableClassList $classes): bool {
                 return $classes->contains('lux');
+            });
+
+        // Assertable Text
+        $html->querySelector('p')
+            ->text
+            ->assertSame('I am a test paragraph.')
+            ->assertNotSame('foo bar')
+            ->assertSeeIn('paragraph')
+            ->assertDontSeeIn('foo bar')
+            ->assertStartsWith('I am')
+            ->assertDoesntStartWith('foo bar')
+            ->assertEndsWith('paragraph.')
+            ->assertDoesntEndWith('foo bar')
+            ->assertText(function (AssertableText $text) {
+                return $text->startsWith('I') && $text->endsWith('.') && $text->contains('test');
             });
     }
 }

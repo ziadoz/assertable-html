@@ -30,7 +30,7 @@ readonly class AssertableHtmlElement
     public string $id;
 
     /** The element's text. */
-    public string $text;
+    public AssertableText $text;
 
     /** Create an assertable element. */
     public function __construct(private HTMLElement|Element $root)
@@ -40,7 +40,7 @@ readonly class AssertableHtmlElement
         $this->attributes = $this->root->attributes; // @todo: AssertableAttributesList (ArrayAccess, Stringable, Assertions, Normalise)
         $this->tag = strtolower($this->root->tagName);
         $this->id = $this->root->id;
-        $this->text = (string) $this->root->textContent; // @todo: AssertableText (Stringable, Assertions, Normalise)
+        $this->text = new AssertableText($this->root->textContent);
 
         // @todo: Parent, Child, Next Sibling, Previous Sibling element proxies only.
     }
