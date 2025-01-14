@@ -6,6 +6,7 @@ namespace Ziadoz\AssertableHtml\Tests\Integration;
 
 use Ziadoz\AssertableHtml\Prototype\Dom\AssertableClassList;
 use Ziadoz\AssertableHtml\Prototype\Dom\AssertableHtmlDocument;
+use Ziadoz\AssertableHtml\Prototype\Dom\AssertableHtmlElement;
 use Ziadoz\AssertableHtml\Prototype\Dom\AssertableHtmlElementsList;
 use Ziadoz\AssertableHtml\Prototype\Dom\AssertableText;
 use Ziadoz\AssertableHtml\Tests\TestCase;
@@ -93,8 +94,8 @@ class IntegrationTest extends TestCase
             ->assertLessThanOrEqual(4)
             ->assertGreaterThan(1)
             ->assertGreaterThanOrEqual(1)
-            ->assertAny(fn ($element) => $element->matches('li'))
-            ->assertAll(fn ($element) => $element->matches('li[id]'))
+            ->assertAny(fn (AssertableHtmlElement $el) => $el->matches('li'))
+            ->assertAll(fn (AssertableHtmlElement $el) => $el->matches('li[id]'))
             ->assertElements(function (AssertableHtmlElementsList $els): bool {
                 return $els[0]->matches('li[id="foo"]') && $els[1]->matches('li[id="bar"]') && $els[2]->matches('li[id="baz"]');
             });
