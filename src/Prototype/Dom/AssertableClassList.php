@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Prototype\Dom;
 
+use ArrayAccess;
+use Countable;
 use Dom\TokenList;
+use IteratorAggregate;
 use RuntimeException;
+use Stringable;
 use Traversable;
 use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsClassList;
 
-readonly class AssertableClassList implements \ArrayAccess, \Countable, \IteratorAggregate, \Stringable
+readonly class AssertableClassList implements ArrayAccess, Countable, IteratorAggregate, Stringable
 {
     use AssertsClassList;
 
