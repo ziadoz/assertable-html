@@ -98,7 +98,7 @@ trait AssertsClassList
     */
 
     /** Assert the class list contains any of the given classes. */
-    public function assertAny(array $classes, ?string $message = null): static
+    public function assertContainsAny(array $classes, ?string $message = null): static
     {
         PHPUnit::assertTrue(
             $this->any($classes),
@@ -112,7 +112,7 @@ trait AssertsClassList
     }
 
     /** Assert the class list contains all the given classes. */
-    public function assertAll(array $classes, ?string $message = null): static
+    public function assertContainsAll(array $classes, ?string $message = null): static
     {
         PHPUnit::assertTrue(
             $this->all($classes),
