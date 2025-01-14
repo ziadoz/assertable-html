@@ -9,10 +9,12 @@ use Dom\HTMLElement;
 use Dom\NamedNodeMap;
 use ReflectionClass;
 use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsHtmlElement;
+use Ziadoz\AssertableHtml\Prototype\Concerns\IdentifiesElement;
 
 readonly class AssertableHtmlElement
 {
     use AssertsHtmlElement;
+    use IdentifiesElement;
 
     /** The element's inner HTML. */
     public string $html;
