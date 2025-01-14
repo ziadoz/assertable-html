@@ -42,7 +42,7 @@ readonly class AssertableHtmlElement
         $this->id = $this->root->id;
         $this->text = new AssertableText($this->root->textContent);
 
-        // @todo: Parent, Child, Next Sibling, Previous Sibling element proxies only.
+        // @todo: Document, Parent, Child, Next Sibling, Previous Sibling element proxies only.
     }
 
     /** Get the underlying HTML element. */
