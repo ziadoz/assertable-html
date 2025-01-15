@@ -86,13 +86,13 @@ readonly class AssertableClassList implements ArrayAccess, Countable, IteratorAg
         return $this->classes[(int) $offset];
     }
 
-    /** Unable to add an assertable class to the assertable class list. */
+    /** Unable to add class to the assertable class list. */
     public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new RuntimeException('Unable to add classes to list');
     }
 
-    /** Unable to remove a class from the assertable class list. */
+    /** Unable to remove class from the assertable class list. */
     public function offsetUnset(mixed $offset): void
     {
         throw new RuntimeException('Unable to remove classes from list');
