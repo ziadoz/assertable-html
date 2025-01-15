@@ -599,7 +599,7 @@ trait AssertsHtmlElement
 
     /*
     |--------------------------------------------------------------------------
-    | Assert Attribute Starts With
+    | Assert Attribute Starts / Ends With
     |--------------------------------------------------------------------------
     */
 
@@ -636,12 +636,6 @@ trait AssertsHtmlElement
 
         return $this;
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Assert Attribute Ends With
-    |--------------------------------------------------------------------------
-    */
 
     /** Assert the attribute ends with the given prefix. */
     public function assertAttributeEndsWith(string $attribute, string $suffix, bool $normaliseWhitespace = false, ?string $message = null): static
