@@ -51,7 +51,7 @@ trait AssertsClassList
     {
         PHPUnit::assertFalse(
             $this->empty(),
-            $message ?? "The class list isn't empty.",
+            $message ?? 'The class list is empty.',
         );
 
         return $this;
