@@ -43,6 +43,7 @@ readonly class AssertableHtmlElement
         $this->id = $this->root->id;
         $this->text = new AssertableText($this->root->textContent);
 
+        // @todo: Rename $this->root to $this->element.
         // @todo: Document, Parent, Child, Next Sibling, Previous Sibling element proxies only.
         // @todo: Should assertable classes be separate (e.g. $this->classes, $this->>assertableClasses, $this->attributes, $this->assertableAttributes).
     }
