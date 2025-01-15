@@ -6,7 +6,6 @@ namespace Ziadoz\AssertableHtml\Prototype\Dom;
 
 use Dom\Element;
 use Dom\HTMLElement;
-use Dom\NamedNodeMap;
 use ReflectionClass;
 use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsHtmlElement;
 use Ziadoz\AssertableHtml\Prototype\Concerns\IdentifiesElement;
@@ -23,7 +22,7 @@ readonly class AssertableHtmlElement
     public AssertableClassList $classes;
 
     /** The element's attributes. */
-    public NamedNodeMap $attributes;
+    public AssertableAttributesList $attributes;
 
     /** The element's tag (lowercase). */
     public string $tag;
@@ -39,7 +38,7 @@ readonly class AssertableHtmlElement
     {
         $this->html = $this->root->innerHTML;
         $this->classes = new AssertableClassList($this->root->classList);
-        $this->attributes = $this->root->attributes; // @todo: AssertableAttributesList (ArrayAccess, Stringable, Assertions, Normalise)
+        $this->attributes = new AssertableAttributesList($this->root->attributes);
         $this->tag = strtolower($this->root->tagName);
         $this->id = $this->root->id;
         $this->text = new AssertableText($this->root->textContent);
