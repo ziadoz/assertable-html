@@ -81,7 +81,7 @@ readonly class AssertableClassList implements ArrayAccess, Countable, IteratorAg
     }
 
     /** Get a class in the assertable class list. */
-    public function offsetGet(mixed $offset): ?AssertableHtmlElement
+    public function offsetGet(mixed $offset): ?string
     {
         return $this->classes[(int) $offset];
     }
