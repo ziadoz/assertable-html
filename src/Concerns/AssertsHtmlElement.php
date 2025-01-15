@@ -9,8 +9,6 @@ use Dom\Element;
 use Dom\HTMLDocument;
 use Dom\HTMLElement;
 use PHPUnit\Framework\Assert as PHPUnit;
-use Ziadoz\AssertableHtml\Prototype\Concerns\InvalidArgumentException;
-use Ziadoz\AssertableHtml\Prototype\Concerns\OutOfBoundsException;
 use Ziadoz\AssertableHtml\Support\Utilities;
 
 trait AssertsHtmlElement
