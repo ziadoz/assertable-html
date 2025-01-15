@@ -11,7 +11,7 @@ use IteratorAggregate;
 use RuntimeException;
 use Traversable;
 use Ziadoz\AssertableHtml\Concerns\AssertsAttributes;
-use Ziadoz\AssertableHtml\Support\Utilities;
+use Ziadoz\AssertableHtml\Support\Whitespace;
 
 readonly class AssertableAttributesList implements ArrayAccess, Countable, IteratorAggregate
 {
@@ -46,7 +46,7 @@ readonly class AssertableAttributesList implements ArrayAccess, Countable, Itera
         }
 
         return $normaliseWhitespace
-            ? Utilities::normaliseWhitespace($this->attributes[$attribute])
+            ? Whitespace::normaliseWhitespace($this->attributes[$attribute])
             : $this->attributes[$attribute];
     }
 

@@ -6,7 +6,7 @@ namespace Ziadoz\AssertableHtml\Tests\Unit\Support;
 
 use Dom\HTMLDocument;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Ziadoz\AssertableHtml\Support\Utilities;
+use Ziadoz\AssertableHtml\Support\Whitespace;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class UtilitiesTest extends TestCase
@@ -16,7 +16,7 @@ class UtilitiesTest extends TestCase
     {
         $this->assertSame(
             $expected,
-            Utilities::selectorFromElement($this->getTestElement($html, 'p')),
+            Whitespace::selectorFromElement($this->getTestElement($html, 'p')),
         );
     }
 
@@ -57,7 +57,7 @@ class UtilitiesTest extends TestCase
     {
         $this->assertSame(
             'foo bar baz',
-            Utilities::normaliseWhitespace("\t\t" . '  foo  ' . "\n\r" . '  bar  ' . "\r\t" . '  baz  ' . "\n\n"),
+            Whitespace::normaliseWhitespace("\t\t" . '  foo  ' . "\n\r" . '  bar  ' . "\r\t" . '  baz  ' . "\n\n"),
         );
     }
 
@@ -94,7 +94,7 @@ class UtilitiesTest extends TestCase
 
             2 Matching Elements Omitted...
             OUTPUT,
-            Utilities::nodesToMatchesHtml($nodes, 2),
+            Whitespace::nodesToMatchesHtml($nodes, 2),
         );
     }
 }

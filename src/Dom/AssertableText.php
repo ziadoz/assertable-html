@@ -6,7 +6,7 @@ namespace Ziadoz\AssertableHtml\Dom;
 
 use Stringable;
 use Ziadoz\AssertableHtml\Concerns\AssertsText;
-use Ziadoz\AssertableHtml\Support\Utilities;
+use Ziadoz\AssertableHtml\Support\Whitespace;
 
 readonly class AssertableText implements Stringable
 {
@@ -33,7 +33,7 @@ readonly class AssertableText implements Stringable
     public function value(bool $normaliseWhitespace = false): string
     {
         return $normaliseWhitespace
-            ? Utilities::normaliseWhitespace($this->text)
+            ? Whitespace::normaliseWhitespace($this->text)
             : $this->text;
     }
 

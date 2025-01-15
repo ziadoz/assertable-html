@@ -8,7 +8,7 @@ use Dom\Document;
 use Dom\Element;
 use Dom\HTMLDocument;
 use Dom\HTMLElement;
-use Ziadoz\AssertableHtml\Support\Utilities;
+use Ziadoz\AssertableHtml\Support\Whitespace;
 
 trait IdentifiesElement
 {
@@ -31,7 +31,7 @@ trait IdentifiesElement
     /** Return the element's formatted ID (if applicable). */
     private function formatId(HTMLDocument|Document|HtmlElement|Element $element): string
     {
-        return trim($id = $element->id) !== '' ? '#' . Utilities::normaliseWhitespace(trim($id)) : '';
+        return trim($id = $element->id) !== '' ? '#' . Whitespace::normaliseWhitespace(trim($id)) : '';
     }
 
     /** Return the elements format classes (if any). */

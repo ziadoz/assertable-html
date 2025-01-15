@@ -9,7 +9,7 @@ use Dom\Element;
 use Dom\HTMLDocument;
 use Dom\HTMLElement;
 use PHPUnit\Framework\Assert as PHPUnit;
-use Ziadoz\AssertableHtml\Support\Utilities;
+use Ziadoz\AssertableHtml\Support\Whitespace;
 
 trait AssertsHtmlElement
 {
@@ -50,7 +50,7 @@ trait AssertsHtmlElement
             $callback($this->root),
             $message ?? sprintf(
                 "The element [%s] doesn't pass the given callback.",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
             ),
         );
 
@@ -70,7 +70,7 @@ trait AssertsHtmlElement
             $this->root->matches($selector),
             $message ?? sprintf(
                 "The element [%s] doesn't match the given selector [%s].",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $selector,
             ),
         );
@@ -85,7 +85,7 @@ trait AssertsHtmlElement
             $this->root->matches($selector),
             $message ?? sprintf(
                 'The element [%s] matches the given selector [%s].',
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $selector,
             ),
         );
@@ -115,7 +115,7 @@ trait AssertsHtmlElement
 
         $message ??= sprintf(
             "The element [%s] doesn't have %s [%d] elements matching the selector [%s].",
-            Utilities::selectorFromElement($this->root),
+            Whitespace::selectorFromElement($this->root),
             match ($comparison) {
                 '='     => 'exactly',
                 '>'     => 'greater than',
@@ -197,7 +197,7 @@ trait AssertsHtmlElement
             $callback($this->root->textContent),
             $message ?? sprintf(
                 "The element [%s] text doesn't pass the given callback.",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
             ),
         );
 
@@ -218,7 +218,7 @@ trait AssertsHtmlElement
             $this->normaliseTextContent($this->root, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] text doesn't equal the given text.",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
             ),
         );
 
@@ -233,7 +233,7 @@ trait AssertsHtmlElement
             $this->normaliseTextContent($this->root, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] text equals the given text.',
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
             ),
         );
 
@@ -254,7 +254,7 @@ trait AssertsHtmlElement
             $this->normaliseTextContent($this->root, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] text doesn't contain the given text.",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
             ),
         );
 
@@ -277,7 +277,7 @@ trait AssertsHtmlElement
             $this->normaliseTextContent($this->root, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] text contains the given text.',
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
             ),
         );
 
@@ -309,7 +309,7 @@ trait AssertsHtmlElement
             $callback(iterator_to_array($this->root->classList)),
             $message ?? sprintf(
                 "The element [%s] class doesn't pass the given callback.",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
             ),
         );
 
@@ -327,7 +327,7 @@ trait AssertsHtmlElement
     {
         $this->assertAttributePresent('class', sprintf(
             'The element [%s] is missing the class attribute.',
-            Utilities::selectorFromElement($this->root),
+            Whitespace::selectorFromElement($this->root),
         ));
 
         return $this;
@@ -338,7 +338,7 @@ trait AssertsHtmlElement
     {
         $this->assertAttributeMissing('class', sprintf(
             'The element [%s] has the class attribute.',
-            Utilities::selectorFromElement($this->root),
+            Whitespace::selectorFromElement($this->root),
         ));
 
         return $this;
@@ -358,7 +358,7 @@ trait AssertsHtmlElement
             $this->normaliseClasses($this->root, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] class doesn't equal the given class [%s].",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $class,
             ),
         );
@@ -374,7 +374,7 @@ trait AssertsHtmlElement
             $this->normaliseClasses($this->root, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] class equals the given class [%s].',
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $class,
             ),
         );
@@ -395,7 +395,7 @@ trait AssertsHtmlElement
             $this->root->classList->contains($class),
             $message ?? sprintf(
                 "The element [%s] class doesn't contain the given class [%s].",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $class,
             ),
         );
@@ -410,7 +410,7 @@ trait AssertsHtmlElement
             $this->root->classList->contains($class),
             $message ?? sprintf(
                 'The element [%s] class contains the given class [%s].',
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $class,
             ),
         );
@@ -433,7 +433,7 @@ trait AssertsHtmlElement
             array_intersect(iterator_to_array($this->root->classList), $classes) === $classes,
             $message ?? sprintf(
                 "The element [%s] class doesn't contain all the given classes [%s].",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 implode(' ', $classes),
             ),
         );
@@ -450,7 +450,7 @@ trait AssertsHtmlElement
             array_intersect(iterator_to_array($this->root->classList), $classes) === $classes,
             $message ?? sprintf(
                 'The element [%s] class contains all the given classes [%s].',
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 implode(' ', $classes),
             ),
         );
@@ -475,7 +475,7 @@ trait AssertsHtmlElement
             $callback($this->root->getAttribute($attribute)),
             $message ?? sprintf(
                 "The element [%s] attribute [%s] doesn't pass the given callback.",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $attribute,
             ),
         );
@@ -496,7 +496,7 @@ trait AssertsHtmlElement
             $this->root->getAttribute($attribute),
             $message ?? sprintf(
                 'The element [%s] is missing the given attribute [%s].',
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $attribute,
             ),
         );
@@ -511,7 +511,7 @@ trait AssertsHtmlElement
             $this->root->getAttribute($attribute),
             $message ?? sprintf(
                 'The element [%s] has the given attribute [%s].',
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $attribute,
             ),
         );
@@ -533,7 +533,7 @@ trait AssertsHtmlElement
             $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] attribute [%s] doesn't equal the given value [%s].",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $attribute,
                 $value,
             ),
@@ -550,7 +550,7 @@ trait AssertsHtmlElement
             $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] attribute [%s] equals the given value [%s].',
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $attribute,
                 $value,
             ),
@@ -573,7 +573,7 @@ trait AssertsHtmlElement
             $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] attribute [%s] doesn't contain the given value [%s].",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $attribute,
                 $value,
             ),
@@ -590,7 +590,7 @@ trait AssertsHtmlElement
             $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] attribute [%s] contains the given value [%s].',
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $attribute,
                 $value,
             ),
@@ -613,7 +613,7 @@ trait AssertsHtmlElement
             $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] attribute [%s] doesn't start with the given prefix [%s].",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $attribute,
                 $prefix,
             ),
@@ -630,7 +630,7 @@ trait AssertsHtmlElement
             $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] attribute [%s] starts with the given prefix [%s].',
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $attribute,
                 $prefix,
             ),
@@ -647,7 +647,7 @@ trait AssertsHtmlElement
             $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 "The element [%s] attribute [%s] doesn't end with the given suffix [%s].",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $attribute,
                 $suffix,
             ),
@@ -664,7 +664,7 @@ trait AssertsHtmlElement
             $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
             $message ?? sprintf(
                 'The element [%s] attribute [%s] ends with the given suffix [%s].',
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $attribute,
                 $suffix,
             ),
@@ -687,7 +687,7 @@ trait AssertsHtmlElement
             strtolower(trim((string) $this->root->getAttribute($attribute))),
             $message ?? sprintf(
                 "The element [%s] attribute [%s] isn't the allowed value [%s].",
-                Utilities::selectorFromElement($this->root),
+                Whitespace::selectorFromElement($this->root),
                 $attribute,
                 $value,
             ),
@@ -850,7 +850,7 @@ trait AssertsHtmlElement
     protected function normaliseTextContent(HTMLDocument|Document|HTMLElement|Element $element, bool $normaliseWhitespace = false): string
     {
         return $normaliseWhitespace
-            ? Utilities::normaliseWhitespace($element->textContent)
+            ? Whitespace::normaliseWhitespace($element->textContent)
             : $element->textContent;
     }
 
@@ -866,7 +866,7 @@ trait AssertsHtmlElement
     protected function normaliseAttribute(HTMLDocument|Document|HTMLElement|Element $element, string $attribute, bool $normaliseWhitespace = false): string
     {
         return $normaliseWhitespace
-            ? Utilities::normaliseWhitespace((string) $element->getAttribute($attribute))
+            ? Whitespace::normaliseWhitespace((string) $element->getAttribute($attribute))
             : (string) $this->root->getAttribute($attribute);
     }
 }
