@@ -36,7 +36,7 @@ trait AssertsClassList
     */
 
     /** Assert the class list is empty. */
-    public function assertEmpty(): static
+    public function assertEmpty(?string $message = null): static
     {
         PHPUnit::assertTrue(
             $this->empty(),
@@ -47,7 +47,7 @@ trait AssertsClassList
     }
 
     /** Assert the class list is not empty. */
-    public function assertNotEmpty(): static
+    public function assertNotEmpty(?string $message = null): static
     {
         PHPUnit::assertFalse(
             $this->empty(),
