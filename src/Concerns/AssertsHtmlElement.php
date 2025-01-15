@@ -8,6 +8,8 @@ use Dom\Document;
 use Dom\Element;
 use Dom\HTMLDocument;
 use Dom\HTMLElement;
+use InvalidArgumentException;
+use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Support\Whitespace;
 
