@@ -116,9 +116,9 @@ readonly class AssertableHtmlElement
     }
 
     /** Return the assertable element's given attribute. */
-    public function getAttribute(string $qualifiedName): ?string
+    public function getAttribute(string $attribute): ?string
     {
-        return $this->element->getAttribute($qualifiedName);
+        return $this->element->getAttribute($attribute);
     }
 
     /** Return whether the assertable element has attributes. */
@@ -128,9 +128,9 @@ readonly class AssertableHtmlElement
     }
 
     /** Return whether the assertable element has the given attribute. */
-    public function hasAttribute(string $qualifiedName): bool
+    public function hasAttribute(string $attribute): bool
     {
-        return $this->element->hasAttribute($qualifiedName);
+        return $this->element->hasAttribute($attribute);
     }
 
     /** Return whether the assertable element contains the given assertable element. */
@@ -166,8 +166,8 @@ readonly class AssertableHtmlElement
     }
 
     /** Return assertable elements matches the given tag. */
-    public function getElementsByTagName(string $qualifiedName): AssertableHtmlElementsList
+    public function getElementsByTagName(string $tag): AssertableHtmlElementsList
     {
-        return new AssertableHtmlElementsList($this->element->getElementsByTagName($qualifiedName));
+        return new AssertableHtmlElementsList($this->element->getElementsByTagName($tag));
     }
 }

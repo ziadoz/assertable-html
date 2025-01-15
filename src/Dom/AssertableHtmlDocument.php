@@ -95,16 +95,16 @@ readonly class AssertableHtmlDocument
     }
 
     /** Return an assertable element matching the given ID. */
-    public function getElementById(string $elementId): ?AssertableHtmlElement
+    public function getElementById(string $id): ?AssertableHtmlElement
     {
-        return ($element = $this->document->getElementById($elementId)) !== null
+        return ($element = $this->document->getElementById($id)) !== null
             ? new AssertableHtmlElement($element)
             : null;
     }
 
     /** Return assertable elements matching the given tag. */
-    public function getElementsByTagName(string $qualifiedName): AssertableHtmlElementsList
+    public function getElementsByTagName(string $tag): AssertableHtmlElementsList
     {
-        return new AssertableHtmlElementsList($this->document->getElementsByTagName($qualifiedName));
+        return new AssertableHtmlElementsList($this->document->getElementsByTagName($tag));
     }
 }
