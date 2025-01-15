@@ -136,7 +136,7 @@ trait AssertsClassList
     {
         PHPUnit::assertSame(
             $value,
-            $this->value,
+            $this->value(),
             $message ?? "The class list doesn't equal the given value.",
         );
 
@@ -148,7 +148,7 @@ trait AssertsClassList
     {
         PHPUnit::assertNotSame(
             $value,
-            $this->value,
+            $this->value(),
             $message ?? 'The class list equals the given value.',
         );
 
