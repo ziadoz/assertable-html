@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Integration;
 
+use Ziadoz\AssertableHtml\Prototype\Dom\AssertableAttributesList;
 use Ziadoz\AssertableHtml\Prototype\Dom\AssertableClassList;
 use Ziadoz\AssertableHtml\Prototype\Dom\AssertableHtmlDocument;
 use Ziadoz\AssertableHtml\Prototype\Dom\AssertableHtmlElement;
@@ -25,6 +26,11 @@ class IntegrationTest extends TestCase
                 <!-- Paragraph -->
                 <p class="lux pux nux" id="qux">I am a test paragraph.</p>
 
+                <!-- Div -->
+                <div id="foo-bar" data-bar="baz-buz" data-qux="lux-pux">
+                    This is a test div.
+                </div>
+
                 <!-- Unordered List -->
                 <ul id="list">
                     <li id="foo">Foo</li>
@@ -42,51 +48,6 @@ class IntegrationTest extends TestCase
             </html>
         HTML);
 
-        //        dump(
-        //            $html->querySelector('form'),
-        //            $html->querySelector('form')->querySelectorAll('button'),
-        //            $html->querySelector('form')->querySelector('button')->getElementsByTagName('li'),
-        //            $html->querySelectorAll('li'),
-        //            $html->getElementById('list'),
-        //            $html->getElementsByTagName('li'),
-        //        );
-        //
-        //        $html->querySelector('form')->assertAttributeEquals('method', 'get');
-        //
-        //        $html->with('form, ul', function ($els) {
-        //            dump($els->nth(1));
-        //            dump($els);
-        //        });
-        //
-        //        $html->with('form', function ($els) {
-        //            dump($els);
-        //        });
-        //
-        //        $html->querySelector('form')->dump();
-        //        dump($html->querySelector('form')->matches('form'));
-        //
-        //        $html->querySelector('form')->when(true, function ($el) {
-        //            dump($el);
-        //        });
-        //
-        //        dump($html->querySelector('button')->closest('form'));
-        //        dump($html->querySelector('ul#list')->parentElement->innerHtml);
-        //
-        //        $html->querySelectorAll('ul li')->dump();
-        //
-        //        dump($html->querySelector('ul li:nth-of-type(2)')->previousElementSibling->innerHtml);
-        //
-        //        dump($html->documentElement->contains($html->querySelector('form')));
-        //
-        //        $html->querySelectorAll('ul li')->each(function ($el) {
-        //            $el->assertAttributePresent('id');
-        //        });
-        //
-        //        $lis = $html->querySelectorAll('ul li');
-        //        dump($lis->first(), $lis->last());
-        //
-        //        dump($html->querySelector('p')->identifier());
-
         // Assertable Element List
         $html->querySelectorAll('ul li')
             ->assertCount(3)
@@ -98,6 +59,35 @@ class IntegrationTest extends TestCase
             ->assertAll(fn (AssertableHtmlElement $el) => $el->matches('li[id]'))
             ->assertElements(function (AssertableHtmlElementsList $els): bool {
                 return $els[0]->matches('li[id="foo"]') && $els[1]->matches('li[id="bar"]') && $els[2]->matches('li[id="baz"]');
+            });
+
+        // Assertable Attributes List
+        $html->querySelector('div')
+            ->attributes
+            ->assertNotEmpty()
+            ->assertPresent('id')
+            ->assertMissing('foo-bar')
+            ->assertEquals('id', 'foo-bar')
+            ->assertDoesntEqual('id', 'baz-qux')
+            ->assertStartsWith('id', 'foo-')
+            ->assertDoesntStartWith('id', 'bar-')
+            ->assertEndsWith('id', '-bar')
+            ->assertDoesntEndWith('id', '-foo')
+            ->assertContains('id', 'o-b')
+            ->assertDoesntContain('id', 'qux')
+            ->assertAttributes(function (AssertableAttributesList $attributes) {
+                return (
+                    $attributes['id'] === 'foo-bar' &&
+                    $attributes['data-bar'] === 'baz-buz' &&
+                    $attributes['data-qux'] === 'lux-pux'
+                ) && (
+                    $attributes->startsWith('id', 'foo-') &&
+                    $attributes->endsWith('data-bar', '-buz') &&
+                    $attributes->contains('data-qux', 'x-p')
+                ) && (
+                    $attributes->present('id') &&
+                    $attributes->missing('foo-bar')
+                );
             });
 
         // Assertable Class List

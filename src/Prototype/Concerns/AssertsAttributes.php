@@ -137,15 +137,105 @@ trait AssertsAttributes
     |--------------------------------------------------------------------------
     */
 
+    /** Assert the given attribute starts with the given prefix in the attribute list. */
+    public function assertStartsWith(string $attribute, string $prefix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        PHPUnit::assertStringStartsWith(
+            $prefix,
+            $this->value($attribute, $normaliseWhitespace),
+            $message ?? sprintf(
+                "The attribute [%s] doesn't start with the given prefix [%s].",
+                $attribute,
+                $prefix,
+            ),
+        );
+
+        return $this;
+    }
+
+    /** Assert the given attribute doesn't start with the given prefix in the attribute list. */
+    public function assertDoesntStartWith(string $attribute, string $prefix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        PHPUnit::assertStringStartsNotWith(
+            $prefix,
+            $this->value($attribute, $normaliseWhitespace),
+            $message ?? sprintf(
+                'The attribute [%s] starts with the given prefix [%s].',
+                $attribute,
+                $prefix,
+            ),
+        );
+
+        return $this;
+    }
+
+    /** Assert the given attribute ends with the given suffix in the attribute list. */
+    public function assertEndsWith(string $attribute, string $suffix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        PHPUnit::assertStringEndsWith(
+            $suffix,
+            $this->value($attribute, $normaliseWhitespace),
+            $message ?? sprintf(
+                "The attribute [%s] doesn't end with the given suffix [%s].",
+                $attribute,
+                $suffix,
+            ),
+        );
+
+        return $this;
+    }
+
+    /** Assert the given attribute doesn't end with the given suffix in the attribute list. */
+    public function assertDoesntEndWith(string $attribute, string $suffix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        PHPUnit::assertStringStartsNotWith(
+            $suffix,
+            $this->value($attribute, $normaliseWhitespace),
+            $message ?? sprintf(
+                'The attribute [%s] ends with the given suffix [%s].',
+                $attribute,
+                $suffix,
+            ),
+        );
+
+        return $this;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Assert Attribute Contains
     |--------------------------------------------------------------------------
     */
 
-    /*
-    |--------------------------------------------------------------------------
-    | Assert Attribute Within
-    |--------------------------------------------------------------------------
-    */
+    /** Assert the given attribute contains the given value in the attribute list. */
+    public function assertContains(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        PHPUnit::assertStringContainsString(
+            $value,
+            $this->value($attribute, $normaliseWhitespace),
+            $message ?? sprintf(
+                "The attribute [%s] doesn't contains the given value [%s].",
+                $attribute,
+                $value,
+            ),
+        );
+
+        return $this;
+    }
+
+    /** Assert the given attribute doesn't contain the given value in the attribute list. */
+    public function assertDoesntContain(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        PHPUnit::assertStringNotContainsString(
+            $value,
+            $this->value($attribute, $normaliseWhitespace),
+            $message ?? sprintf(
+                'The attribute [%s] contains the given value [%s].',
+                $attribute,
+                $value,
+            ),
+        );
+
+        return $this;
+    }
 }
