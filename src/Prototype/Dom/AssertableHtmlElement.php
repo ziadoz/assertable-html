@@ -45,6 +45,7 @@ readonly class AssertableHtmlElement
         $this->text = new AssertableText($this->root->textContent);
 
         // @todo: Document, Parent, Child, Next Sibling, Previous Sibling element proxies only.
+        // @todo: Should assertable classes be separate (e.g. $this->classes, $this->>assertableClasses, $this->attributes, $this->assertableAttributes).
     }
 
     /** Get the underlying HTML element. */
