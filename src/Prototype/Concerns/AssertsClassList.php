@@ -132,11 +132,11 @@ trait AssertsClassList
     */
 
     /** Assert the class list value equals the given value. */
-    public function assertValueEquals(string $value, ?string $message = null): static
+    public function assertValueEquals(string $value, bool $normaliseWhitespace = false, ?string $message = null): static
     {
         PHPUnit::assertSame(
             $value,
-            $this->value(),
+            $this->value($normaliseWhitespace),
             $message ?? "The class list doesn't equal the given value.",
         );
 
@@ -144,11 +144,11 @@ trait AssertsClassList
     }
 
     /** Assert the class list value doesn't equal the given value. */
-    public function assertValueDoesntEqual(string $value, ?string $message = null): static
+    public function assertValueDoesntEqual(string $value, bool $normaliseWhitespace = false, ?string $message = null): static
     {
         PHPUnit::assertNotSame(
             $value,
-            $this->value(),
+            $this->value($normaliseWhitespace),
             $message ?? 'The class list equals the given value.',
         );
 
