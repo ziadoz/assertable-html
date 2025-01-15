@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Prototype\Concerns;
+namespace Ziadoz\AssertableHtml\Concerns;
 
 use PHPUnit\Framework\Assert as PHPUnit;
 

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Prototype\Dom;
+namespace Ziadoz\AssertableHtml\Dom;
 
 use Dom\Element;
 use Dom\HTMLElement;
 use ReflectionClass;
-use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsHtmlElement;
-use Ziadoz\AssertableHtml\Prototype\Concerns\IdentifiesElement;
+use Ziadoz\AssertableHtml\Concerns\AssertsHtmlElement;
+use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
 
 readonly class AssertableHtmlElement
 {

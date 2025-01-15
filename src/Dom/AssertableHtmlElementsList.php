@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Prototype\Dom;
+namespace Ziadoz\AssertableHtml\Dom;
 
 use ArrayAccess;
 use Countable;
@@ -13,7 +13,7 @@ use Dom\NodeList;
 use IteratorAggregate;
 use RuntimeException;
 use Traversable;
-use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsHtmlElementList;
+use Ziadoz\AssertableHtml\Concerns\AssertsHtmlElementList;
 
 readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, IteratorAggregate
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Prototype\Dom;
+namespace Ziadoz\AssertableHtml\Dom;
 
 use Stringable;
-use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsText;
+use Ziadoz\AssertableHtml\Concerns\AssertsText;
 use Ziadoz\AssertableHtml\Support\Utilities;
 
 readonly class AssertableText implements Stringable

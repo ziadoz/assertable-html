@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Prototype\Dom;
+namespace Ziadoz\AssertableHtml\Dom;
 
 use ArrayAccess;
 use Countable;
@@ -10,7 +10,7 @@ use Dom\NamedNodeMap;
 use IteratorAggregate;
 use RuntimeException;
 use Traversable;
-use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsAttributes;
+use Ziadoz\AssertableHtml\Concerns\AssertsAttributes;
 use Ziadoz\AssertableHtml\Support\Utilities;
 
 readonly class AssertableAttributesList implements ArrayAccess, Countable, IteratorAggregate

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Prototype\Dom;
+namespace Ziadoz\AssertableHtml\Dom;
 
 use ArrayAccess;
 use Countable;
@@ -11,7 +11,7 @@ use IteratorAggregate;
 use RuntimeException;
 use Stringable;
 use Traversable;
-use Ziadoz\AssertableHtml\Prototype\Concerns\AssertsClassList;
+use Ziadoz\AssertableHtml\Concerns\AssertsClassList;
 
 readonly class AssertableClassList implements ArrayAccess, Countable, IteratorAggregate, Stringable
 {

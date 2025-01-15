@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Integration;
 
-use Ziadoz\AssertableHtml\Prototype\Dom\AssertableAttributesList;
-use Ziadoz\AssertableHtml\Prototype\Dom\AssertableClassList;
-use Ziadoz\AssertableHtml\Prototype\Dom\AssertableHtmlDocument;
-use Ziadoz\AssertableHtml\Prototype\Dom\AssertableHtmlElement;
-use Ziadoz\AssertableHtml\Prototype\Dom\AssertableHtmlElementsList;
-use Ziadoz\AssertableHtml\Prototype\Dom\AssertableText;
+use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
+use Ziadoz\AssertableHtml\Dom\AssertableClassList;
+use Ziadoz\AssertableHtml\Dom\AssertableHtmlDocument;
+use Ziadoz\AssertableHtml\Dom\AssertableHtmlElement;
+use Ziadoz\AssertableHtml\Dom\AssertableHtmlElementsList;
+use Ziadoz\AssertableHtml\Dom\AssertableText;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class IntegrationTest extends TestCase
