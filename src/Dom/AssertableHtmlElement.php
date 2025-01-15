@@ -34,16 +34,15 @@ readonly class AssertableHtmlElement
     public AssertableText $text;
 
     /** Create an assertable element. */
-    public function __construct(private HTMLElement|Element $root)
+    public function __construct(private HTMLElement|Element $element)
     {
-        $this->html = $this->root->innerHTML;
-        $this->classes = new AssertableClassList($this->root->classList);
-        $this->attributes = new AssertableAttributesList($this->root->attributes);
-        $this->tag = strtolower($this->root->tagName);
-        $this->id = $this->root->id;
-        $this->text = new AssertableText($this->root->textContent);
+        $this->html = $this->element->innerHTML;
+        $this->classes = new AssertableClassList($this->element->classList);
+        $this->attributes = new AssertableAttributesList($this->element->attributes);
+        $this->tag = strtolower($this->element->tagName);
+        $this->id = $this->element->id;
+        $this->text = new AssertableText($this->element->textContent);
 
-        // @todo: Rename $this->root to $this->element.
         // @todo: Document, Parent, Child, Next Sibling, Previous Sibling element proxies only.
         // @todo: Should assertable classes be separate (e.g. $this->classes, $this->>assertableClasses, $this->attributes, $this->assertableAttributes).
     }
@@ -51,13 +50,13 @@ readonly class AssertableHtmlElement
     /** Get the underlying HTML element. */
     private function getElement(): HTMLElement|Element
     {
-        return $this->root;
+        return $this->element;
     }
 
     /** Get the assertable element HTML. */
     public function getHtml(): string
     {
-        return $this->root->ownerDocument->saveHtml($this->root);
+        return $this->element->ownerDocument->saveHtml($this->element);
     }
 
     /** Dump the assertable element. */
@@ -113,37 +112,37 @@ readonly class AssertableHtmlElement
     /** Return the assertable element's attribute names. */
     public function getAttributeNames(): array
     {
-        return $this->root->getAttributeNames();
+        return $this->element->getAttributeNames();
     }
 
     /** Return the assertable element's given attribute. */
     public function getAttribute(string $qualifiedName): ?string
     {
-        return $this->root->getAttribute($qualifiedName);
+        return $this->element->getAttribute($qualifiedName);
     }
 
     /** Return whether the assertable element has attributes. */
     public function hasAttributes(): bool
     {
-        return $this->root->hasAttributes();
+        return $this->element->hasAttributes();
     }
 
     /** Return whether the assertable element has the given attribute. */
     public function hasAttribute(string $qualifiedName): bool
     {
-        return $this->root->hasAttribute($qualifiedName);
+        return $this->element->hasAttribute($qualifiedName);
     }
 
     /** Return whether the assertable element contains the given assertable element. */
     public function contains(self $other): bool
     {
-        return $this->root->contains($other->getElement());
+        return $this->element->contains($other->getElement());
     }
 
     /** Return the closest matching assertable element. */
     public function closest(string $selectors): ?static
     {
-        return ($element = $this->root->closest($selectors)) !== null
+        return ($element = $this->element->closest($selectors)) !== null
             ? new static($element)
             : null;
     }
@@ -151,24 +150,24 @@ readonly class AssertableHtmlElement
     /** Return whether the assertable element matches the given selectors. */
     public function matches(string $selectors): bool
     {
-        return $this->root->matches($selectors);
+        return $this->element->matches($selectors);
     }
 
     /** Return the assertable element matches the given selectors. */
     public function querySelector(string $selectors): ?static
     {
-        return new AssertableHtmlElement($this->root->querySelector($selectors));
+        return new AssertableHtmlElement($this->element->querySelector($selectors));
     }
 
     /** Return assertable elements matches the given selectors. */
     public function querySelectorAll(string $selectors): AssertableHtmlElementsList
     {
-        return new AssertableHtmlElementsList($this->root->querySelectorAll($selectors));
+        return new AssertableHtmlElementsList($this->element->querySelectorAll($selectors));
     }
 
     /** Return assertable elements matches the given tag. */
     public function getElementsByTagName(string $qualifiedName): AssertableHtmlElementsList
     {
-        return new AssertableHtmlElementsList($this->root->getElementsByTagName($qualifiedName));
+        return new AssertableHtmlElementsList($this->element->getElementsByTagName($qualifiedName));
     }
 }
