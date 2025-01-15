@@ -16,9 +16,9 @@ trait IdentifiesElement
     public function identifier(): string
     {
         return implode('', array_filter([
-            $this->formatTag($this->root),
-            $this->formatId($this->root),
-            $this->formatClasses($this->root),
+            $this->formatTag($this->element),
+            $this->formatId($this->element),
+            $this->formatClasses($this->element),
         ]));
     }
 
