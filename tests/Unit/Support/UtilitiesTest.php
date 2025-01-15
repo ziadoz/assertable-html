@@ -57,7 +57,7 @@ class UtilitiesTest extends TestCase
     {
         $this->assertSame(
             'foo bar baz',
-            Whitespace::normaliseWhitespace("\t\t" . '  foo  ' . "\n\r" . '  bar  ' . "\r\t" . '  baz  ' . "\n\n"),
+            Whitespace::normalise("\t\t" . '  foo  ' . "\n\r" . '  bar  ' . "\r\t" . '  baz  ' . "\n\n"),
         );
     }
 

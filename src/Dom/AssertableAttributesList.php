@@ -46,7 +46,7 @@ readonly class AssertableAttributesList implements ArrayAccess, Countable, Itera
         }
 
         return $normaliseWhitespace
-            ? Whitespace::normaliseWhitespace($this->attributes[$attribute])
+            ? Whitespace::normalise($this->attributes[$attribute])
             : $this->attributes[$attribute];
     }
 

@@ -850,7 +850,7 @@ trait AssertsHtmlElement
     protected function normaliseTextContent(HTMLDocument|Document|HTMLElement|Element $element, bool $normaliseWhitespace = false): string
     {
         return $normaliseWhitespace
-            ? Whitespace::normaliseWhitespace($element->textContent)
+            ? Whitespace::normalise($element->textContent)
             : $element->textContent;
     }
 
@@ -866,7 +866,7 @@ trait AssertsHtmlElement
     protected function normaliseAttribute(HTMLDocument|Document|HTMLElement|Element $element, string $attribute, bool $normaliseWhitespace = false): string
     {
         return $normaliseWhitespace
-            ? Whitespace::normaliseWhitespace((string) $element->getAttribute($attribute))
+            ? Whitespace::normalise((string) $element->getAttribute($attribute))
             : (string) $this->element->getAttribute($attribute);
     }
 }

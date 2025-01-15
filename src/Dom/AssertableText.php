@@ -33,7 +33,7 @@ readonly class AssertableText implements Stringable
     public function value(bool $normaliseWhitespace = false): string
     {
         return $normaliseWhitespace
-            ? Whitespace::normaliseWhitespace($this->text)
+            ? Whitespace::normalise($this->text)
             : $this->text;
     }
 

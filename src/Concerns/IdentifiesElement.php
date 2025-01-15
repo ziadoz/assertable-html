@@ -31,7 +31,7 @@ trait IdentifiesElement
     /** Return the element's formatted ID (if applicable). */
     private function formatId(HTMLDocument|Document|HtmlElement|Element $element): string
     {
-        return trim($id = $element->id) !== '' ? '#' . Whitespace::normaliseWhitespace(trim($id)) : '';
+        return trim($id = $element->id) !== '' ? '#' . Whitespace::normalise(trim($id)) : '';
     }
 
     /** Return the elements format classes (if any). */
