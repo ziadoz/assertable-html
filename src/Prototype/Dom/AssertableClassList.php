@@ -17,13 +17,17 @@ readonly class AssertableClassList implements ArrayAccess, Countable, IteratorAg
 {
     use AssertsClassList;
 
-    /** The class value. */
-    public string $value;
-
     /** Create a list of assertable classes. */
     public function __construct(private TokenList $classes)
     {
-        $this->value = $this->classes->value;
+    }
+
+    /** Return the classes (optionally whitespace normalised). */
+    public function value(bool $normaliseWhitespace = false): string
+    {
+        return $normaliseWhitespace
+            ? $this->__toString()
+            : $this->classes->value;
     }
 
     /** Return whether the assertable class list is empty. */
