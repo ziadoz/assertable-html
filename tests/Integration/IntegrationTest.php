@@ -119,7 +119,7 @@ class IntegrationTest extends TestCase
                 'data-qux' => 'lux-pux',
                 'id'       => 'foo-bar',
             ])
-            ->assertAttributes(function (AssertableAttributesList $attributes) {
+            ->assertAttributes(function (AssertableAttributesList $attributes): bool {
                 return (
                     $attributes['id'] === 'foo-bar' &&
                     $attributes['data-bar'] === 'baz-buz' &&
@@ -133,7 +133,7 @@ class IntegrationTest extends TestCase
                     $attributes->missing('foo-bar')
                 );
             })
-            ->assertAttribute('id', function (?string $value) {
+            ->assertAttribute('id', function (?string $value): bool {
                 return $value === 'foo-bar';
             });
 
@@ -187,7 +187,7 @@ class IntegrationTest extends TestCase
                 'data-qux' => 'lux-pux',
                 'id'       => 'foo-bar',
             ])
-            ->assertAttributes(function (AssertableAttributesList $attributes) {
+            ->assertAttributes(function (AssertableAttributesList $attributes): bool {
                 return (
                     $attributes['id'] === 'foo-bar' &&
                     $attributes['data-bar'] === 'baz-buz' &&
@@ -201,7 +201,7 @@ class IntegrationTest extends TestCase
                     $attributes->missing('foo-bar')
                 );
             })
-            ->assertAttribute('id', function (?string $value) {
+            ->assertAttribute('id', function (?string $value): bool {
                 return $value === 'foo-bar';
             });
 
@@ -232,7 +232,7 @@ class IntegrationTest extends TestCase
             ->assertDoesntStartWith('foo bar')
             ->assertEndsWith('paragraph.')
             ->assertDoesntEndWith('foo bar')
-            ->assertText(function (AssertableText $text) {
+            ->assertText(function (AssertableText $text): bool {
                 return $text->startsWith('I') && $text->endsWith('.') && $text->contains('test');
             });
     }
