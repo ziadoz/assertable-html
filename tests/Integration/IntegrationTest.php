@@ -130,7 +130,9 @@ class IntegrationTest extends TestCase
             ->assertContains('lux')
             ->assertDoesntContain('tux')
             ->assertContainsAll(['pux', 'lux', 'nux'])
+            ->assertDoesntContainAll(['pux', 'lux', 'nux', 'tux', 'wux', 'lux'])
             ->assertContainsAny(['tux', 'wux', 'lux'])
+            ->assertDoesntContainAny(['tux', 'wux', 'vux'])
             ->assertValueEquals('lux pux nux')
             ->assertValueDoesntEqual('tux wux lux')
             ->assertClasses(function (AssertableClassList $classes): bool {

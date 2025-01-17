@@ -111,6 +111,20 @@ trait AssertsClassList
         return $this;
     }
 
+    /** Assert the class list doesn't contain any of the given classes. */
+    public function assertDoesntContainAny(array $classes, ?string $message = null): static
+    {
+        PHPUnit::assertFalse(
+            $this->any($classes),
+            $message ?? sprintf(
+                'The class list contains some of the classes [%s]',
+                implode(' ', $classes),
+            ),
+        );
+
+        return $this;
+    }
+
     /** Assert the class list contains all the given classes. */
     public function assertContainsAll(array $classes, ?string $message = null): static
     {
@@ -118,6 +132,20 @@ trait AssertsClassList
             $this->all($classes),
             $message ?? sprintf(
                 "The class list doesn't contain all the classes [%s]",
+                implode(' ', $classes),
+            ),
+        );
+
+        return $this;
+    }
+
+    /** Assert the class list doesn't contain all the given classes. */
+    public function assertDoesntContainAll(array $classes, ?string $message = null): static
+    {
+        PHPUnit::assertFalse(
+            $this->all($classes),
+            $message ?? sprintf(
+                'The class list contains all the classes [%s]',
                 implode(' ', $classes),
             ),
         );
