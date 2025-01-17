@@ -316,6 +316,36 @@ trait AssertsHtmlElement
 
     /*
     |--------------------------------------------------------------------------
+    | Assert ID Equals
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element's ID equals the given value. */
+    public function assertIdEquals(string $value, ?string $message = null): static
+    {
+        $this->attributes->assertEquals('id', $value, false, $message ?? sprintf(
+            "The element [%s] doesn't equal the given value [%s].",
+            $this->identifier(),
+            $value,
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element's ID doesn't equal the given value. */
+    public function assertIdDoesntEqual(string $value, ?string $message = null): static
+    {
+        $this->attributes->assertDoesntEqual('id', $value, false, $message ?? sprintf(
+            'The element [%s] equals the given value [%s].',
+            $this->identifier(),
+            $value,
+        ));
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Class
     |--------------------------------------------------------------------------
     */

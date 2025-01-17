@@ -103,6 +103,8 @@ class IntegrationTest extends TestCase
             });
 
         $html->querySelector('div')
+            ->assertIdEquals('foo-bar')
+            ->assertIdDoesntEqual('baz-qux')
             ->assertAttributesNotEmpty()
             ->assertAttributePresent('id')
             ->assertAttributeMissing('foo-bar')
