@@ -54,7 +54,12 @@ class IntegrationTest extends TestCase
             </html>
         HTML, LIBXML_NOERROR);
 
-        // With / Elsewhere
+        /*
+        |--------------------------------------------------------------------------
+        | With / Elsewhere
+        |--------------------------------------------------------------------------
+        */
+
         $html->with('ul', function (AssertableHtmlElement $el): void {
             $el->assertElementsCount('li', 3);
             $el->with('li:nth-child(1)', fn (AssertableHtmlElement $el) => $el->assertAttributeEquals('id', 'foo'));
@@ -66,7 +71,12 @@ class IntegrationTest extends TestCase
             });
         });
 
-        // When
+        /*
+        |--------------------------------------------------------------------------
+        | When
+        |--------------------------------------------------------------------------
+        */
+
         $html->when(true, function (AssertableHtmlDocument $doc): void {
             $doc->querySelectorAll('ul li')->assertCount(3);
         });
@@ -83,7 +93,12 @@ class IntegrationTest extends TestCase
             $el->assertTextEquals('Foo Bar Baz', true);
         });
 
-        // Assertable HTML Element
+        /*
+        |--------------------------------------------------------------------------
+        | Assertable HTML Element
+        |--------------------------------------------------------------------------
+        */
+
         $html->querySelector('div')
             ->assertTitleEquals('Test Page Title');
 
@@ -192,7 +207,12 @@ class IntegrationTest extends TestCase
         $html->querySelector('my-web-component')
             ->assertTag('my-web-component');
 
-        // Assertable Element List
+        /*
+        |--------------------------------------------------------------------------
+        | Assertable HTML Element Element
+        |--------------------------------------------------------------------------
+        */
+
         $html->querySelectorAll('ul li')
             ->assertCount(3)
             ->assertLessThan(4)
@@ -205,7 +225,12 @@ class IntegrationTest extends TestCase
                 return $els[0]->matches('li[id="foo"]') && $els[1]->matches('li[id="bar"]') && $els[2]->matches('li[id="baz"]');
             });
 
-        // Assertable Attributes List
+        /*
+        |--------------------------------------------------------------------------
+        | Assertable Attributes List
+        |--------------------------------------------------------------------------
+        */
+
         $html->querySelector('div')
             ->attributes
             ->assertNotEmpty()
@@ -242,7 +267,12 @@ class IntegrationTest extends TestCase
                 return $value === 'foo-bar';
             });
 
-        // Assertable Class List
+        /*
+        |--------------------------------------------------------------------------
+        | Assertable Class List
+        |--------------------------------------------------------------------------
+        */
+
         $html->querySelector('p')
             ->classes
             ->assertNotEmpty()
@@ -258,7 +288,12 @@ class IntegrationTest extends TestCase
                 return $classes->contains('lux');
             });
 
-        // Assertable Text
+        /*
+        |--------------------------------------------------------------------------
+        | Assertable Text
+        |--------------------------------------------------------------------------
+        */
+
         $html->querySelector('p')
             ->text
             ->assertEquals('I am a test paragraph.')
