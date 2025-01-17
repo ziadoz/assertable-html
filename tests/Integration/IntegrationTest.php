@@ -72,6 +72,15 @@ class IntegrationTest extends TestCase
             ->assertElementsCountLessThan('li', 4)
             ->assertElementsCountLessThanOrEqual('li', 3);
 
+        $html->querySelector('div')
+            ->assertText(fn (AssertableText $text) => $text->contains('is a test', true))
+            ->assertTextEquals('This is a test div.', true)
+            ->assertTextDoesntEqual('This is NOT a test div.', true)
+            ->assertTextStartsWith('This is', true)
+            ->assertTextDoesntStartWith('This is NOT', true)
+            ->assertTextEndsWith('a test div.', true)
+            ->assertTextDoesntEndWith('a test span', true);
+
         // Assertable Element List
         $html->querySelectorAll('ul li')
             ->assertCount(3)
@@ -131,6 +140,8 @@ class IntegrationTest extends TestCase
         // Assertable Text
         $html->querySelector('p')
             ->text
+            ->assertEquals('I am a test paragraph.')
+            ->assertDoesntEqual('foo bar')
             ->assertSeeIn('paragraph')
             ->assertDontSeeIn('foo bar')
             ->assertStartsWith('I am')

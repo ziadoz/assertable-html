@@ -203,14 +203,10 @@ trait AssertsHtmlElement
     /** Assert the element's text equals the given text. */
     public function assertTextEquals(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertSame(
-            $text,
-            $this->normaliseTextContent($this->element, $normaliseWhitespace),
-            $message ?? sprintf(
-                "The element [%s] text doesn't equal the given text.",
-                $this->identifier(),
-            ),
-        );
+        $this->text->assertEquals($text, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] text doesn't pass the given callback.",
+            $this->identifier(),
+        ));
 
         return $this;
     }
@@ -218,14 +214,60 @@ trait AssertsHtmlElement
     /** Assert the element's text doesn't equal the given text. */
     public function assertTextDoesntEqual(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertNotSame(
-            $text,
-            $this->normaliseTextContent($this->element, $normaliseWhitespace),
-            $message ?? sprintf(
-                'The element [%s] text equals the given text.',
-                $this->identifier(),
-            ),
-        );
+        $this->text->assertDoesntEqual($text, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] text equals the given text.',
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Text Starts / Ends With
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element's text starts with the given text. */
+    public function assertTextStartsWith(string $prefix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        $this->text->assertStartsWith($prefix, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] text doesn't start with the given prefix.",
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element's text starts doesn't start with the given text. */
+    public function assertTextDoesntStartWith(string $prefix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        $this->text->assertDoesntStartWith($prefix, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] text starts with the given prefix.',
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element's text ends with the given text. */
+    public function assertTextEndsWith(string $suffix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        $this->text->assertEndsWith($suffix, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] text doesn't end with the given suffix.",
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element's text doesn't end with the given text. */
+    public function assertTextDoesntEndWith(string $suffix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        $this->text->assertDoesntEndWith($suffix, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] text ends with the given suffix.',
+            $this->identifier(),
+        ));
 
         return $this;
     }
@@ -239,14 +281,10 @@ trait AssertsHtmlElement
     /** Assert the element's text contains the given text. */
     public function assertTextContains(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertStringContainsString(
-            $text,
-            $this->normaliseTextContent($this->element, $normaliseWhitespace),
-            $message ?? sprintf(
-                "The element [%s] text doesn't contain the given text.",
-                $this->identifier(),
-            ),
-        );
+        $this->text->assertContains($text, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] text doesn't contain the given text.",
+            $this->identifier(),
+        ));
 
         return $this;
     }
@@ -262,14 +300,10 @@ trait AssertsHtmlElement
     /** Assert the element's text doesn't contain the given text. */
     public function assertTextDoesntContain(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertStringNotContainsString(
-            $text,
-            $this->normaliseTextContent($this->element, $normaliseWhitespace),
-            $message ?? sprintf(
-                'The element [%s] text contains the given text.',
-                $this->identifier(),
-            ),
-        );
+        $this->text->assertDoesntContain($text, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] text contains the given text.',
+            $this->identifier(),
+        ));
 
         return $this;
     }
