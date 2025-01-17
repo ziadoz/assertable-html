@@ -43,9 +43,9 @@ trait AssertsHtmlElementList
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
      */
-    public function assertNumberOfElements(string $comparison, int $expected, ?string $message = null): static
+    public function assertNumberOfElements(string $comparison, int $count, ?string $message = null): static
     {
-        if ($expected < 0) {
+        if ($count < 0) {
             throw new InvalidArgumentException('Expected number of elements in a list cannot be less than zero');
         }
 
@@ -59,15 +59,15 @@ trait AssertsHtmlElementList
                 '<='    => 'less than or equal to',
                 default => throw new OutOfBoundsException('Invalid comparison operator: ' . $comparison),
             },
-            $expected,
+            $count,
         );
 
         match ($comparison) {
-            '='     => PHPUnit::assertCount($expected, $this, $message),
-            '>'     => PHPUnit::assertGreaterThan($expected, count($this), $message),
-            '>='    => PHPUnit::assertGreaterThanOrEqual($expected, count($this), $message),
-            '<'     => PHPUnit::assertLessThan($expected, count($this), $message),
-            '<='    => PHPUnit::assertLessThanOrEqual($expected, count($this), $message),
+            '='     => PHPUnit::assertCount($count, $this, $message),
+            '>'     => PHPUnit::assertGreaterThan($count, count($this), $message),
+            '>='    => PHPUnit::assertGreaterThanOrEqual($count, count($this), $message),
+            '<'     => PHPUnit::assertLessThan($count, count($this), $message),
+            '<='    => PHPUnit::assertLessThanOrEqual($count, count($this), $message),
             default => throw new OutOfBoundsException('Invalid comparison operator: ' . $comparison),
         };
 
@@ -75,41 +75,41 @@ trait AssertsHtmlElementList
     }
 
     /** Assert the element list contains the given number of elements. */
-    public function assertCount(int $expected, ?string $message = null): static
+    public function assertCount(int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements('=', $expected, $message);
+        $this->assertNumberOfElements('=', $count, $message);
 
         return $this;
     }
 
     /** Assert the element list contains greater than the given number of elements. */
-    public function assertGreaterThan(int $expected, ?string $message = null): static
+    public function assertGreaterThan(int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements('>', $expected, $message);
+        $this->assertNumberOfElements('>', $count, $message);
 
         return $this;
     }
 
     /** Assert the element list contains greater than or equal the given number of elements. */
-    public function assertGreaterThanOrEqual(int $expected, ?string $message = null): static
+    public function assertGreaterThanOrEqual(int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements('>=', $expected, $message);
+        $this->assertNumberOfElements('>=', $count, $message);
 
         return $this;
     }
 
     /** Assert the element list contains less than the given number of elements. */
-    public function assertLessThan(int $expected, ?string $message = null): static
+    public function assertLessThan(int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements('<', $expected, $message);
+        $this->assertNumberOfElements('<', $count, $message);
 
         return $this;
     }
 
     /** Assert the element contains less than or equal the given number of elements. */
-    public function assertLessThanOrEqual(int $expected, ?string $message = null): static
+    public function assertLessThanOrEqual(int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements('<=', $expected, $message);
+        $this->assertNumberOfElements('<=', $count, $message);
 
         return $this;
     }
