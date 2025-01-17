@@ -337,6 +337,28 @@ trait AssertsHtmlElement
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Classes Empty
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element's class list is empty. */
+    public function assertClassesEmpty(?string $message = null): static
+    {
+        $this->classes->assertEmpty($message ?? "The class list isn't empty.");
+
+        return $this;
+    }
+
+    /** Assert the element's class list isn't empty. */
+    public function assertClassesNotEmpty(?string $message = null): static
+    {
+        $this->classes->assertNotEmpty($message ?? 'The class list is empty.');
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Class Present/Missing
     |--------------------------------------------------------------------------
     */
@@ -527,6 +549,28 @@ trait AssertsHtmlElement
             "The element [%s] attributes doesn't equal the given array.",
             $this->identifier(),
         ));
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Attributes Empty
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element's attributes list is empty. */
+    public function assertAttributesEmpty(?string $message = null): static
+    {
+        $this->attributes->assertEmpty($message ?? "The attribute list isn't empty.");
+
+        return $this;
+    }
+
+    /** Assert the element's attribute list isn't empty. */
+    public function assertAttributesNotEmpty(?string $message = null): static
+    {
+        $this->attributes->assertNotEmpty($message ?? 'The attribute list is empty.');
 
         return $this;
     }

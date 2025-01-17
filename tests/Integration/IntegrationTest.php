@@ -82,6 +82,7 @@ class IntegrationTest extends TestCase
             ->assertText(fn (AssertableText $text) => $text->contains('is a test', true));
 
         $html->querySelector('p')
+            ->assertClassesNotEmpty()
             ->assertClassPresent()
             ->assertClassEquals('lux pux nux')
             ->assertClassDoesntEqual('foo bar baz')
@@ -99,6 +100,7 @@ class IntegrationTest extends TestCase
             });
 
         $html->querySelector('div')
+            ->assertAttributesNotEmpty()
             ->assertAttributePresent('id')
             ->assertAttributeMissing('foo-bar')
             ->assertAttributeEquals('id', 'foo-bar')

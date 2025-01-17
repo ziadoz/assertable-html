@@ -46,7 +46,7 @@ trait AssertsClassList
         return $this;
     }
 
-    /** Assert the class list is not empty. */
+    /** Assert the class list isn't empty. */
     public function assertNotEmpty(?string $message = null): static
     {
         PHPUnit::assertFalse(
