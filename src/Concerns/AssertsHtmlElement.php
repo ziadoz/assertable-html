@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Concerns;
 
-use Dom\Document;
-use Dom\Element;
-use Dom\HTMLDocument;
-use Dom\HTMLElement;
+use InvalidArgumentException;
+use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
-use Ziadoz\AssertableHtml\Support\Utilities;
+use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
+use Ziadoz\AssertableHtml\Dom\AssertableClassList;
+use Ziadoz\AssertableHtml\Dom\AssertableHtmlElement;
+use Ziadoz\AssertableHtml\Dom\AssertableText;
 
-trait AssertsHtml
+trait AssertsHtmlElement
 {
     /*
     |--------------------------------------------------------------------------
@@ -24,8 +25,31 @@ trait AssertsHtml
     {
         PHPUnit::assertSame(
             $title,
-            $this->root->ownerDocument->title,
+            $this->element->ownerDocument->title,
             $message ?? "The page title doesn't equal the given title.",
+        );
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Tag
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element's tag matches the given tag. */
+    public function assertTag(string $tag, ?string $message = null): static
+    {
+        PHPUnit::assertSame(
+            $expected = strtolower($tag),
+            $actual = strtolower($this->element->tagName),
+            $message ?? sprintf(
+                "The element [%s] tag name [%s] doesn't match the given tag [%s].",
+                $this->identifier(),
+                $expected,
+                $actual,
+            ),
         );
 
         return $this;
@@ -40,15 +64,15 @@ trait AssertsHtml
     /**
      * Assert the element passes the given callback.
      *
-     * @param  callable(HtmlElement $element): bool  $callback
+     * @param  callable(AssertableHtmlElement $element): bool  $callback
      */
     public function assertElement(callable $callback, ?string $message = null): static
     {
         PHPUnit::assertTrue(
-            $callback($this->root),
+            $callback($this),
             $message ?? sprintf(
                 "The element [%s] doesn't pass the given callback.",
-                Utilities::selectorFromElement($this->root),
+                $this->identifier(),
             ),
         );
 
@@ -65,10 +89,10 @@ trait AssertsHtml
     public function assertMatchesSelector(string $selector, ?string $message = null): static
     {
         PHPUnit::assertTrue(
-            $this->root->matches($selector),
+            $this->element->matches($selector),
             $message ?? sprintf(
                 "The element [%s] doesn't match the given selector [%s].",
-                Utilities::selectorFromElement($this->root),
+                $this->identifier(),
                 $selector,
             ),
         );
@@ -80,10 +104,10 @@ trait AssertsHtml
     public function assertDoesntMatchSelector(string $selector, ?string $message = null): static
     {
         PHPUnit::assertFalse(
-            $this->root->matches($selector),
+            $this->element->matches($selector),
             $message ?? sprintf(
                 'The element [%s] matches the given selector [%s].',
-                Utilities::selectorFromElement($this->root),
+                $this->identifier(),
                 $selector,
             ),
         );
@@ -103,77 +127,66 @@ trait AssertsHtml
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
      */
-    public function assertNumberOfElements(string $selector, string $comparison, int $expected, ?string $message = null): static
+    public function assertNumberOfElements(string $selector, string $comparison, int $count, ?string $message = null): static
     {
-        if ($expected < 0) {
-            throw new InvalidArgumentException('Expected count of elements cannot be less than zero');
-        }
-
-        $elements = $this->root->querySelectorAll($selector);
-
-        $message ??= sprintf(
-            "The element [%s] doesn't have %s [%d] elements matching the selector [%s].",
-            Utilities::selectorFromElement($this->root),
-            match ($comparison) {
-                '='     => 'exactly',
-                '>'     => 'greater than',
-                '>='    => 'greater than or equal to',
-                '<'     => 'less than',
-                '<='    => 'less than or equal to',
-                default => throw new OutOfBoundsException('Invalid comparison operator: ' . $comparison),
-            },
-            $expected,
-            $selector,
+        $this->querySelectorAll($selector)->assertNumberOfElements(
+            $comparison,
+            $count,
+            sprintf(
+                $message ?? "The element [%s] doesn't have %s [%d] elements matching the selector [%s].",
+                $this->identifier(),
+                match ($comparison) {
+                    '='     => 'exactly',
+                    '>'     => 'greater than',
+                    '>='    => 'greater than or equal to',
+                    '<'     => 'less than',
+                    '<='    => 'less than or equal to',
+                    default => throw new OutOfBoundsException('Invalid comparison operator: ' . $comparison),
+                },
+                $count,
+                $selector,
+            ),
         );
-
-        match ($comparison) {
-            '='     => PHPUnit::assertCount($expected, $elements, $message),
-            '>'     => PHPUnit::assertGreaterThan($expected, count($elements), $message),
-            '>='    => PHPUnit::assertGreaterThanOrEqual($expected, count($elements), $message),
-            '<'     => PHPUnit::assertLessThan($expected, count($elements), $message),
-            '<='    => PHPUnit::assertLessThanOrEqual($expected, count($elements), $message),
-            default => throw new OutOfBoundsException('Invalid comparison operator: ' . $comparison),
-        };
 
         return $this;
     }
 
     /** Assert the element contains the exact number of elements matching the given selector. */
-    public function assertElementsCount(string $selector, int $expected, ?string $message = null): static
+    public function assertElementsCount(string $selector, int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements($selector, '=', $expected, $message);
+        $this->querySelectorAll($selector)->assertNumberOfElements('=', $count, $message);
 
         return $this;
     }
 
     /** Assert the element contains greater than the number of elements matching the given selector. */
-    public function assertElementsGreaterThan(string $selector, int $expected, ?string $message = null): static
+    public function assertElementsCountGreaterThan(string $selector, int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements($selector, '>', $expected, $message);
+        $this->querySelectorAll($selector)->assertNumberOfElements('>', $count, $message);
 
         return $this;
     }
 
     /** Assert the element contains greater than or equal the number of elements matching the given selector. */
-    public function assertElementsGreaterThanOrEqual(string $selector, int $expected, ?string $message = null): static
+    public function assertElementsCountGreaterThanOrEqual(string $selector, int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements($selector, '>=', $expected, $message);
+        $this->querySelectorAll($selector)->assertNumberOfElements('>=', $count, $message);
 
         return $this;
     }
 
     /** Assert the element contains less than the number of elements matching the given selector. */
-    public function assertElementsLessThan(string $selector, int $expected, ?string $message = null): static
+    public function assertElementsCountLessThan(string $selector, int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements($selector, '<', $expected, $message);
+        $this->querySelectorAll($selector)->assertNumberOfElements('<', $count, $message);
 
         return $this;
     }
 
     /** Assert the element contains less than or equal the number of elements matching the given selector. */
-    public function assertElementsLessThanOrEqual(string $selector, int $expected, ?string $message = null): static
+    public function assertElementsCountLessThanOrEqual(string $selector, int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements($selector, '<=', $expected, $message);
+        $this->querySelectorAll($selector)->assertNumberOfElements('<=', $count, $message);
 
         return $this;
     }
@@ -187,17 +200,14 @@ trait AssertsHtml
     /**
      * Assert the element's text passes the given callback.
      *
-     * @param  callable(string $text): bool  $callback
+     * @param  callable(AssertableText $text): bool  $callback
      */
     public function assertText(callable $callback, ?string $message = null): static
     {
-        PHPUnit::assertTrue(
-            $callback($this->root->textContent),
-            $message ?? sprintf(
-                "The element [%s] text doesn't pass the given callback.",
-                Utilities::selectorFromElement($this->root),
-            ),
-        );
+        $this->text->assertText($callback, $message ?? sprintf(
+            "The element [%s] text doesn't pass the given callback.",
+            $this->identifier(),
+        ));
 
         return $this;
     }
@@ -211,14 +221,10 @@ trait AssertsHtml
     /** Assert the element's text equals the given text. */
     public function assertTextEquals(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertSame(
-            $text,
-            $this->normaliseTextContent($this->root, $normaliseWhitespace),
-            $message ?? sprintf(
-                "The element [%s] text doesn't equal the given text.",
-                Utilities::selectorFromElement($this->root),
-            ),
-        );
+        $this->text->assertEquals($text, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] text doesn't pass the given callback.",
+            $this->identifier(),
+        ));
 
         return $this;
     }
@@ -226,14 +232,60 @@ trait AssertsHtml
     /** Assert the element's text doesn't equal the given text. */
     public function assertTextDoesntEqual(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertNotSame(
-            $text,
-            $this->normaliseTextContent($this->root, $normaliseWhitespace),
-            $message ?? sprintf(
-                'The element [%s] text equals the given text.',
-                Utilities::selectorFromElement($this->root),
-            ),
-        );
+        $this->text->assertDoesntEqual($text, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] text equals the given text.',
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Text Starts / Ends With
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element's text starts with the given text. */
+    public function assertTextStartsWith(string $prefix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        $this->text->assertStartsWith($prefix, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] text doesn't start with the given prefix.",
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element's text starts doesn't start with the given text. */
+    public function assertTextDoesntStartWith(string $prefix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        $this->text->assertDoesntStartWith($prefix, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] text starts with the given prefix.',
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element's text ends with the given text. */
+    public function assertTextEndsWith(string $suffix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        $this->text->assertEndsWith($suffix, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] text doesn't end with the given suffix.",
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element's text doesn't end with the given text. */
+    public function assertTextDoesntEndWith(string $suffix, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        $this->text->assertDoesntEndWith($suffix, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] text ends with the given suffix.',
+            $this->identifier(),
+        ));
 
         return $this;
     }
@@ -247,14 +299,10 @@ trait AssertsHtml
     /** Assert the element's text contains the given text. */
     public function assertTextContains(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertStringContainsString(
-            $text,
-            $this->normaliseTextContent($this->root, $normaliseWhitespace),
-            $message ?? sprintf(
-                "The element [%s] text doesn't contain the given text.",
-                Utilities::selectorFromElement($this->root),
-            ),
-        );
+        $this->text->assertContains($text, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] text doesn't contain the given text.",
+            $this->identifier(),
+        ));
 
         return $this;
     }
@@ -270,14 +318,10 @@ trait AssertsHtml
     /** Assert the element's text doesn't contain the given text. */
     public function assertTextDoesntContain(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertStringNotContainsString(
-            $text,
-            $this->normaliseTextContent($this->root, $normaliseWhitespace),
-            $message ?? sprintf(
-                'The element [%s] text contains the given text.',
-                Utilities::selectorFromElement($this->root),
-            ),
-        );
+        $this->text->assertDoesntContain($text, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] text contains the given text.',
+            $this->identifier(),
+        ));
 
         return $this;
     }
@@ -292,6 +336,36 @@ trait AssertsHtml
 
     /*
     |--------------------------------------------------------------------------
+    | Assert ID Equals
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element's ID equals the given value. */
+    public function assertIdEquals(string $value, ?string $message = null): static
+    {
+        $this->attributes->assertEquals('id', $value, false, $message ?? sprintf(
+            "The element [%s] doesn't equal the given value [%s].",
+            $this->identifier(),
+            $value,
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element's ID doesn't equal the given value. */
+    public function assertIdDoesntEqual(string $value, ?string $message = null): static
+    {
+        $this->attributes->assertDoesntEqual('id', $value, false, $message ?? sprintf(
+            'The element [%s] equals the given value [%s].',
+            $this->identifier(),
+            $value,
+        ));
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Class
     |--------------------------------------------------------------------------
     */
@@ -299,17 +373,36 @@ trait AssertsHtml
     /**
      * Assert the element's class passes the given callback.
      *
-     * @param  callable(array $classes): bool  $callback
+     * @param  callable(AssertableClassList $classes): bool  $callback
      */
     public function assertClass(callable $callback, ?string $message = null): static
     {
-        PHPUnit::assertTrue(
-            $callback(iterator_to_array($this->root->classList)),
-            $message ?? sprintf(
-                "The element [%s] class doesn't pass the given callback.",
-                Utilities::selectorFromElement($this->root),
-            ),
-        );
+        $this->classes->assertClasses($callback, $message ?? sprintf(
+            "The element [%s] class doesn't pass the given callback.",
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Classes Empty
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element's class list is empty. */
+    public function assertClassesEmpty(?string $message = null): static
+    {
+        $this->classes->assertEmpty($message ?? "The class list isn't empty.");
+
+        return $this;
+    }
+
+    /** Assert the element's class list isn't empty. */
+    public function assertClassesNotEmpty(?string $message = null): static
+    {
+        $this->classes->assertNotEmpty($message ?? 'The class list is empty.');
 
         return $this;
     }
@@ -323,9 +416,9 @@ trait AssertsHtml
     /** Assert the element has a class. */
     public function assertClassPresent(): static
     {
-        $this->assertAttributePresent('class', sprintf(
+        $this->attributes->assertPresent('class', sprintf(
             'The element [%s] is missing the class attribute.',
-            Utilities::selectorFromElement($this->root),
+            $this->identifier(),
         ));
 
         return $this;
@@ -334,9 +427,9 @@ trait AssertsHtml
     /** Assert the element is missing a class. */
     public function assertClassMissing(): static
     {
-        $this->assertAttributeMissing('class', sprintf(
+        $this->attributes->assertMissing('class', sprintf(
             'The element [%s] has the class attribute.',
-            Utilities::selectorFromElement($this->root),
+            $this->identifier(),
         ));
 
         return $this;
@@ -351,15 +444,11 @@ trait AssertsHtml
     /** Assert the element's class equals the given class. */
     public function assertClassEquals(string $class, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertSame(
+        $this->classes->assertValueEquals($class, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] class doesn't equal the given class [%s].",
+            $this->identifier(),
             $class,
-            $this->normaliseClasses($this->root, $normaliseWhitespace),
-            $message ?? sprintf(
-                "The element [%s] class doesn't equal the given class [%s].",
-                Utilities::selectorFromElement($this->root),
-                $class,
-            ),
-        );
+        ));
 
         return $this;
     }
@@ -367,15 +456,11 @@ trait AssertsHtml
     /** Assert the element's class doesn't equal the given class. */
     public function assertClassDoesntEqual(string $class, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertNotSame(
+        $this->classes->assertValueDoesntEqual($class, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] class equals the given class [%s].',
+            $this->identifier(),
             $class,
-            $this->normaliseClasses($this->root, $normaliseWhitespace),
-            $message ?? sprintf(
-                'The element [%s] class equals the given class [%s].',
-                Utilities::selectorFromElement($this->root),
-                $class,
-            ),
-        );
+        ));
 
         return $this;
     }
@@ -389,14 +474,11 @@ trait AssertsHtml
     /** Assert the element's class contains the given class. */
     public function assertClassContains(string $class, ?string $message = null): static
     {
-        PHPUnit::assertTrue(
-            $this->root->classList->contains($class),
-            $message ?? sprintf(
-                "The element [%s] class doesn't contain the given class [%s].",
-                Utilities::selectorFromElement($this->root),
-                $class,
-            ),
-        );
+        $this->classes->assertContains($class, $message ?? sprintf(
+            "The element [%s] class doesn't contain the given class [%s].",
+            $this->identifier(),
+            $class,
+        ));
 
         return $this;
     }
@@ -404,14 +486,11 @@ trait AssertsHtml
     /** Assert the element's class doesn't contain the given class. */
     public function assertClassDoesntContain(string $class, ?string $message = null): static
     {
-        PHPUnit::assertFalse(
-            $this->root->classList->contains($class),
-            $message ?? sprintf(
-                'The element [%s] class contains the given class [%s].',
-                Utilities::selectorFromElement($this->root),
-                $class,
-            ),
-        );
+        $this->classes->assertDoesntContain($class, $message ?? sprintf(
+            'The element [%s] class contains the given class [%s].',
+            $this->identifier(),
+            $class,
+        ));
 
         return $this;
     }
@@ -422,19 +501,38 @@ trait AssertsHtml
     |--------------------------------------------------------------------------
     */
 
+    /** Assert the element's class contains any of the given classes. */
+    public function assertClassContainsAny(array $classes, ?string $message = null): static
+    {
+        $this->classes->assertContainsAny($classes, $message ?? sprintf(
+            "The element [%s] class doesn't contain any of the given classes [%s].",
+            $this->identifier(),
+            implode(' ', $classes),
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element's class doesn't contain any of the given classes. */
+    public function assertClassDoesntContainAny(array $classes, ?string $message = null): static
+    {
+        $this->classes->assertDoesntContainAny($classes, $message ?? sprintf(
+            'The element [%s] class contains some of the given classes [%s].',
+            $this->identifier(),
+            implode(' ', $classes),
+        ));
+
+        return $this;
+    }
+
     /** Assert the element's class contains all the given classes. */
     public function assertClassContainsAll(array $classes, ?string $message = null): static
     {
-        $classes = array_values($classes);
-
-        PHPUnit::assertTrue(
-            array_intersect(iterator_to_array($this->root->classList), $classes) === $classes,
-            $message ?? sprintf(
-                "The element [%s] class doesn't contain all the given classes [%s].",
-                Utilities::selectorFromElement($this->root),
-                implode(' ', $classes),
-            ),
-        );
+        $this->classes->assertContainsAll($classes, $message ?? sprintf(
+            "The element [%s] class doesn't contain all the given classes [%s].",
+            $this->identifier(),
+            implode(' ', $classes),
+        ));
 
         return $this;
     }
@@ -442,16 +540,11 @@ trait AssertsHtml
     /** Assert the element's class doesn't contain all the given classes. */
     public function assertClassDoesntContainAll(array $classes, ?string $message = null): static
     {
-        $classes = array_values($classes);
-
-        PHPUnit::assertFalse(
-            array_intersect(iterator_to_array($this->root->classList), $classes) === $classes,
-            $message ?? sprintf(
-                'The element [%s] class contains all the given classes [%s].',
-                Utilities::selectorFromElement($this->root),
-                implode(' ', $classes),
-            ),
-        );
+        $this->classes->assertDoesntContainAll($classes, $message ?? sprintf(
+            'The element [%s] class contains all the given classes [%s].',
+            $this->identifier(),
+            implode(' ', $classes),
+        ));
 
         return $this;
     }
@@ -463,20 +556,71 @@ trait AssertsHtml
     */
 
     /**
+     * Assert the element's attributes pass the given callback.
+     *
+     * @param  callable(AssertableAttributesList $value): bool  $callback
+     */
+    public function assertAttributes(callable $callback, ?string $message = null): static
+    {
+        $this->attributes->assertAttributes($callback, $message ?? sprintf(
+            "The element [%s] attributes don't pass the given callback.",
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /**
      * Assert the element's attribute passes the given callback.
      *
      * @param  callable(?string $value): bool  $callback
      */
     public function assertAttribute(string $attribute, callable $callback, ?string $message = null): static
     {
-        PHPUnit::assertTrue(
-            $callback($this->root->getAttribute($attribute)),
-            $message ?? sprintf(
-                "The element [%s] attribute [%s] doesn't pass the given callback.",
-                Utilities::selectorFromElement($this->root),
-                $attribute,
-            ),
-        );
+        $this->attributes->assertAttribute($attribute, $callback, $message ?? sprintf(
+            "The element [%s] attribute [%s] doesn't pass the given callback.",
+            $this->identifier(),
+            $attribute,
+        ));
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Attribute Array
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the given associative array of attributes equals the attribute list. */
+    public function assertAttributesEqualArray(array $attributes, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        $this->attributes->assertEqualsArray($attributes, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] attributes doesn't equal the given array.",
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Attributes Empty
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element's attributes list is empty. */
+    public function assertAttributesEmpty(?string $message = null): static
+    {
+        $this->attributes->assertEmpty($message ?? "The attribute list isn't empty.");
+
+        return $this;
+    }
+
+    /** Assert the element's attribute list isn't empty. */
+    public function assertAttributesNotEmpty(?string $message = null): static
+    {
+        $this->attributes->assertNotEmpty($message ?? 'The attribute list is empty.');
 
         return $this;
     }
@@ -490,14 +634,11 @@ trait AssertsHtml
     /** Assert the element has the given attribute. */
     public function assertAttributePresent(string $attribute, ?string $message = null): static
     {
-        PHPUnit::assertNotNull(
-            $this->root->getAttribute($attribute),
-            $message ?? sprintf(
-                'The element [%s] is missing the given attribute [%s].',
-                Utilities::selectorFromElement($this->root),
-                $attribute,
-            ),
-        );
+        $this->attributes->assertPresent($attribute, $message ?? sprintf(
+            'The element [%s] is missing the given attribute [%s].',
+            $this->identifier(),
+            $attribute,
+        ));
 
         return $this;
     }
@@ -505,14 +646,11 @@ trait AssertsHtml
     /** Assert the element is missing the given attribute. */
     public function assertAttributeMissing(string $attribute, ?string $message = null): static
     {
-        PHPUnit::assertNull(
-            $this->root->getAttribute($attribute),
-            $message ?? sprintf(
-                'The element [%s] has the given attribute [%s].',
-                Utilities::selectorFromElement($this->root),
-                $attribute,
-            ),
-        );
+        $this->attributes->assertMissing($attribute, $message ?? sprintf(
+            'The element [%s] has the given attribute [%s].',
+            $this->identifier(),
+            $attribute,
+        ));
 
         return $this;
     }
@@ -526,16 +664,12 @@ trait AssertsHtml
     /** Assert the given element's attribute equals the given value. */
     public function assertAttributeEquals(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertSame(
+        $this->attributes->assertEquals($attribute, $value, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] attribute [%s] doesn't equal the given value [%s].",
+            $this->identifier(),
+            $attribute,
             $value,
-            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
-            $message ?? sprintf(
-                "The element [%s] attribute [%s] doesn't equal the given value [%s].",
-                Utilities::selectorFromElement($this->root),
-                $attribute,
-                $value,
-            ),
-        );
+        ));
 
         return $this;
     }
@@ -543,16 +677,12 @@ trait AssertsHtml
     /** Assert the given element's attribute doesn't equal the given value. */
     public function assertAttributeDoesntEqual(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertNotSame(
+        $this->attributes->assertDoesntEqual($attribute, $value, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] attribute [%s] equals the given value [%s].',
+            $this->identifier(),
+            $attribute,
             $value,
-            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
-            $message ?? sprintf(
-                'The element [%s] attribute [%s] equals the given value [%s].',
-                Utilities::selectorFromElement($this->root),
-                $attribute,
-                $value,
-            ),
-        );
+        ));
 
         return $this;
     }
@@ -566,16 +696,12 @@ trait AssertsHtml
     /** Assert the given element's attribute contains the given value. */
     public function assertAttributeContains(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertStringContainsString(
+        $this->attributes->assertContains($attribute, $value, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] attribute [%s] doesn't contain the given value [%s].",
+            $this->identifier(),
+            $attribute,
             $value,
-            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
-            $message ?? sprintf(
-                "The element [%s] attribute [%s] doesn't contain the given value [%s].",
-                Utilities::selectorFromElement($this->root),
-                $attribute,
-                $value,
-            ),
-        );
+        ));
 
         return $this;
     }
@@ -583,39 +709,31 @@ trait AssertsHtml
     /** Assert the given element's class doesn't contain the given value. */
     public function assertAttributeDoesntContain(string $attribute, string $value, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertStringNotContainsString(
+        $this->attributes->assertDoesntContain($attribute, $value, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] attribute [%s] contains the given value [%s].',
+            $this->identifier(),
+            $attribute,
             $value,
-            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
-            $message ?? sprintf(
-                'The element [%s] attribute [%s] contains the given value [%s].',
-                Utilities::selectorFromElement($this->root),
-                $attribute,
-                $value,
-            ),
-        );
+        ));
 
         return $this;
     }
 
     /*
     |--------------------------------------------------------------------------
-    | Assert Attribute Starts With
+    | Assert Attribute Starts / Ends With
     |--------------------------------------------------------------------------
     */
 
     /** Assert the attribute starts with the given prefix. */
     public function assertAttributeStartsWith(string $attribute, string $prefix, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertStringStartsWith(
+        $this->attributes->assertStartsWith($attribute, $prefix, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] attribute [%s] doesn't start with the given prefix [%s].",
+            $this->identifier(),
+            $attribute,
             $prefix,
-            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
-            $message ?? sprintf(
-                "The element [%s] attribute [%s] doesn't start with the given prefix [%s].",
-                Utilities::selectorFromElement($this->root),
-                $attribute,
-                $prefix,
-            ),
-        );
+        ));
 
         return $this;
     }
@@ -623,39 +741,25 @@ trait AssertsHtml
     /** Assert the attribute doesn't start with the given prefix. */
     public function assertAttributeDoesntStartWith(string $attribute, string $prefix, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertStringStartsNotWith(
+        $this->attributes->assertDoesntStartWith($attribute, $prefix, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] attribute [%s] starts with the given prefix [%s].',
+            $this->identifier(),
+            $attribute,
             $prefix,
-            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
-            $message ?? sprintf(
-                'The element [%s] attribute [%s] starts with the given prefix [%s].',
-                Utilities::selectorFromElement($this->root),
-                $attribute,
-                $prefix,
-            ),
-        );
+        ));
 
         return $this;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Assert Attribute Ends With
-    |--------------------------------------------------------------------------
-    */
-
     /** Assert the attribute ends with the given prefix. */
     public function assertAttributeEndsWith(string $attribute, string $suffix, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertStringEndsWith(
+        $this->attributes->assertEndsWith($attribute, $suffix, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] attribute [%s] doesn't end with the given suffix [%s].",
+            $this->identifier(),
+            $attribute,
             $suffix,
-            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
-            $message ?? sprintf(
-                "The element [%s] attribute [%s] doesn't end with the given suffix [%s].",
-                Utilities::selectorFromElement($this->root),
-                $attribute,
-                $suffix,
-            ),
-        );
+        ));
 
         return $this;
     }
@@ -663,39 +767,12 @@ trait AssertsHtml
     /** Assert the attribute doesn't start with the given prefix. */
     public function assertAttributeDoesntEndWith(string $attribute, string $suffix, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertStringEndsNotWith(
+        $this->attributes->assertDoesntEndWith($attribute, $suffix, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] attribute [%s] ends with the given suffix [%s].',
+            $this->identifier(),
+            $attribute,
             $suffix,
-            $this->normaliseAttribute($this->root, $attribute, $normaliseWhitespace),
-            $message ?? sprintf(
-                'The element [%s] attribute [%s] ends with the given suffix [%s].',
-                Utilities::selectorFromElement($this->root),
-                $attribute,
-                $suffix,
-            ),
-        );
-
-        return $this;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Assert Attribute Is Allowed
-    |--------------------------------------------------------------------------
-    */
-
-    /** Assert the given element's attribute is the allowed value. */
-    public function assertAttributeIsAllowed(string $attribute, string $value, ?string $message = null): static
-    {
-        PHPUnit::assertSame(
-            strtolower(trim($value)),
-            strtolower(trim((string) $this->root->getAttribute($attribute))),
-            $message ?? sprintf(
-                "The element [%s] attribute [%s] isn't the allowed value [%s].",
-                Utilities::selectorFromElement($this->root),
-                $attribute,
-                $value,
-            ),
-        );
+        ));
 
         return $this;
     }
@@ -709,7 +786,7 @@ trait AssertsHtml
     /**
      * Assert the element's data attribute passes the given callback.
      *
-     * @param  callable(string|null $value): bool  $callback
+     * @param  callable(?string $value): bool  $callback
      */
     public function assertDataAttribute(string $attribute, callable $callback, ?string $message = null): static
     {
@@ -775,7 +852,7 @@ trait AssertsHtml
     /**
      * Assert the element's data attribute passes the given callback.
      *
-     * @param  callable(string|null $value): bool  $callback
+     * @param  callable(?string $value): bool  $callback
      */
     public function assertAriaAttribute(string $attribute, callable $callback, ?string $message = null): static
     {
@@ -848,29 +925,5 @@ trait AssertsHtml
     protected function prefixAriaAttribute(string $attribute): string
     {
         return (! str_starts_with($attribute, 'aria-') ? 'aria-' : '') . $attribute;
-    }
-
-    /** Normalise the given element's text content. */
-    protected function normaliseTextContent(HTMLDocument|Document|HTMLElement|Element $element, bool $normaliseWhitespace = false): string
-    {
-        return $normaliseWhitespace
-            ? Utilities::normaliseWhitespace($element->textContent)
-            : $element->textContent;
-    }
-
-    /** Normalise the given element's classes. */
-    protected function normaliseClasses(HTMLDocument|Document|HTMLElement|Element $element, bool $normaliseWhitespace = false): string
-    {
-        return $normaliseWhitespace
-            ? implode(' ', iterator_to_array($element->classList))
-            : $element->classList->value;
-    }
-
-    /** Normalise the given element's attribute. */
-    protected function normaliseAttribute(HTMLDocument|Document|HTMLElement|Element $element, string $attribute, bool $normaliseWhitespace = false): string
-    {
-        return $normaliseWhitespace
-            ? Utilities::normaliseWhitespace((string) $element->getAttribute($attribute))
-            : (string) $this->root->getAttribute($attribute);
     }
 }
