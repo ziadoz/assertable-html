@@ -31,6 +31,9 @@ class IntegrationTest extends TestCase
                     This is a test div.
                 </div>
 
+                <!-- Span -->
+                <span data-foo="foo-bar" aria-label="foo-bar">I am a test span.</span>
+
                 <!-- Unordered List -->
                 <ul id="list">
                     <li id="foo">Foo</li>
@@ -131,6 +134,24 @@ class IntegrationTest extends TestCase
                 );
             })
             ->assertAttribute('id', function (?string $value) {
+                return $value === 'foo-bar';
+            });
+
+        $html->querySelector('span')
+            ->assertDataAttributePresent('foo')
+            ->assertDataAttributeEquals('foo', 'foo-bar')
+            ->assertDataAttributeDoesntEqual('foo', 'baz-qux')
+            ->assertDataAttributeContains('foo', 'foo')
+            ->assertDataAttributeDoesntContain('foo', 'baz')
+            ->assertDataAttribute('foo', function (?string $value): bool {
+                return $value === 'foo-bar';
+            })
+            ->assertAriaAttributePresent('label')
+            ->assertAriaAttributeEquals('label', 'foo-bar')
+            ->assertAriaAttributeDoesntEqual('label', 'baz-qux')
+            ->assertAriaAttributeContains('label', 'foo')
+            ->assertAriaAttributeDoesntContain('label', 'baz')
+            ->assertAriaAttribute('label', function (?string $value): bool {
                 return $value === 'foo-bar';
             });
 
