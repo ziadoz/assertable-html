@@ -11,6 +11,7 @@ use Dom\HTMLElement;
 use InvalidArgumentException;
 use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
 use Ziadoz\AssertableHtml\Dom\AssertableClassList;
 use Ziadoz\AssertableHtml\Dom\AssertableHtmlElement;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
@@ -487,20 +488,32 @@ trait AssertsHtmlElement
     */
 
     /**
+     * Assert the element's attributes pass the given callback.
+     *
+     * @param  callable(AssertableAttributesList $value): bool  $callback
+     */
+    public function assertAttributes(callable $callback, ?string $message = null): static
+    {
+        $this->attributes->assertAttributes($callback, $message ?? sprintf(
+            "The element [%s] attributes don't pass the given callback.",
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /**
      * Assert the element's attribute passes the given callback.
      *
      * @param  callable(?string $value): bool  $callback
      */
     public function assertAttribute(string $attribute, callable $callback, ?string $message = null): static
     {
-        PHPUnit::assertTrue(
-            $callback($this->element->getAttribute($attribute)),
-            $message ?? sprintf(
-                "The element [%s] attribute [%s] doesn't pass the given callback.",
-                $this->identifier(),
-                $attribute,
-            ),
-        );
+        $this->attributes->assertAttribute($attribute, $callback, $message ?? sprintf(
+            "The element [%s] attribute [%s] doesn't pass the given callback.",
+            $this->identifier(),
+            $attribute,
+        ));
 
         return $this;
     }

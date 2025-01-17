@@ -98,6 +98,25 @@ class IntegrationTest extends TestCase
                     $classes->contains('nux');
             });
 
+        $html->querySelector('div')
+            ->assertAttributes(function (AssertableAttributesList $attributes) {
+                return (
+                    $attributes['id'] === 'foo-bar' &&
+                    $attributes['data-bar'] === 'baz-buz' &&
+                    $attributes['data-qux'] === 'lux-pux'
+                ) && (
+                    $attributes->startsWith('id', 'foo-') &&
+                    $attributes->endsWith('data-bar', '-buz') &&
+                    $attributes->contains('data-qux', 'x-p')
+                ) && (
+                    $attributes->present('id') &&
+                    $attributes->missing('foo-bar')
+                );
+            })
+            ->assertAttribute('id', function (?string $value) {
+                return $value === 'foo-bar';
+            });
+
         // Assertable Element List
         $html->querySelectorAll('ul li')
             ->assertCount(3)
