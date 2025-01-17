@@ -6,9 +6,13 @@ namespace Ziadoz\AssertableHtml\Dom;
 
 use Dom\Document;
 use Dom\HTMLDocument;
+use ReflectionClass;
+use Ziadoz\AssertableHtml\Concerns\Withable;
 
 readonly class AssertableHtmlDocument
 {
+    use Withable;
+
     /** The document's head. */
     public ?AssertableHtmlElement $head;
 
@@ -18,12 +22,16 @@ readonly class AssertableHtmlDocument
     /** The document's page title. */
     public string $title;
 
+    /** The element's assertable HTML document. */
+    public AssertableHtmlDocument $ownerDocument;
+
     /** Create a new assertable document. */
     public function __construct(private HTMLDocument|Document $document)
     {
         $this->head = AssertableHtmlElement::proxy($this->document->head);
         $this->body = AssertableHtmlElement::proxy($this->document->body);
         $this->title = $this->document->title;
+        $this->ownerDocument = $this;
     }
 
     /** Get the assertable document HTML. */
@@ -44,18 +52,16 @@ readonly class AssertableHtmlDocument
         dd($this->getHtml());
     }
 
-    /** Scope assertable elements matching the given selector. */
-    public function with(string $selectors, ?callable $callback): AssertableHtmlElement|AssertableHtmlElementsList
+    /*
+    |--------------------------------------------------------------------------
+    | Proxy
+    |--------------------------------------------------------------------------
+    */
+
+    /** Create a lazy proxy assertable element for the given element. */
+    public static function proxy(HTMLDocument|Document $document): static
     {
-        $elements = count($results = $this->querySelectorAll($selectors)) === 1
-            ? $results[0]
-            : $results;
-
-        if ($callback) {
-            $callback($elements);
-        }
-
-        return $elements;
+        return new ReflectionClass(static::class)->newLazyProxy(fn () => new static($document));
     }
 
     /*

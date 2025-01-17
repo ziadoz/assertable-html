@@ -51,6 +51,18 @@ class IntegrationTest extends TestCase
             </html>
         HTML);
 
+        // With / Elsewhere
+        $html->with('ul', function (AssertableHtmlElement $el): void {
+            $el->assertElementsCount('li', 3);
+            $el->with('li:nth-child(1)', fn (AssertableHtmlElement $el) => $el->assertAttributeEquals('id', 'foo'));
+            $el->with('li:nth-child(2)', fn (AssertableHtmlElement $el) => $el->assertAttributeEquals('id', 'bar'));
+            $el->with('li:nth-child(3)', fn (AssertableHtmlElement $el) => $el->assertAttributeEquals('id', 'baz'));
+
+            $el->elsewhere('div', function (AssertableHtmlElement $el): void {
+                $el->assertTextEquals('This is a test div.', true);
+            });
+        });
+
         // Assertable HTML Element
         $html->querySelector('div')
             ->assertTitleEquals('Test Page Title');

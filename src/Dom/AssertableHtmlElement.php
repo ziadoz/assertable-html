@@ -9,11 +9,13 @@ use Dom\HTMLElement;
 use ReflectionClass;
 use Ziadoz\AssertableHtml\Concerns\AssertsHtmlElement;
 use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
+use Ziadoz\AssertableHtml\Concerns\Withable;
 
 readonly class AssertableHtmlElement
 {
     use AssertsHtmlElement;
     use IdentifiesElement;
+    use Withable;
 
     /** The element's inner HTML. */
     public string $html;
@@ -33,18 +35,20 @@ readonly class AssertableHtmlElement
     /** The element's text. */
     public AssertableText $text;
 
+    /** The element's assertable HTML document. */
+    public AssertableHtmlDocument $ownerDocument;
+
     /** Create an assertable element. */
     public function __construct(private HTMLElement|Element $element)
     {
+        // Properties
         $this->html = $this->element->innerHTML;
         $this->classes = new AssertableClassList($this->element->classList);
         $this->attributes = new AssertableAttributesList($this->element->attributes);
         $this->tag = strtolower($this->element->tagName);
         $this->id = $this->element->id;
         $this->text = new AssertableText($this->element->textContent);
-
-        // @todo: Document, Parent, Child, Next Sibling, Previous Sibling element proxies only.
-        // @todo: Should assertable classes be separate (e.g. $this->classes, $this->>assertableClasses, $this->attributes, $this->assertableAttributes).
+        $this->ownerDocument = AssertableHtmlDocument::proxy($this->element->ownerDocument);
     }
 
     /** Get the underlying HTML element. */
@@ -96,7 +100,7 @@ readonly class AssertableHtmlElement
     */
 
     /** Create a lazy proxy assertable element for the given element. */
-    public static function proxy(HTMLElement|Element|null $element): ?object
+    public static function proxy(HTMLElement|Element|null $element): ?static
     {
         return $element !== null
             ? new ReflectionClass(static::class)->newLazyProxy(fn () => new static($element))
