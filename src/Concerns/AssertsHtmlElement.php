@@ -11,6 +11,7 @@ use Dom\HTMLElement;
 use InvalidArgumentException;
 use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Ziadoz\AssertableHtml\Dom\AssertableClassList;
 use Ziadoz\AssertableHtml\Dom\AssertableHtmlElement;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
 use Ziadoz\AssertableHtml\Support\Whitespace;
@@ -325,17 +326,14 @@ trait AssertsHtmlElement
     /**
      * Assert the element's class passes the given callback.
      *
-     * @param  callable(array $classes): bool  $callback
+     * @param  callable(AssertableClassList $classes): bool  $callback
      */
     public function assertClass(callable $callback, ?string $message = null): static
     {
-        PHPUnit::assertTrue(
-            $callback(iterator_to_array($this->element->classList)),
-            $message ?? sprintf(
-                "The element [%s] class doesn't pass the given callback.",
-                $this->identifier(),
-            ),
-        );
+        $this->classes->assertClasses($callback, $message ?? sprintf(
+            "The element [%s] class doesn't pass the given callback.",
+            $this->identifier(),
+        ));
 
         return $this;
     }
@@ -349,7 +347,7 @@ trait AssertsHtmlElement
     /** Assert the element has a class. */
     public function assertClassPresent(): static
     {
-        $this->assertAttributePresent('class', sprintf(
+        $this->attributes->assertPresent('class', sprintf(
             'The element [%s] is missing the class attribute.',
             $this->identifier(),
         ));
@@ -360,7 +358,7 @@ trait AssertsHtmlElement
     /** Assert the element is missing a class. */
     public function assertClassMissing(): static
     {
-        $this->assertAttributeMissing('class', sprintf(
+        $this->attributes->assertMissing('class', sprintf(
             'The element [%s] has the class attribute.',
             $this->identifier(),
         ));
@@ -377,15 +375,11 @@ trait AssertsHtmlElement
     /** Assert the element's class equals the given class. */
     public function assertClassEquals(string $class, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertSame(
+        $this->classes->assertValueEquals($class, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] class doesn't equal the given class [%s].",
+            $this->identifier(),
             $class,
-            $this->normaliseClasses($this->element, $normaliseWhitespace),
-            $message ?? sprintf(
-                "The element [%s] class doesn't equal the given class [%s].",
-                $this->identifier(),
-                $class,
-            ),
-        );
+        ));
 
         return $this;
     }
@@ -393,15 +387,11 @@ trait AssertsHtmlElement
     /** Assert the element's class doesn't equal the given class. */
     public function assertClassDoesntEqual(string $class, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertNotSame(
+        $this->classes->assertValueDoesntEqual($class, $normaliseWhitespace, $message ?? sprintf(
+            'The element [%s] class equals the given class [%s].',
+            $this->identifier(),
             $class,
-            $this->normaliseClasses($this->element, $normaliseWhitespace),
-            $message ?? sprintf(
-                'The element [%s] class equals the given class [%s].',
-                $this->identifier(),
-                $class,
-            ),
-        );
+        ));
 
         return $this;
     }
@@ -415,14 +405,11 @@ trait AssertsHtmlElement
     /** Assert the element's class contains the given class. */
     public function assertClassContains(string $class, ?string $message = null): static
     {
-        PHPUnit::assertTrue(
-            $this->element->classList->contains($class),
-            $message ?? sprintf(
-                "The element [%s] class doesn't contain the given class [%s].",
-                $this->identifier(),
-                $class,
-            ),
-        );
+        $this->classes->assertContains($class, $message ?? sprintf(
+            "The element [%s] class doesn't contain the given class [%s].",
+            $this->identifier(),
+            $class,
+        ));
 
         return $this;
     }
@@ -430,14 +417,11 @@ trait AssertsHtmlElement
     /** Assert the element's class doesn't contain the given class. */
     public function assertClassDoesntContain(string $class, ?string $message = null): static
     {
-        PHPUnit::assertFalse(
-            $this->element->classList->contains($class),
-            $message ?? sprintf(
-                'The element [%s] class contains the given class [%s].',
-                $this->identifier(),
-                $class,
-            ),
-        );
+        $this->classes->assertDoesntContain($class, $message ?? sprintf(
+            'The element [%s] class contains the given class [%s].',
+            $this->identifier(),
+            $class,
+        ));
 
         return $this;
     }
@@ -448,19 +432,38 @@ trait AssertsHtmlElement
     |--------------------------------------------------------------------------
     */
 
+    /** Assert the element's class contains any of the given classes. */
+    public function assertClassContainsAny(array $classes, ?string $message = null): static
+    {
+        $this->classes->assertContainsAny($classes, $message ?? sprintf(
+            "The element [%s] class doesn't contain any of the given classes [%s].",
+            $this->identifier(),
+            implode(' ', $classes),
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element's class doesn't contain any of the given classes. */
+    public function assertClassDoesntContainAny(array $classes, ?string $message = null): static
+    {
+        $this->classes->assertDoesntContainAny($classes, $message ?? sprintf(
+            'The element [%s] class contains some of the given classes [%s].',
+            $this->identifier(),
+            implode(' ', $classes),
+        ));
+
+        return $this;
+    }
+
     /** Assert the element's class contains all the given classes. */
     public function assertClassContainsAll(array $classes, ?string $message = null): static
     {
-        $classes = array_values($classes);
-
-        PHPUnit::assertTrue(
-            array_intersect(iterator_to_array($this->element->classList), $classes) === $classes,
-            $message ?? sprintf(
-                "The element [%s] class doesn't contain all the given classes [%s].",
-                $this->identifier(),
-                implode(' ', $classes),
-            ),
-        );
+        $this->classes->assertContainsAll($classes, $message ?? sprintf(
+            "The element [%s] class doesn't contain all the given classes [%s].",
+            $this->identifier(),
+            implode(' ', $classes),
+        ));
 
         return $this;
     }
@@ -468,16 +471,11 @@ trait AssertsHtmlElement
     /** Assert the element's class doesn't contain all the given classes. */
     public function assertClassDoesntContainAll(array $classes, ?string $message = null): static
     {
-        $classes = array_values($classes);
-
-        PHPUnit::assertFalse(
-            array_intersect(iterator_to_array($this->element->classList), $classes) === $classes,
-            $message ?? sprintf(
-                'The element [%s] class contains all the given classes [%s].',
-                $this->identifier(),
-                implode(' ', $classes),
-            ),
-        );
+        $this->classes->assertDoesntContainAll($classes, $message ?? sprintf(
+            'The element [%s] class contains all the given classes [%s].',
+            $this->identifier(),
+            implode(' ', $classes),
+        ));
 
         return $this;
     }

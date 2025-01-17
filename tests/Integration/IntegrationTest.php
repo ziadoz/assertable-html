@@ -73,13 +73,30 @@ class IntegrationTest extends TestCase
             ->assertElementsCountLessThanOrEqual('li', 3);
 
         $html->querySelector('div')
-            ->assertText(fn (AssertableText $text) => $text->contains('is a test', true))
             ->assertTextEquals('This is a test div.', true)
             ->assertTextDoesntEqual('This is NOT a test div.', true)
             ->assertTextStartsWith('This is', true)
             ->assertTextDoesntStartWith('This is NOT', true)
             ->assertTextEndsWith('a test div.', true)
-            ->assertTextDoesntEndWith('a test span', true);
+            ->assertTextDoesntEndWith('a test span', true)
+            ->assertText(fn (AssertableText $text) => $text->contains('is a test', true));
+
+        $html->querySelector('p')
+            ->assertClassPresent()
+            ->assertClassEquals('lux pux nux')
+            ->assertClassDoesntEqual('foo bar baz')
+            ->assertClassContains('pux')
+            ->assertClassDoesntContain('bar')
+            ->assertClassContainsAll(['lux'])
+            ->assertClassContainsAll(['pux', 'lux', 'nux'])
+            ->assertClassDoesntContainAll(['pux', 'lux', 'nux', 'foo', 'bar', 'baz'])
+            ->assertClassContainsAny(['foo', 'bar', 'lux'])
+            ->assertClassDoesntContainAny(['foo', 'bar', 'baz'])
+            ->assertClass(function (AssertableClassList $classes): bool {
+                return $classes->contains('lux') &&
+                    $classes->contains('pux') &&
+                    $classes->contains('nux');
+            });
 
         // Assertable Element List
         $html->querySelectorAll('ul li')
@@ -130,11 +147,11 @@ class IntegrationTest extends TestCase
             ->assertContains('lux')
             ->assertDoesntContain('tux')
             ->assertContainsAll(['pux', 'lux', 'nux'])
-            ->assertDoesntContainAll(['pux', 'lux', 'nux', 'tux', 'wux', 'lux'])
-            ->assertContainsAny(['tux', 'wux', 'lux'])
-            ->assertDoesntContainAny(['tux', 'wux', 'vux'])
+            ->assertDoesntContainAll(['pux', 'lux', 'nux', 'foo', 'bar', 'baz'])
+            ->assertContainsAny(['foo', 'bar', 'lux'])
+            ->assertDoesntContainAny(['foo', 'bar', 'baz'])
             ->assertValueEquals('lux pux nux')
-            ->assertValueDoesntEqual('tux wux lux')
+            ->assertValueDoesntEqual('foo bar baz')
             ->assertClasses(function (AssertableClassList $classes): bool {
                 return $classes->contains('lux');
             });
