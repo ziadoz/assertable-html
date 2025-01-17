@@ -48,6 +48,30 @@ class IntegrationTest extends TestCase
             </html>
         HTML);
 
+        // Assertable HTML Element
+        $html->querySelector('div')
+            ->assertTitleEquals('Test Page Title');
+
+        $html->querySelector('div')
+            ->assertElement(function (AssertableHtmlElement $el): bool {
+                return
+                    $el->id === 'foo-bar' &&
+                    $el->attributes->contains('data-bar', 'baz') &&
+                    $el->attributes->value('data-qux') === 'lux-pux';
+            });
+
+        $html->querySelector('div')
+            ->assertMatchesSelector('div#foo-bar')
+            ->assertDoesntMatchSelector('span[data-foo-bar]');
+
+        $html->querySelector('ul')
+            ->assertNumberOfElements('li', '=', 3)
+            ->assertElementsCount('li', 3)
+            ->assertElementsCountGreaterThan('li', 1)
+            ->assertElementsCountGreaterThanOrEqual('li', 3)
+            ->assertElementsCountLessThan('li', 4)
+            ->assertElementsCountLessThanOrEqual('li', 3);
+
         // Assertable Element List
         $html->querySelectorAll('ul li')
             ->assertCount(3)
