@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ziadoz\AssertableHtml\Concerns;
 
 use PHPUnit\Framework\Assert as PHPUnit;
+use Ziadoz\AssertableHtml\Support\Whitespace;
 
 trait AssertsAttributes
 {
@@ -45,6 +46,34 @@ trait AssertsAttributes
         );
 
         return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Attribute Array
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the given associative array of attributes equals the attribute list. */
+    public function assertEqualsArray(array $attributes, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        PHPUnit::assertSame(
+            $this->prepareArray($attributes),
+            $this->prepareArray($this->toArray()),
+            $message ?? "The attributes list doesn't equal the given array.",
+        );
+
+        return $this;
+    }
+
+    /** Prepare the attributes array by sorting and then normalising the whitespace. */
+    private function prepareArray(array $attributes, bool $normaliseWhitespace = false): array
+    {
+        ksort($attributes);
+
+        return $normaliseWhitespace
+            ? array_map(fn (string $value): string => Whitespace::normalise($value), $attributes)
+            : $attributes;
     }
 
     /*

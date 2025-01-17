@@ -520,6 +520,23 @@ trait AssertsHtmlElement
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Attribute Array
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the given associative array of attributes equals the attribute list. */
+    public function assertAttributesEqualArray(array $attributes, bool $normaliseWhitespace = false, ?string $message = null): static
+    {
+        $this->attributes->assertEqualsArray($attributes, $normaliseWhitespace, $message ?? sprintf(
+            "The element [%s] attributes doesn't equal the given array.",
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Attribute Present/Missing
     |--------------------------------------------------------------------------
     */

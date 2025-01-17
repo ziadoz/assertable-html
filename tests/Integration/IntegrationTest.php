@@ -99,6 +99,11 @@ class IntegrationTest extends TestCase
             });
 
         $html->querySelector('div')
+            ->assertAttributesEqualArray([
+                'data-bar' => 'baz-buz',
+                'data-qux' => 'lux-pux',
+                'id'       => 'foo-bar',
+            ])
             ->assertAttributes(function (AssertableAttributesList $attributes) {
                 return (
                     $attributes['id'] === 'foo-bar' &&
@@ -144,6 +149,11 @@ class IntegrationTest extends TestCase
             ->assertDoesntEndWith('id', '-foo')
             ->assertContains('id', 'o-b')
             ->assertDoesntContain('id', 'qux')
+            ->assertEqualsArray([
+                'data-bar' => 'baz-buz',
+                'data-qux' => 'lux-pux',
+                'id'       => 'foo-bar',
+            ])
             ->assertAttributes(function (AssertableAttributesList $attributes) {
                 return (
                     $attributes['id'] === 'foo-bar' &&
