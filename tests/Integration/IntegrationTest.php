@@ -99,6 +99,16 @@ class IntegrationTest extends TestCase
             });
 
         $html->querySelector('div')
+            ->assertAttributePresent('id')
+            ->assertAttributeMissing('foo-bar')
+            ->assertAttributeEquals('id', 'foo-bar')
+            ->assertAttributeDoesntEqual('id', 'baz-qux')
+            ->assertAttributeStartsWith('id', 'foo-')
+            ->assertAttributeDoesntStartWith('id', 'bar-')
+            ->assertAttributeEndsWith('id', '-bar')
+            ->assertAttributeDoesntEndWith('id', '-foo')
+            ->assertAttributeContains('id', 'o-b')
+            ->assertAttributeDoesntContain('id', 'qux')
             ->assertAttributesEqualArray([
                 'data-bar' => 'baz-buz',
                 'data-qux' => 'lux-pux',
