@@ -8,7 +8,7 @@ use Stringable;
 use Ziadoz\AssertableHtml\Concerns\AssertsText;
 use Ziadoz\AssertableHtml\Support\Whitespace;
 
-readonly class AssertableText implements Stringable
+final readonly class AssertableText implements Stringable
 {
     use AssertsText;
 

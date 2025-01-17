@@ -15,7 +15,7 @@ use RuntimeException;
 use Traversable;
 use Ziadoz\AssertableHtml\Concerns\AssertsHtmlElementList;
 
-readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, IteratorAggregate
+final readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, IteratorAggregate
 {
     use AssertsHtmlElementList;
 

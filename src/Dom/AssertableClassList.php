@@ -13,7 +13,7 @@ use Stringable;
 use Traversable;
 use Ziadoz\AssertableHtml\Concerns\AssertsClassList;
 
-readonly class AssertableClassList implements ArrayAccess, Countable, IteratorAggregate, Stringable
+final readonly class AssertableClassList implements ArrayAccess, Countable, IteratorAggregate, Stringable
 {
     use AssertsClassList;
 

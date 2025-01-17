@@ -10,7 +10,7 @@ use ReflectionClass;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
 
-readonly class AssertableHtmlDocument
+final readonly class AssertableHtmlDocument
 {
     use Whenable;
     use Withable;

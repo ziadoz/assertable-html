@@ -13,7 +13,7 @@ use Traversable;
 use Ziadoz\AssertableHtml\Concerns\AssertsAttributes;
 use Ziadoz\AssertableHtml\Support\Whitespace;
 
-readonly class AssertableAttributesList implements ArrayAccess, Countable, IteratorAggregate
+final readonly class AssertableAttributesList implements ArrayAccess, Countable, IteratorAggregate
 {
     use AssertsAttributes;
 
