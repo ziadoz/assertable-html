@@ -138,6 +138,9 @@ class IntegrationTest extends TestCase
                     $attributes->present('id') &&
                     $attributes->missing('foo-bar')
                 );
+            })
+            ->assertAttribute('id', function (?string $value) {
+                return $value === 'foo-bar';
             });
 
         // Assertable Class List

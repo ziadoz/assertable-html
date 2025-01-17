@@ -29,6 +29,24 @@ trait AssertsAttributes
         return $this;
     }
 
+    /**
+     * Assert the attribute list passes the given callback.
+     *
+     * @param  callable(?string $value): bool  $callback
+     */
+    public function assertAttribute(string $attribute, callable $callback, ?string $message = null): static
+    {
+        PHPUnit::assertTrue(
+            $callback($this->attributes[$attribute] ?? null),
+            $message ?? sprintf(
+                "The attribute [%s] doesn't pass the given callback.",
+                $attribute,
+            ),
+        );
+
+        return $this;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Assert Empty
