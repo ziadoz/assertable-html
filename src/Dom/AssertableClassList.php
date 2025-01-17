@@ -45,13 +45,13 @@ readonly class AssertableClassList implements ArrayAccess, Countable, IteratorAg
     /** Return whether the assertable class list contains any of the given classes. */
     public function any(array $classes): bool
     {
-        return array_any($classes, fn (string $class): bool => $this->classes->contains($class));
+        return array_any(array_values($classes), fn (string $class): bool => $this->classes->contains($class));
     }
 
     /** Return whether the assertable class list contains all the given classes. */
     public function all(array $classes): bool
     {
-        return array_all($classes, fn (string $class): bool => $this->classes->contains($class));
+        return array_all(array_values($classes), fn (string $class): bool => $this->classes->contains($class));
     }
 
     /** Dump the assertable class list. */
