@@ -11,7 +11,8 @@ use Dom\HTMLElement;
 use InvalidArgumentException;
 use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
-use Ziadoz\AssertableHtml\Dom\AssertableHtmlElementsList;
+use Ziadoz\AssertableHtml\Dom\AssertableHtmlElement;
+use Ziadoz\AssertableHtml\Dom\AssertableText;
 use Ziadoz\AssertableHtml\Support\Whitespace;
 
 trait AssertsHtmlElement
@@ -45,7 +46,7 @@ trait AssertsHtmlElement
     /**
      * Assert the element passes the given callback.
      *
-     * @param  callable(HtmlElement $element): bool  $callback
+     * @param  callable(AssertableHtmlElement $element): bool  $callback
      */
     public function assertElement(callable $callback, ?string $message = null): static
     {
@@ -114,7 +115,7 @@ trait AssertsHtmlElement
             $comparison,
             $expected,
             sprintf(
-                "The element [%s] doesn't have %s [%d] elements matching the selector [%s].",
+                $message ?? "The element [%s] doesn't have %s [%d] elements matching the selector [%s].",
                 $this->identifier(),
                 match ($comparison) {
                     '='     => 'exactly',
@@ -181,17 +182,14 @@ trait AssertsHtmlElement
     /**
      * Assert the element's text passes the given callback.
      *
-     * @param  callable(string $text): bool  $callback
+     * @param  callable(AssertableText $text): bool  $callback
      */
     public function assertText(callable $callback, ?string $message = null): static
     {
-        PHPUnit::assertTrue(
-            $callback($this->element->textContent),
-            $message ?? sprintf(
-                "The element [%s] text doesn't pass the given callback.",
-                $this->identifier(),
-            ),
-        );
+        $this->text->assertText($callback, $message ?? sprintf(
+            "The element [%s] text doesn't pass the given callback.",
+            $this->identifier(),
+        ));
 
         return $this;
     }
