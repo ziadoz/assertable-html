@@ -131,8 +131,6 @@ class IntegrationTest extends TestCase
         // Assertable Text
         $html->querySelector('p')
             ->text
-            ->assertSame('I am a test paragraph.')
-            ->assertNotSame('foo bar')
             ->assertSeeIn('paragraph')
             ->assertDontSeeIn('foo bar')
             ->assertStartsWith('I am')

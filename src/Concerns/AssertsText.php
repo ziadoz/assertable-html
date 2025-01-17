@@ -35,8 +35,8 @@ trait AssertsText
     |--------------------------------------------------------------------------
     */
 
-    /** Assert the text is the same as the given text. */
-    public function assertSame(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
+    /** Assert the text equals the given text. */
+    public function assertEquals(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
     {
         PHPUnit::assertSame(
             $text,
@@ -47,8 +47,8 @@ trait AssertsText
         return $this;
     }
 
-    /** Assert the text isn't the same as the given text. */
-    public function assertNotSame(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
+    /** Assert the text doesn't equal the given text. */
+    public function assertDoesntEqual(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
     {
         PHPUnit::assertNotSame(
             $text,
