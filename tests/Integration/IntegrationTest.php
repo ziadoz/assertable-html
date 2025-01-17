@@ -63,6 +63,23 @@ class IntegrationTest extends TestCase
             });
         });
 
+        // When
+        $html->when(true, function (AssertableHtmlDocument $doc): void {
+            $doc->querySelectorAll('ul li')->assertCount(3);
+        });
+
+        $html->when(false, null, function (AssertableHtmlDocument $doc): void {
+            $doc->querySelectorAll('ul li')->assertCount(3);
+        });
+
+        $html->querySelector('ul')->when(true, function (AssertableHtmlElement $el): void {
+            $el->assertTextEquals('Foo Bar Baz', true);
+        });
+
+        $html->querySelector('ul')->when(true, null, function (AssertableHtmlElement $el): void {
+            $el->assertTextEquals('Foo Bar Baz', true);
+        });
+
         // Assertable HTML Element
         $html->querySelector('div')
             ->assertTitleEquals('Test Page Title');

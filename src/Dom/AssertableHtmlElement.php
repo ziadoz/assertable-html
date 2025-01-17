@@ -9,12 +9,14 @@ use Dom\HTMLElement;
 use ReflectionClass;
 use Ziadoz\AssertableHtml\Concerns\AssertsHtmlElement;
 use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
+use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
 
 readonly class AssertableHtmlElement
 {
     use AssertsHtmlElement;
     use IdentifiesElement;
+    use Whenable;
     use Withable;
 
     /** The element's inner HTML. */
@@ -73,24 +75,6 @@ readonly class AssertableHtmlElement
     public function dd(): never
     {
         dd($this->getHtml());
-    }
-
-    /**
-     * Return a value if the given condition is true, otherwise return a default.
-     *
-     * @param  callable(static $assertable): bool|bool  $condition
-     * @param  callable(static $assertable): bool|mixed  $value
-     * @param  callable(static $assertable): bool|mixed  $default
-     */
-    public function when(callable|bool $condition, mixed $value, mixed $default = null): mixed
-    {
-        $condition = is_callable($condition) ? $condition($this) : $condition;
-
-        if ($condition) {
-            return is_callable($value) ? $value($this) : $value;
-        }
-
-        return is_callable($default) ? $default($this) : $default;
     }
 
     /*

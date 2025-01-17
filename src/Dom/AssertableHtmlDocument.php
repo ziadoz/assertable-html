@@ -7,10 +7,12 @@ namespace Ziadoz\AssertableHtml\Dom;
 use Dom\Document;
 use Dom\HTMLDocument;
 use ReflectionClass;
+use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
 
 readonly class AssertableHtmlDocument
 {
+    use Whenable;
     use Withable;
 
     /** The document's head. */
