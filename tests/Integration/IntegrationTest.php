@@ -47,9 +47,12 @@ class IntegrationTest extends TestCase
                     <label>Age <input type="number" name="age" value="42"></label>
                     <button type="submit">Save</button>
                 </form>
+
+                <-- Custom Element -->
+                <my-web-component>I am a web component.</my-web-component>
             </body>
             </html>
-        HTML);
+        HTML, LIBXML_NOERROR);
 
         // With / Elsewhere
         $html->with('ul', function (AssertableHtmlElement $el): void {
@@ -185,6 +188,9 @@ class IntegrationTest extends TestCase
             ->assertAriaAttribute('label', function (?string $value): bool {
                 return $value === 'foo-bar';
             });
+
+        $html->querySelector('my-web-component')
+            ->assertTag('my-web-component');
 
         // Assertable Element List
         $html->querySelectorAll('ul li')

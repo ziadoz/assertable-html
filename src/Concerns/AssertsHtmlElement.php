@@ -34,6 +34,29 @@ trait AssertsHtmlElement
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Tag
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element's tag matches the given tag. */
+    public function assertTag(string $tag, ?string $message = null): static
+    {
+        PHPUnit::assertSame(
+            $expected = strtolower($tag),
+            $actual = strtolower($this->element->tagName),
+            $message ?? sprintf(
+                "The element [%s] tag name [%s] doesn't match the given tag [%s].",
+                $this->identifier(),
+                $expected,
+                $actual,
+            ),
+        );
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Element
     |--------------------------------------------------------------------------
     */
