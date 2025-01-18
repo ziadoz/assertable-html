@@ -70,12 +70,6 @@ final readonly class AssertableHtmlDocument
     |--------------------------------------------------------------------------
     */
 
-    /** Create an empty assertable document. */
-    public static function createEmpty(string $encoding = 'UTF-8'): static
-    {
-        return new static(HTMLDocument::createEmpty());
-    }
-
     /** Create an assertable document from a file. */
     public static function createFromFile(string $path, int $options = 0, ?string $overrideEncoding = null): static
     {
