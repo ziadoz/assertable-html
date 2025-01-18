@@ -9,6 +9,7 @@ use Dom\HTMLElement;
 use ReflectionClass;
 use Ziadoz\AssertableHtml\Concerns\AssertsHtmlElement;
 use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
+use Ziadoz\AssertableHtml\Concerns\Scopeable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
 
@@ -16,6 +17,7 @@ readonly class AssertableHtmlElement
 {
     use AssertsHtmlElement;
     use IdentifiesElement;
+    use Scopeable;
     use Whenable;
     use Withable;
 

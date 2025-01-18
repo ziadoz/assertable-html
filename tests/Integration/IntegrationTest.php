@@ -56,7 +56,7 @@ class IntegrationTest extends TestCase
 
         /*
         |--------------------------------------------------------------------------
-        | With / Elsewhere
+        | With / Elsewhere / Scope
         |--------------------------------------------------------------------------
         */
 
@@ -70,6 +70,16 @@ class IntegrationTest extends TestCase
             $el->elsewhere('div', function (AssertableHtmlElement $el): void {
                 $el->assertTextEquals('This is a test div.', true);
             });
+
+            $el->querySelectorAll('li')->scope(function (AssertableHtmlElementsList $els): void {
+                $els[0]->assertTextEquals('Foo');
+                $els[1]->assertTextEquals('Bar');
+                $els[2]->assertTextEquals('Baz');
+            });
+
+            $el->scope(function (AssertableHtmlElement $el): void {
+                $el->assertClassMissing();
+            });
         })->with('div', function (AssertableHtmlElement $el): void {
             $el->assertIdEquals('foo-bar');
 
@@ -78,6 +88,8 @@ class IntegrationTest extends TestCase
             });
         })->elsewhere('p', function (AssertableHtmlElement $el): void {
             $el->assertTextEquals('I am a test paragraph.');
+        })->scope(function (AssertableHtmlDocument $doc): void {
+            $doc->getElementById('foo-bar')->assertTextContains('This is a test div.');
         });
 
         /*

@@ -12,7 +12,7 @@ trait Withable
     /**
      * Scope the first assertable element within the current assertable document or element matching the given selector.
      *
-     * @param  callable(?AssertableHtmlElement $assertable): bool|mixed  $callback
+     * @param  callable(?AssertableHtmlElement $assertable): void  $callback
      */
     public function with(string $selector, callable $callback): static
     {
@@ -24,7 +24,7 @@ trait Withable
     /**
      * Scope the first assertable element elsewhere in the assertable document matching the given selector.
      *
-     * @param  callable(?AssertableHtmlElement $assertable): bool|mixed  $callback
+     * @param  callable(?AssertableHtmlElement $assertable): void  $callback
      */
     public function elsewhere(string $selector, callable $callback): static
     {
