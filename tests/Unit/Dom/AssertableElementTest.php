@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Tests\Unit\Elements;
+namespace Ziadoz\AssertableHtml\Tests\Unit\Dom;
 
 use Dom\HTMLDocument;
 use Dom\HTMLElement;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Ziadoz\AssertableHtml\Elements\AssertableElement;
+use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class AssertableElementTest extends TestCase
