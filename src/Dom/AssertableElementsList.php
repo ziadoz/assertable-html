@@ -30,9 +30,23 @@ final readonly class AssertableElementsList implements ArrayAccess, Countable, I
         $this->elements = array_values(
             array_map(
                 fn (HTMLElement|Element $element): AssertableElement => new AssertableElement($element),
-                iterator_to_array($nodes),
+                $nodes instanceof NodeList
+                    ? iterator_to_array($nodes)
+                    : $this->htmlCollectionToArray($nodes),
             ),
         );
+    }
+
+    /** Convert a \Dom\HTMLCollection instance to an array. */
+    private function htmlCollectionToArray(HTMLCollection $nodes): array
+    {
+        $array = [];
+
+        foreach ($nodes as $node) {
+            $array[] = $node;
+        }
+
+        return $array;
     }
 
     /** Get the assertable element list HTML. */
