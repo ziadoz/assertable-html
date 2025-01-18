@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Dom\Elements;
 
+use Dom\Element;
+use Dom\HTMLElement;
+use Ziadoz\AssertableHtml\Contracts\AssertableHtmlElementMatcherInterface;
 use Ziadoz\AssertableHtml\Dom\AssertableHtmlElement;
 
-readonly class AssertableHtmlFormElement extends AssertableHtmlElement
+readonly class AssertableHtmlFormElement extends AssertableHtmlElement implements AssertableHtmlElementMatcherInterface
 {
+    /** Return if the assertable is usable for the given element. */
+    public static function match(HTMLElement|Element $element): bool
+    {
+        return $element->matches('form');
+    }
+
     /** Assert the form's method is GET. */
     public function assertMethodGet(?string $message = null): static
     {

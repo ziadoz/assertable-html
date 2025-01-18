@@ -12,9 +12,10 @@ use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
+use Ziadoz\AssertableHtml\Contracts\AssertableHtmlElementMatcherInterface;
 use Ziadoz\AssertableHtml\Dom\Elements\AssertableHtmlFormElement;
 
-readonly class AssertableHtmlElement
+readonly class AssertableHtmlElement implements AssertableHtmlElementMatcherInterface
 {
     use AssertsHtmlElement;
     use IdentifiesElement;
@@ -42,6 +43,12 @@ readonly class AssertableHtmlElement
 
     /** The element's assertable HTML document. */
     public AssertableHtmlDocument $document;
+
+    /** Return if the assertable is usable for the given element. */
+    public static function match(HTMLElement|Element $element): bool
+    {
+        return true;
+    }
 
     /** Create an assertable element. */
     public function __construct(private HTMLElement|Element $element)
@@ -103,12 +110,17 @@ readonly class AssertableHtmlElement
     // @todo: element()/elements()
     // @todo: component()/components()
 
+    /** Return a custom assertable element for the matching element. */
     public function element(?callable $callable = null): static
     {
-        $element = match (true) {
-            $this->element->matches('form') => new AssertableHtmlFormElement($this->element),
-            default                         => $this,
-        };
+        $assertable = array_find([
+            AssertableHtmlFormElement::class,
+            AssertableHtmlElement::class,
+        ], function ($assertable): bool {
+            return $assertable::match($this->element);
+        });
+
+        $element = new $assertable($this->element);
 
         if ($callable) {
             $callable($element);
