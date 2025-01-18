@@ -13,12 +13,12 @@ use Dom\NodeList;
 use IteratorAggregate;
 use RuntimeException;
 use Traversable;
-use Ziadoz\AssertableHtml\Concerns\AssertsHtmlElementList;
+use Ziadoz\AssertableHtml\Concerns\AssertsElementList;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;
 
-final readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, IteratorAggregate
+final readonly class AssertableElementsList implements ArrayAccess, Countable, IteratorAggregate
 {
-    use AssertsHtmlElementList;
+    use AssertsElementList;
     use Scopeable;
 
     /** The assertable elements. */
@@ -29,7 +29,7 @@ final readonly class AssertableHtmlElementsList implements ArrayAccess, Countabl
     {
         $this->elements = array_values(
             array_map(
-                fn (HTMLElement|Element $element): AssertableHtmlElement => new AssertableHtmlElement($element),
+                fn (HTMLElement|Element $element): AssertableElement => new AssertableElement($element),
                 iterator_to_array($nodes),
             ),
         );
@@ -39,7 +39,7 @@ final readonly class AssertableHtmlElementsList implements ArrayAccess, Countabl
     public function getHtml(): string
     {
         return implode("\n", array_map(
-            fn (AssertableHtmlElement $element): string => $element->getHtml(),
+            fn (AssertableElement $element): string => $element->getHtml(),
             $this->elements,
         ));
     }
@@ -57,19 +57,19 @@ final readonly class AssertableHtmlElementsList implements ArrayAccess, Countabl
     }
 
     /** Get the assertable element at the nth position in the assertable element list. */
-    public function nth(int $index): ?AssertableHtmlElement
+    public function nth(int $index): ?AssertableElement
     {
         return $this->offsetGet($index);
     }
 
     /** Return the first assertable element in the assertable element list.  */
-    public function first(): ?AssertableHtmlElement
+    public function first(): ?AssertableElement
     {
         return $this->offsetGet(0);
     }
 
     /** Return the last assertable element in the assertable element list.  */
-    public function last(): ?AssertableHtmlElement
+    public function last(): ?AssertableElement
     {
         return $this->offsetGet(count($this) - 1);
     }
@@ -95,7 +95,7 @@ final readonly class AssertableHtmlElementsList implements ArrayAccess, Countabl
     }
 
     /** Get an assertable element in the assertable element list. */
-    public function offsetGet(mixed $offset): ?AssertableHtmlElement
+    public function offsetGet(mixed $offset): ?AssertableElement
     {
         return $this->elements[(int) $offset];
     }

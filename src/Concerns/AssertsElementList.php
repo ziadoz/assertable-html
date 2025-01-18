@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
 
-trait AssertsHtmlElementList
+trait AssertsElementList
 {
     /*
     |--------------------------------------------------------------------------

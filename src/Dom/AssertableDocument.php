@@ -11,17 +11,17 @@ use Ziadoz\AssertableHtml\Concerns\Scopeable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
 
-final readonly class AssertableHtmlDocument
+final readonly class AssertableDocument
 {
     use Scopeable;
     use Whenable;
     use Withable;
 
     /** The document's head. */
-    public ?AssertableHtmlElement $head;
+    public ?AssertableElement $head;
 
     /** The document's body. */
-    public ?AssertableHtmlElement $body;
+    public ?AssertableElement $body;
 
     /** The document's page title. */
     public string $title;
@@ -29,8 +29,8 @@ final readonly class AssertableHtmlDocument
     /** Create a new assertable document. */
     public function __construct(private HTMLDocument|Document $document)
     {
-        $this->head = AssertableHtmlElement::proxy($this->document->head);
-        $this->body = AssertableHtmlElement::proxy($this->document->body);
+        $this->head = AssertableElement::proxy($this->document->head);
+        $this->body = AssertableElement::proxy($this->document->body);
         $this->title = $this->document->title;
     }
 
@@ -83,30 +83,30 @@ final readonly class AssertableHtmlDocument
     }
 
     /** Return the assertable element matching the given selectors. */
-    public function querySelector(string $selectors): ?AssertableHtmlElement
+    public function querySelector(string $selectors): ?AssertableElement
     {
         return ($element = $this->document->querySelector($selectors)) !== null
-            ? new AssertableHtmlElement($element)
+            ? new AssertableElement($element)
             : null;
     }
 
     /** Return assertable elements matching the given selectors. */
-    public function querySelectorAll(string $selectors): AssertableHtmlElementsList
+    public function querySelectorAll(string $selectors): AssertableElementsList
     {
-        return new AssertableHtmlElementsList($this->document->querySelectorAll($selectors));
+        return new AssertableElementsList($this->document->querySelectorAll($selectors));
     }
 
     /** Return an assertable element matching the given ID. */
-    public function getElementById(string $id): ?AssertableHtmlElement
+    public function getElementById(string $id): ?AssertableElement
     {
         return ($element = $this->document->getElementById($id)) !== null
-            ? new AssertableHtmlElement($element)
+            ? new AssertableElement($element)
             : null;
     }
 
     /** Return assertable elements matching the given tag. */
-    public function getElementsByTagName(string $tag): AssertableHtmlElementsList
+    public function getElementsByTagName(string $tag): AssertableElementsList
     {
-        return new AssertableHtmlElementsList($this->document->getElementsByTagName($tag));
+        return new AssertableElementsList($this->document->getElementsByTagName($tag));
     }
 }

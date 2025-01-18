@@ -6,9 +6,9 @@ namespace Ziadoz\AssertableHtml\Tests\Integration;
 
 use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
 use Ziadoz\AssertableHtml\Dom\AssertableClassList;
-use Ziadoz\AssertableHtml\Dom\AssertableHtmlDocument;
-use Ziadoz\AssertableHtml\Dom\AssertableHtmlElement;
-use Ziadoz\AssertableHtml\Dom\AssertableHtmlElementsList;
+use Ziadoz\AssertableHtml\Dom\AssertableDocument;
+use Ziadoz\AssertableHtml\Dom\AssertableElement;
+use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
@@ -16,7 +16,7 @@ class IntegrationTest extends TestCase
 {
     public function test_assertable_html(): void
     {
-        $html = AssertableHtmlDocument::createFromString(<<<'HTML'
+        $html = AssertableDocument::createFromString(<<<'HTML'
             <!DOCTYPE html>
             <html>
             <head>
@@ -60,35 +60,35 @@ class IntegrationTest extends TestCase
         |--------------------------------------------------------------------------
         */
 
-        $html->with('ul', function (AssertableHtmlElement $el): void {
+        $html->with('ul', function (AssertableElement $el): void {
             $el->assertElementsCount('li', 3);
 
-            $el->with('li:nth-child(1)', fn (AssertableHtmlElement $el) => $el->assertAttributeEquals('id', 'foo'));
-            $el->with('li:nth-child(2)', fn (AssertableHtmlElement $el) => $el->assertAttributeEquals('id', 'bar'));
-            $el->with('li:nth-child(3)', fn (AssertableHtmlElement $el) => $el->assertAttributeEquals('id', 'baz'));
+            $el->with('li:nth-child(1)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'foo'));
+            $el->with('li:nth-child(2)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'bar'));
+            $el->with('li:nth-child(3)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'baz'));
 
-            $el->elsewhere('div', function (AssertableHtmlElement $el): void {
+            $el->elsewhere('div', function (AssertableElement $el): void {
                 $el->assertTextEquals('This is a test div.', true);
             });
 
-            $el->querySelectorAll('li')->scope(function (AssertableHtmlElementsList $els): void {
+            $el->querySelectorAll('li')->scope(function (AssertableElementsList $els): void {
                 $els[0]->assertTextEquals('Foo');
                 $els[1]->assertTextEquals('Bar');
                 $els[2]->assertTextEquals('Baz');
             });
 
-            $el->scope(function (AssertableHtmlElement $el): void {
+            $el->scope(function (AssertableElement $el): void {
                 $el->assertClassMissing();
             });
-        })->with('div', function (AssertableHtmlElement $el): void {
+        })->with('div', function (AssertableElement $el): void {
             $el->assertIdEquals('foo-bar');
 
-            $el->elsewhere('ul', function (AssertableHtmlElement $el): void {
+            $el->elsewhere('ul', function (AssertableElement $el): void {
                 $el->assertElementsCount('li[id]', 3);
             });
-        })->elsewhere('p', function (AssertableHtmlElement $el): void {
+        })->elsewhere('p', function (AssertableElement $el): void {
             $el->assertTextEquals('I am a test paragraph.');
-        })->scope(function (AssertableHtmlDocument $doc): void {
+        })->scope(function (AssertableDocument $doc): void {
             $doc->getElementById('foo-bar')->assertTextContains('This is a test div.');
         });
 
@@ -98,19 +98,19 @@ class IntegrationTest extends TestCase
         |--------------------------------------------------------------------------
         */
 
-        $html->when(true, function (AssertableHtmlDocument $doc): void {
+        $html->when(true, function (AssertableDocument $doc): void {
             $doc->querySelectorAll('ul li')->assertCount(3);
         });
 
-        $html->when(false, null, function (AssertableHtmlDocument $doc): void {
+        $html->when(false, null, function (AssertableDocument $doc): void {
             $doc->querySelectorAll('ul li')->assertCount(3);
         });
 
-        $html->querySelector('ul')->when(true, function (AssertableHtmlElement $el): void {
+        $html->querySelector('ul')->when(true, function (AssertableElement $el): void {
             $el->assertTextEquals('Foo Bar Baz', true);
         });
 
-        $html->querySelector('ul')->when(true, null, function (AssertableHtmlElement $el): void {
+        $html->querySelector('ul')->when(true, null, function (AssertableElement $el): void {
             $el->assertTextEquals('Foo Bar Baz', true);
         });
 
@@ -124,7 +124,7 @@ class IntegrationTest extends TestCase
             ->assertTitleEquals('Test Page Title');
 
         $html->querySelector('div')
-            ->assertElement(function (AssertableHtmlElement $el): bool {
+            ->assertElement(function (AssertableElement $el): bool {
                 return
                     $el->id === 'foo-bar' &&
                     $el->attributes->contains('data-bar', 'baz') &&
@@ -240,9 +240,9 @@ class IntegrationTest extends TestCase
             ->assertLessThanOrEqual(4)
             ->assertGreaterThan(1)
             ->assertGreaterThanOrEqual(1)
-            ->assertAny(fn (AssertableHtmlElement $el) => $el->matches('li'))
-            ->assertAll(fn (AssertableHtmlElement $el) => $el->matches('li[id]'))
-            ->assertElements(function (AssertableHtmlElementsList $els): bool {
+            ->assertAny(fn (AssertableElement $el) => $el->matches('li'))
+            ->assertAll(fn (AssertableElement $el) => $el->matches('li[id]'))
+            ->assertElements(function (AssertableElementsList $els): bool {
                 return $els[0]->matches('li[id="foo"]') && $els[1]->matches('li[id="bar"]') && $els[2]->matches('li[id="baz"]');
             });
 

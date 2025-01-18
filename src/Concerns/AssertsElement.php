@@ -9,10 +9,10 @@ use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
 use Ziadoz\AssertableHtml\Dom\AssertableClassList;
-use Ziadoz\AssertableHtml\Dom\AssertableHtmlElement;
+use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
 
-trait AssertsHtmlElement
+trait AssertsElement
 {
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ trait AssertsHtmlElement
     /**
      * Assert the element passes the given callback.
      *
-     * @param  callable(AssertableHtmlElement $element): bool  $callback
+     * @param  callable(AssertableElement $element): bool  $callback
      */
     public function assertElement(callable $callback, ?string $message = null): static
     {

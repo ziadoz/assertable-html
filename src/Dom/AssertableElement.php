@@ -7,15 +7,15 @@ namespace Ziadoz\AssertableHtml\Dom;
 use Dom\Element;
 use Dom\HTMLElement;
 use ReflectionClass;
-use Ziadoz\AssertableHtml\Concerns\AssertsHtmlElement;
+use Ziadoz\AssertableHtml\Concerns\AssertsElement;
 use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
 
-readonly class AssertableHtmlElement
+readonly class AssertableElement
 {
-    use AssertsHtmlElement;
+    use AssertsElement;
     use IdentifiesElement;
     use Scopeable;
     use Whenable;
@@ -40,7 +40,7 @@ readonly class AssertableHtmlElement
     public AssertableText $text;
 
     /** The element's assertable HTML document. */
-    public AssertableHtmlDocument $document;
+    public AssertableDocument $document;
 
     /** Create an assertable element. */
     public function __construct(private HTMLElement|Element $element)
@@ -52,7 +52,7 @@ readonly class AssertableHtmlElement
         $this->tag = strtolower($this->element->tagName);
         $this->id = $this->element->id;
         $this->text = new AssertableText($this->element->textContent);
-        $this->document = AssertableHtmlDocument::proxy($this->element->ownerDocument);
+        $this->document = AssertableDocument::proxy($this->element->ownerDocument);
     }
 
     /** Get the underlying HTML element. */
@@ -152,14 +152,14 @@ readonly class AssertableHtmlElement
     }
 
     /** Return assertable elements matches the given selectors. */
-    public function querySelectorAll(string $selectors): AssertableHtmlElementsList
+    public function querySelectorAll(string $selectors): AssertableElementsList
     {
-        return new AssertableHtmlElementsList($this->element->querySelectorAll($selectors));
+        return new AssertableElementsList($this->element->querySelectorAll($selectors));
     }
 
     /** Return assertable elements matches the given tag. */
-    public function getElementsByTagName(string $tag): AssertableHtmlElementsList
+    public function getElementsByTagName(string $tag): AssertableElementsList
     {
-        return new AssertableHtmlElementsList($this->element->getElementsByTagName($tag));
+        return new AssertableElementsList($this->element->getElementsByTagName($tag));
     }
 }
