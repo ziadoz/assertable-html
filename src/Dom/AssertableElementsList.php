@@ -75,7 +75,7 @@ final readonly class AssertableElementsList implements ArrayAccess, Countable, I
     }
 
     /** Perform a callback on each assert element in the list. */
-    public function each(callable $callback): static
+    public function each(callable $callback): self
     {
         array_map($callback, $this->elements);
 

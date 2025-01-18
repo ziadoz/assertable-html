@@ -59,7 +59,7 @@ final readonly class AssertableDocument
     */
 
     /** Create a lazy proxy assertable element for the given element. */
-    public static function proxy(HTMLDocument|Document $document): static
+    public static function proxy(HTMLDocument|Document $document): self
     {
         return new ReflectionClass(self::class)->newLazyProxy(fn () => new self($document));
     }
@@ -71,13 +71,13 @@ final readonly class AssertableDocument
     */
 
     /** Create an assertable document from a file. */
-    public static function createFromFile(string $path, int $options = 0, ?string $overrideEncoding = null): static
+    public static function createFromFile(string $path, int $options = 0, ?string $overrideEncoding = null): self
     {
         return new static(HTMLDocument::createFromFile($path, $options, $overrideEncoding));
     }
 
     /** Create an assertable document from a string. */
-    public static function createFromString(string $source, int $options = 0, ?string $overrideEncoding = null): static
+    public static function createFromString(string $source, int $options = 0, ?string $overrideEncoding = null): self
     {
         return new static(HTMLDocument::createFromString($source, $options, $overrideEncoding));
     }
