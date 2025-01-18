@@ -61,7 +61,7 @@ final readonly class AssertableHtmlDocument
     /** Create a lazy proxy assertable element for the given element. */
     public static function proxy(HTMLDocument|Document $document): static
     {
-        return new ReflectionClass(static::class)->newLazyProxy(fn () => new static($document));
+        return new ReflectionClass(self::class)->newLazyProxy(fn () => new self($document));
     }
 
     /*
