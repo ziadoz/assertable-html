@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Concerns;
 
+use Ziadoz\AssertableHtml\Dom\AssertableHtmlDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableHtmlElement;
 
 trait Withable
@@ -11,32 +12,26 @@ trait Withable
     /**
      * Scope the first assertable element within the current assertable document or element matching the given selector.
      *
-     * @param  callable(?AssertableHtmlElement $assertable): bool|mixed  $callback
+     * @param  callable(?AssertableHtmlElement $assertable): void  $callback
      */
-    public function with(string $selector, ?callable $callback): ?AssertableHtmlElement
+    public function with(string $selector, callable $callback): static
     {
-        $element = $this->querySelector($selector);
+        $callback($this->querySelector($selector));
 
-        if ($callback) {
-            $callback($element);
-        }
-
-        return $element;
+        return $this;
     }
 
     /**
      * Scope the first assertable element elsewhere in the assertable document matching the given selector.
      *
-     * @param  callable(?AssertableHtmlElement $assertable): bool|mixed  $callback
+     * @param  callable(?AssertableHtmlElement $assertable): void  $callback
      */
-    public function elsewhere(string $selector, ?callable $callback): ?AssertableHtmlElement
+    public function elsewhere(string $selector, callable $callback): static
     {
-        $element = $this->ownerDocument->querySelector($selector);
+        $document = $this instanceof AssertableHtmlDocument ? $this : $this->document;
 
-        if ($callback) {
-            $callback($element);
-        }
+        $callback($document->querySelector($selector));
 
-        return $element;
+        return $this;
     }
 }

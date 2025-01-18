@@ -57,12 +57,13 @@ class IntegrationTest extends TestCase
 
         /*
         |--------------------------------------------------------------------------
-        | With / Elsewhere
+        | With / Elsewhere / Scope
         |--------------------------------------------------------------------------
         */
 
         $html->with('ul', function (AssertableHtmlElement $el): void {
             $el->assertElementsCount('li', 3);
+
             $el->with('li:nth-child(1)', fn (AssertableHtmlElement $el) => $el->assertAttributeEquals('id', 'foo'));
             $el->with('li:nth-child(2)', fn (AssertableHtmlElement $el) => $el->assertAttributeEquals('id', 'bar'));
             $el->with('li:nth-child(3)', fn (AssertableHtmlElement $el) => $el->assertAttributeEquals('id', 'baz'));
@@ -70,6 +71,26 @@ class IntegrationTest extends TestCase
             $el->elsewhere('div', function (AssertableHtmlElement $el): void {
                 $el->assertTextEquals('This is a test div.', true);
             });
+
+            $el->querySelectorAll('li')->scope(function (AssertableHtmlElementsList $els): void {
+                $els[0]->assertTextEquals('Foo');
+                $els[1]->assertTextEquals('Bar');
+                $els[2]->assertTextEquals('Baz');
+            });
+
+            $el->scope(function (AssertableHtmlElement $el): void {
+                $el->assertClassMissing();
+            });
+        })->with('div', function (AssertableHtmlElement $el): void {
+            $el->assertIdEquals('foo-bar');
+
+            $el->elsewhere('ul', function (AssertableHtmlElement $el): void {
+                $el->assertElementsCount('li[id]', 3);
+            });
+        })->elsewhere('p', function (AssertableHtmlElement $el): void {
+            $el->assertTextEquals('I am a test paragraph.');
+        })->scope(function (AssertableHtmlDocument $doc): void {
+            $doc->getElementById('foo-bar')->assertTextContains('This is a test div.');
         });
 
         /*

@@ -14,10 +14,12 @@ use IteratorAggregate;
 use RuntimeException;
 use Traversable;
 use Ziadoz\AssertableHtml\Concerns\AssertsHtmlElementList;
+use Ziadoz\AssertableHtml\Concerns\Scopeable;
 
 final readonly class AssertableHtmlElementsList implements ArrayAccess, Countable, IteratorAggregate
 {
     use AssertsHtmlElementList;
+    use Scopeable;
 
     /** The assertable elements. */
     private array $elements;

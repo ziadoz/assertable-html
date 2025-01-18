@@ -7,11 +7,13 @@ namespace Ziadoz\AssertableHtml\Dom;
 use Dom\Document;
 use Dom\HTMLDocument;
 use ReflectionClass;
+use Ziadoz\AssertableHtml\Concerns\Scopeable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
 
 final readonly class AssertableHtmlDocument
 {
+    use Scopeable;
     use Whenable;
     use Withable;
 
@@ -24,16 +26,12 @@ final readonly class AssertableHtmlDocument
     /** The document's page title. */
     public string $title;
 
-    /** The element's assertable HTML document. */
-    public AssertableHtmlDocument $ownerDocument;
-
     /** Create a new assertable document. */
     public function __construct(private HTMLDocument|Document $document)
     {
         $this->head = AssertableHtmlElement::proxy($this->document->head);
         $this->body = AssertableHtmlElement::proxy($this->document->body);
         $this->title = $this->document->title;
-        $this->ownerDocument = $this;
     }
 
     /** Get the assertable document HTML. */
@@ -63,7 +61,7 @@ final readonly class AssertableHtmlDocument
     /** Create a lazy proxy assertable element for the given element. */
     public static function proxy(HTMLDocument|Document $document): static
     {
-        return new ReflectionClass(static::class)->newLazyProxy(fn () => new static($document));
+        return new ReflectionClass(self::class)->newLazyProxy(fn () => new self($document));
     }
 
     /*
