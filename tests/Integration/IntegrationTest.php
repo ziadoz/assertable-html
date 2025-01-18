@@ -48,11 +48,11 @@ class IntegrationTest extends TestCase
                     <button type="submit">Save</button>
                 </form>
 
-                <-- Custom Element -->
+                <!-- Custom Element -->
                 <my-web-component>I am a web component.</my-web-component>
             </body>
             </html>
-        HTML, LIBXML_NOERROR);
+        HTML);
 
         /*
         |--------------------------------------------------------------------------
