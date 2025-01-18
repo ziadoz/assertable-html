@@ -11,6 +11,7 @@ use Ziadoz\AssertableHtml\Concerns\AssertsHtmlElement;
 use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
+use Ziadoz\AssertableHtml\Dom\Elements\AssertableHtmlFormElement;
 
 readonly class AssertableHtmlElement
 {
@@ -89,6 +90,29 @@ readonly class AssertableHtmlElement
         return $element !== null
             ? new ReflectionClass(static::class)->newLazyProxy(fn () => new static($element))
             : null;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Elements
+    |--------------------------------------------------------------------------
+    */
+
+    // @todo: element()/elements()
+    // @todo: component()/components()
+
+    public function element(?callable $callable = null): static
+    {
+        $element = match (true) {
+            $this->element->matches('form') => new AssertableHtmlFormElement($this->element),
+            default                         => $this,
+        };
+
+        if ($callable) {
+            $callable($element);
+        }
+
+        return $element;
     }
 
     /*

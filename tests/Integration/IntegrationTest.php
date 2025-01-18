@@ -10,6 +10,7 @@ use Ziadoz\AssertableHtml\Dom\AssertableHtmlDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableHtmlElement;
 use Ziadoz\AssertableHtml\Dom\AssertableHtmlElementsList;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
+use Ziadoz\AssertableHtml\Dom\Elements\AssertableHtmlFormElement;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class IntegrationTest extends TestCase
@@ -42,7 +43,7 @@ class IntegrationTest extends TestCase
                 </ul>
 
                 <!-- Form -->
-                <form method="get" action="/foo/bar" enctype="multipart/form-data">
+                <form method="post" action="/foo/bar" enctype="multipart/form-data">
                     <label>Name <input type="text" name="name" value="Foo Bar"></label>
                     <label>Age <input type="number" name="age" value="42"></label>
                     <button type="submit">Save</button>
@@ -307,5 +308,16 @@ class IntegrationTest extends TestCase
             ->assertText(function (AssertableText $text): bool {
                 return $text->startsWith('I') && $text->endsWith('.') && $text->contains('test');
             });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Assertable Custom Elements
+        |--------------------------------------------------------------------------
+        */
+
+        $html->querySelector('form')->element(function (AssertableHtmlFormElement $form): void {
+            $form->assertMethodPost();
+            $form->assertAcceptsUploads();
+        });
     }
 }
