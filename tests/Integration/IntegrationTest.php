@@ -42,6 +42,9 @@ class IntegrationTest extends TestCase
                     <li id="baz">Baz</li>
                 </ul>
 
+                <!-- Custom Element -->
+                <my-web-component>I am a web component.</my-web-component>
+
                 <!-- Form -->
                 <form method="post" action="/foo/bar" enctype="multipart/form-data">
                     <label>Name <input type="text" name="name" value="Foo Bar"></label>
@@ -49,11 +52,13 @@ class IntegrationTest extends TestCase
                     <button type="submit">Save</button>
                 </form>
 
-                <-- Custom Element -->
-                <my-web-component>I am a web component.</my-web-component>
+                <!-- Form (Hidden Input Method) -->
+                <form>
+                    <input type="hidden" name="_method" value="PUT">
+                </form>
             </body>
             </html>
-        HTML, LIBXML_NOERROR);
+        HTML);
 
         /*
         |--------------------------------------------------------------------------
@@ -336,9 +341,15 @@ class IntegrationTest extends TestCase
         |--------------------------------------------------------------------------
         */
 
+        // Forms
         $html->querySelector('form')->element(function (AssertableHtmlFormElement $form): void {
             $form->assertMethodPost();
             $form->assertAcceptsUploads();
+            $form->assertAction('/foo/bar');
+        });
+
+        $html->querySelector('form:has(input[type="hidden"][name="_method"]')->element(function (AssertableHtmlFormElement $form): void {
+            $form->assertMethodPut();
         });
     }
 }

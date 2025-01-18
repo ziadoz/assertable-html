@@ -843,6 +843,12 @@ trait AssertsHtmlElement
         return $this;
     }
 
+    /** Prefix the given attribute name with "data-" if applicable. */
+    protected function prefixDataAttribute(string $attribute): string
+    {
+        return (! str_starts_with($attribute, 'data-') ? 'data-' : '') . $attribute;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Assert Aria Attribute
@@ -909,21 +915,28 @@ trait AssertsHtmlElement
         return $this;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Internal
-    |--------------------------------------------------------------------------
-    */
-
-    /** Prefix the given attribute name with "data-" if applicable. */
-    protected function prefixDataAttribute(string $attribute): string
-    {
-        return (! str_starts_with($attribute, 'data-') ? 'data-' : '') . $attribute;
-    }
-
     /** Prefix the given attribute name with "aria-" if applicable. */
     protected function prefixAriaAttribute(string $attribute): string
     {
         return (! str_starts_with($attribute, 'aria-') ? 'aria-' : '') . $attribute;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert If Null
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Assert only if the given input is null.
+     * Useful if you want to fail when a child element isn't matched before attempting to chain on more assertions.
+     */
+    protected function assertIfNull(mixed $value, ?string $message = null): static
+    {
+        if ($value === null) {
+            PHPUnit::fail($message ?? 'The given input was null.');
+        }
+
+        return $value;
     }
 }
