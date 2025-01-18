@@ -38,7 +38,7 @@ readonly class AssertableHtmlElement
     public AssertableText $text;
 
     /** The element's assertable HTML document. */
-    public AssertableHtmlDocument $ownerDocument;
+    public AssertableHtmlDocument $document;
 
     /** Create an assertable element. */
     public function __construct(private HTMLElement|Element $element)
@@ -50,7 +50,7 @@ readonly class AssertableHtmlElement
         $this->tag = strtolower($this->element->tagName);
         $this->id = $this->element->id;
         $this->text = new AssertableText($this->element->textContent);
-        $this->ownerDocument = AssertableHtmlDocument::proxy($this->element->ownerDocument);
+        $this->document = AssertableHtmlDocument::proxy($this->element->ownerDocument);
     }
 
     /** Get the underlying HTML element. */

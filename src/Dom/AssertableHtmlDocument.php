@@ -24,16 +24,12 @@ final readonly class AssertableHtmlDocument
     /** The document's page title. */
     public string $title;
 
-    /** The element's assertable HTML document. */
-    public AssertableHtmlDocument $ownerDocument;
-
     /** Create a new assertable document. */
     public function __construct(private HTMLDocument|Document $document)
     {
         $this->head = AssertableHtmlElement::proxy($this->document->head);
         $this->body = AssertableHtmlElement::proxy($this->document->body);
         $this->title = $this->document->title;
-        $this->ownerDocument = $this;
     }
 
     /** Get the assertable document HTML. */
