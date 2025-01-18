@@ -91,7 +91,9 @@ final readonly class AssertableHtmlDocument
     /** Return the assertable element matching the given selectors. */
     public function querySelector(string $selectors): ?AssertableHtmlElement
     {
-        return new AssertableHtmlElement($this->document->querySelector($selectors));
+        return ($element = $this->document->querySelector($selectors)) !== null
+            ? new AssertableHtmlElement($element)
+            : null;
     }
 
     /** Return assertable elements matching the given selectors. */
