@@ -70,12 +70,6 @@ final readonly class AssertableHtmlDocument
     |--------------------------------------------------------------------------
     */
 
-    /** Create an empty assertable document. */
-    public static function createEmpty(string $encoding = 'UTF-8'): static
-    {
-        return new static(HTMLDocument::createEmpty());
-    }
-
     /** Create an assertable document from a file. */
     public static function createFromFile(string $path, int $options = 0, ?string $overrideEncoding = null): static
     {
@@ -91,7 +85,9 @@ final readonly class AssertableHtmlDocument
     /** Return the assertable element matching the given selectors. */
     public function querySelector(string $selectors): ?AssertableHtmlElement
     {
-        return new AssertableHtmlElement($this->document->querySelector($selectors));
+        return ($element = $this->document->querySelector($selectors)) !== null
+            ? new AssertableHtmlElement($element)
+            : null;
     }
 
     /** Return assertable elements matching the given selectors. */

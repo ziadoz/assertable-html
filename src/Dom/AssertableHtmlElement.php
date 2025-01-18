@@ -170,7 +170,9 @@ readonly class AssertableHtmlElement
     /** Return the assertable element matches the given selectors. */
     public function querySelector(string $selectors): ?static
     {
-        return new AssertableHtmlElement($this->element->querySelector($selectors));
+        return ($element = $this->element->querySelector($selectors)) !== null
+            ? new static($element)
+            : null;
     }
 
     /** Return assertable elements matches the given selectors. */
