@@ -12,6 +12,8 @@ use Ziadoz\AssertableHtml\Dom\AssertableClassList;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
 
+// @todo: Assert querySelector/All exists/missing/empty/notEmpty
+
 trait AssertsElement
 {
     /*

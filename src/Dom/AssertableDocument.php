@@ -109,4 +109,6 @@ final readonly class AssertableDocument
     {
         return new AssertableElementsList($this->document->getElementsByTagName($tag));
     }
+
+    // @todo: Assert page title
 }
