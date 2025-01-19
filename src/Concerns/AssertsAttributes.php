@@ -31,7 +31,7 @@ trait AssertsAttributes
     }
 
     /**
-     * Assert the attribute list passes the given callback.
+     * Assert the given attribute in the attribute list passes the given callback.
      *
      * @param  callable(?string $value): bool  $callback
      */
