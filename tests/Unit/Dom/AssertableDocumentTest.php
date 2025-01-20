@@ -6,11 +6,11 @@ namespace Ziadoz\AssertableHtml\Tests\Unit\Dom;
 
 use Closure;
 use Dom\HTMLDocument;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
-use PHPUnit\Framework\TestCase;
 
 class AssertableDocumentTest extends TestCase
 {

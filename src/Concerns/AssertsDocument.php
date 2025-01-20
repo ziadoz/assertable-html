@@ -25,4 +25,16 @@ trait AssertsDocument
 
         return $this;
     }
+
+    /** Assert the page title doesn't equal the given value. */
+    public function assertTitleDoesntEqual(string $title, ?string $message = null): self
+    {
+        PHPUnit::assertNotSame(
+            $title,
+            $this->title,
+            $message ?? 'The page title equals the given title.',
+        );
+
+        return $this;
+    }
 }
