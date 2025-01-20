@@ -237,7 +237,7 @@ trait AssertsElement
     public function assertTextEquals(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
     {
         $this->text->assertEquals($text, $normaliseWhitespace, $message ?? sprintf(
-            "The element [%s] text doesn't pass the given callback.",
+            "The element [%s] text doesn't equal the given text.",
             $this->identifier(),
         ));
 
