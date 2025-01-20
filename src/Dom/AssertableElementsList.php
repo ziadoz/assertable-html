@@ -70,10 +70,10 @@ final readonly class AssertableElementsList implements ArrayAccess, Countable, I
         dd($this->getHtml());
     }
 
-    /** Get the assertable element at the nth position in the assertable element list. */
-    public function nth(int $index): ?AssertableElement
+    /** Return whether the assertable element list is empty. */
+    public function empty(): bool
     {
-        return $this->offsetGet($index);
+        return count($this) === 0;
     }
 
     /** Return the first assertable element in the assertable element list.  */
@@ -91,7 +91,7 @@ final readonly class AssertableElementsList implements ArrayAccess, Countable, I
     /** Perform a callback on each assert element in the list. */
     public function each(callable $callback): self
     {
-        array_map($callback, $this->elements);
+        array_map($callback, array_values($this->elements), array_keys($this->elements));
 
         return $this;
     }
