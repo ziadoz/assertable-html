@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Concerns;
 
-use Dom\Document;
 use Dom\Element;
-use Dom\HTMLDocument;
 use Dom\HTMLElement;
 use Ziadoz\AssertableHtml\Support\Whitespace;
 
@@ -23,19 +21,19 @@ trait IdentifiesElement
     }
 
     /** Return the element's formatted tag name. */
-    private function formatTag(HTMLDocument|Document|HtmlElement|Element $element): string
+    private function formatTag(HtmlElement|Element $element): string
     {
         return mb_strtolower($element->tagName);
     }
 
     /** Return the element's formatted ID (if applicable). */
-    private function formatId(HTMLDocument|Document|HtmlElement|Element $element): string
+    private function formatId(HtmlElement|Element $element): string
     {
         return trim($id = $element->id) !== '' ? '#' . Whitespace::normalise(trim($id)) : '';
     }
 
     /** Return the elements format classes (if any). */
-    private function formatClasses(HTMLDocument|Document|HtmlElement|Element $element): string
+    private function formatClasses(HtmlElement|Element $element): string
     {
         return implode('', array_map(fn (string $class): string => '.' . $class, iterator_to_array($element->classList)));
     }
