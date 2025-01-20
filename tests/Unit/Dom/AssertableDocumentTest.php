@@ -14,6 +14,14 @@ use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
 
 class AssertableDocumentTest extends TestCase
 {
+    public function test_properties(): void
+    {
+        $assertable = AssertableDocument::createFromString('<title>Foo - Bar</title>', LIBXML_NOERROR);
+        $this->assertSame('Foo - Bar', $assertable->title);
+        $this->assertInstanceOf(AssertableElement::class, $assertable->head);
+        $this->assertInstanceOf(AssertableElement::class, $assertable->body);
+    }
+
     public function test_get_html(): void
     {
         $assertable = AssertableDocument::createFromString('<p>Foo</p>', LIBXML_NOERROR);
