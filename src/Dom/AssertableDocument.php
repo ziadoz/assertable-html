@@ -7,12 +7,14 @@ namespace Ziadoz\AssertableHtml\Dom;
 use Dom\Document;
 use Dom\HTMLDocument;
 use ReflectionClass;
+use Ziadoz\AssertableHtml\Concerns\AssertsDocument;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
 
 final readonly class AssertableDocument
 {
+    use AssertsDocument;
     use Scopeable;
     use Whenable;
     use Withable;
@@ -109,6 +111,4 @@ final readonly class AssertableDocument
     {
         return new AssertableElementsList($this->document->getElementsByTagName($tag));
     }
-
-    // @todo: Assert page title
 }

@@ -120,8 +120,7 @@ class IntegrationTest extends TestCase
         |--------------------------------------------------------------------------
         */
 
-        $html->querySelector('div')
-            ->assertTitleEquals('Test Page Title');
+        $html->assertTitleEquals('Test Page Title');
 
         $html->querySelector('div')
             ->assertElement(function (AssertableElement $el): bool {
