@@ -32,8 +32,10 @@ class AssertableElementListTest extends TestCase
         // Empty
         $this->assertFalse($assertable->empty());
 
-        // First / Last
+        // Nth / First / Last
         $this->assertSame('foo', $assertable->first()->id);
+        $this->assertSame('bar', $assertable->nth(1)->id);
+        $this->assertSame('baz', $assertable->nth(2)->id);
         $this->assertSame('qux', $assertable->last()->id);
 
         // Each

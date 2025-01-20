@@ -76,6 +76,12 @@ final readonly class AssertableElementsList implements ArrayAccess, Countable, I
         return count($this) === 0;
     }
 
+    /** Get the assertable element at the nth position in the assertable element list. */
+    public function nth(int $index): ?AssertableElement
+    {
+        return $this->offsetGet($index);
+    }
+
     /** Return the first assertable element in the assertable element list.  */
     public function first(): ?AssertableElement
     {
