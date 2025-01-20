@@ -78,7 +78,7 @@ class IntegrationTest extends TestCase
             });
 
             $el->scope(function (AssertableElement $el): void {
-                $el->assertClassDoesntExist();
+                $el->assertClassMissing();
             });
         })->with('div', function (AssertableElement $el): void {
             $el->assertIdEquals('foo-bar');
