@@ -122,6 +122,10 @@ class IntegrationTest extends TestCase
 
         $html->assertTitleEquals('Test Page Title');
 
+        $html->querySelector('body')
+            ->assertElementsExist('div')
+            ->assertElementsDontExist('foo');
+
         $html->querySelector('div')
             ->assertElement(function (AssertableElement $el): bool {
                 return

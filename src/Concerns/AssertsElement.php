@@ -12,23 +12,36 @@ use Ziadoz\AssertableHtml\Dom\AssertableClassList;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
 
-// @todo: Assert querySelector/All exists/missing/empty/notEmpty
-
 trait AssertsElement
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Assert Title
-    |--------------------------------------------------------------------------
-    */
+    /** Assert the element contains one or more elements matching the given selector. */
+    public function assertElementsExist(string $selector, ?string $message = null): static
+    {
+        PHPUnit::assertGreaterThan(
+            0,
+            $this->element->querySelectorAll($selector)->length,
+            $message ?? sprintf(
+                "The element [%s] doesn't contain any elements matching the given selector [%s].",
+                $this->identifier(),
+                $selector,
+            ),
+        );
 
-    /** Assert the page title equals the given value. */
-    public function assertTitleEquals(string $title, ?string $message = null): static
+        return $this;
+    }
+
+    /** Assert the element doesn't contain any elements matching the given selector. */
+    public function assertElementsDontExist(string $selector, ?string $message = null): static
     {
         PHPUnit::assertSame(
-            $title,
-            $this->element->ownerDocument->title,
-            $message ?? "The page title doesn't equal the given title.",
+            0,
+            $total = $this->element->querySelectorAll($selector)->length,
+            $message ?? sprintf(
+                'The element [%s] contain [%d] elements matching the given selector [%s].',
+                $this->identifier(),
+                $total,
+                $selector,
+            ),
         );
 
         return $this;
