@@ -28,12 +28,24 @@ class AssertableDocumentTest extends TestCase
         $this->assertSame('<html><head></head><body><p>Foo</p></body></html>', $assertable->getHtml());
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Proxy
+    |--------------------------------------------------------------------------
+    */
+
     public function test_proxy(): void
     {
         $proxy = AssertableDocument::proxy(HTMLDocument::createFromString('<p>Foo</p>', LIBXML_NOERROR));
         $this->assertInstanceOf(AssertableDocument::class, $proxy);
         $this->assertInstanceOf(Closure::class, new ReflectionClass($proxy)->getLazyInitializer($proxy));
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Native
+    |--------------------------------------------------------------------------
+    */
 
     public function test_create_from_string(): void
     {

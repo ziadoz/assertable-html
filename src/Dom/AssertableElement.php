@@ -99,30 +99,6 @@ readonly class AssertableElement
     |--------------------------------------------------------------------------
     */
 
-    /** Return the assertable element's attribute names. */
-    public function getAttributeNames(): array
-    {
-        return $this->element->getAttributeNames();
-    }
-
-    /** Return the assertable element's given attribute. */
-    public function getAttribute(string $attribute): ?string
-    {
-        return $this->element->getAttribute($attribute);
-    }
-
-    /** Return whether the assertable element has attributes. */
-    public function hasAttributes(): bool
-    {
-        return $this->element->hasAttributes();
-    }
-
-    /** Return whether the assertable element has the given attribute. */
-    public function hasAttribute(string $attribute): bool
-    {
-        return $this->element->hasAttribute($attribute);
-    }
-
     /** Return whether the assertable element contains the given assertable element. */
     public function contains(self $other): bool
     {
