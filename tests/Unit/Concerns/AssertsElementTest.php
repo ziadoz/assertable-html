@@ -11,7 +11,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Tests\TestCase;
 
-class AssertableElementTest extends TestCase
+class AssertsElementTest extends TestCase
 {
     /*
     |--------------------------------------------------------------------------
