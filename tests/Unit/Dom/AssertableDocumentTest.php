@@ -10,7 +10,7 @@ use ReflectionClass;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
-use Ziadoz\AssertableHtml\Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class AssertableDocumentTest extends TestCase
 {
