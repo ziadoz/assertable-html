@@ -13,7 +13,7 @@ trait AssertsDocument
     */
 
     /** Assert the page title equals the given value. */
-    public function assertTitleEquals(string $title, ?string $message = null): static
+    public function assertTitleEquals(string $title, ?string $message = null): self
     {
         PHPUnit::assertSame(
             $title,
