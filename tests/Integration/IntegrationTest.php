@@ -130,7 +130,7 @@ class IntegrationTest extends TestCase
             ->assertElement(function (AssertableElement $el): bool {
                 return
                     $el->id === 'foo-bar' &&
-                    $el->attributes->contains('data-bar', 'baz') &&
+                    str_contains($el->attributes->value('data-bar'), 'baz') &&
                     $el->attributes->value('data-qux') === 'lux-pux';
             });
 
@@ -153,7 +153,7 @@ class IntegrationTest extends TestCase
             ->assertTextDoesntStartWith('This is NOT', true)
             ->assertTextEndsWith('a test div.', true)
             ->assertTextDoesntEndWith('a test span', true)
-            ->assertText(fn (AssertableText $text) => $text->contains('is a test', true));
+            ->assertText(fn (AssertableText $text) => str_contains($text->value(true), 'is a test'));
 
         $html->querySelector('p')
             ->assertClassesNotEmpty()
@@ -198,12 +198,12 @@ class IntegrationTest extends TestCase
                     $attributes['data-bar'] === 'baz-buz' &&
                     $attributes['data-qux'] === 'lux-pux'
                 ) && (
-                    $attributes->startsWith('id', 'foo-') &&
-                    $attributes->endsWith('data-bar', '-buz') &&
-                    $attributes->contains('data-qux', 'x-p')
+                    str_starts_with($attributes['id'], 'foo-') &&
+                    str_ends_with($attributes['data-bar'], '-buz') &&
+                    str_contains($attributes['data-qux'], 'x-p')
                 ) && (
-                    $attributes->present('id') &&
-                    $attributes->missing('foo-bar')
+                    $attributes->exists('id') &&
+                    ! $attributes->exists('foo-bar')
                 );
             })
             ->assertAttribute('id', function (?string $value): bool {
@@ -279,12 +279,12 @@ class IntegrationTest extends TestCase
                     $attributes['data-bar'] === 'baz-buz' &&
                     $attributes['data-qux'] === 'lux-pux'
                 ) && (
-                    $attributes->startsWith('id', 'foo-') &&
-                    $attributes->endsWith('data-bar', '-buz') &&
-                    $attributes->contains('data-qux', 'x-p')
+                    str_starts_with($attributes['id'], 'foo-') &&
+                    str_ends_with($attributes['data-bar'], '-buz') &&
+                    str_contains($attributes['data-qux'], 'x-p')
                 ) && (
-                    $attributes->present('id') &&
-                    $attributes->missing('foo-bar')
+                    $attributes->exists('id') &&
+                    ! $attributes->exists('foo-bar')
                 );
             })
             ->assertAttribute('id', function (?string $value): bool {
@@ -329,7 +329,10 @@ class IntegrationTest extends TestCase
             ->assertEndsWith('paragraph.')
             ->assertDoesntEndWith('foo bar')
             ->assertText(function (AssertableText $text): bool {
-                return $text->startsWith('I') && $text->endsWith('.') && $text->contains('test');
+                return
+                    str_starts_with($text->value(), 'I') &&
+                    str_ends_with($text->value(), '.') &&
+                    str_contains($text->value(), 'test');
             });
     }
 }

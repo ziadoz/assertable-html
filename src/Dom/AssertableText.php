@@ -37,24 +37,6 @@ final readonly class AssertableText implements Stringable
             : $this->text;
     }
 
-    /** Return whether the assertable text starts with the given text. */
-    public function startsWith(string $prefix, bool $normaliseWhitespace = false): bool
-    {
-        return str_starts_with($this->value($normaliseWhitespace), $prefix);
-    }
-
-    /** Return whether the assertable text ends with the given text. */
-    public function endsWith(string $suffix, bool $normaliseWhitespace = false): bool
-    {
-        return str_ends_with($this->value($normaliseWhitespace), $suffix);
-    }
-
-    /** Return whether the assertable text contains with the given text. */
-    public function contains(string $contains, bool $normaliseWhitespace = false): bool
-    {
-        return str_contains($this->value($normaliseWhitespace), $contains);
-    }
-
     /** Return the assertable text. */
     public function __toString(): string
     {

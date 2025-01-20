@@ -62,34 +62,10 @@ final readonly class AssertableAttributesList implements ArrayAccess, Countable,
         return array_keys($this->attributes);
     }
 
-    /** Return whether the attribute is present in the assertable attribute list. */
-    public function present(string $attribute): bool
+    /** Return whether the attribute exists in the assertable attribute list. */
+    public function exists(string $attribute): bool
     {
         return $this->offsetExists($attribute);
-    }
-
-    /** Return whether the attribute is missing in the assertable attribute list. */
-    public function missing(string $attribute): bool
-    {
-        return ! $this->present($attribute);
-    }
-
-    /** Return whether the given attribute starts with the given value in the assertable attribute list. */
-    public function startsWith(string $attribute, string $value): bool
-    {
-        return str_starts_with($this->attributes[$attribute] ?? '', $value);
-    }
-
-    /** Return whether the given attribute ends with the given value in the assertable attribute list. */
-    public function endsWith(string $attribute, string $value): bool
-    {
-        return str_ends_with($this->attributes[$attribute] ?? '', $value);
-    }
-
-    /** Return whether the given attribute contains the given value in the assertable attribute list. */
-    public function contains(string $attribute, string $value): bool
-    {
-        return str_contains($this->attributes[$attribute] ?? '', $value);
     }
 
     /** Dump the assertable class list. */
