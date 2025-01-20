@@ -78,7 +78,7 @@ class IntegrationTest extends TestCase
             });
 
             $el->scope(function (AssertableElement $el): void {
-                $el->assertClassMissing();
+                $el->assertClassDoesntExist();
             });
         })->with('div', function (AssertableElement $el): void {
             $el->assertIdEquals('foo-bar');
@@ -202,8 +202,8 @@ class IntegrationTest extends TestCase
                     str_ends_with($attributes['data-bar'], '-buz') &&
                     str_contains($attributes['data-qux'], 'x-p')
                 ) && (
-                    $attributes->exists('id') &&
-                    ! $attributes->exists('foo-bar')
+                    $attributes->has('id') &&
+                    ! $attributes->has('foo-bar')
                 );
             })
             ->assertAttribute('id', function (?string $value): bool {
@@ -283,8 +283,8 @@ class IntegrationTest extends TestCase
                     str_ends_with($attributes['data-bar'], '-buz') &&
                     str_contains($attributes['data-qux'], 'x-p')
                 ) && (
-                    $attributes->exists('id') &&
-                    ! $attributes->exists('foo-bar')
+                    $attributes->has('id') &&
+                    ! $attributes->has('foo-bar')
                 );
             })
             ->assertAttribute('id', function (?string $value): bool {
