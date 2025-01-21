@@ -332,6 +332,42 @@ class AssertsElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
+    | Assert ID Equals
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_id_equals_passes(): void
+    {
+        $this->getAssertableElement('<p id="foo">Foo</p>')
+            ->assertIdEquals('foo');
+    }
+
+    public function test_assert_id_equals_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [p#foo] id doesn't equal the given value [bar].");
+
+        $this->getAssertableElement('<p id="foo">Foo</p>')
+            ->assertIdEquals('bar');
+    }
+
+    public function test_assert_id_doesnt_equal_passes(): void
+    {
+        $this->getAssertableElement('<p id="foo">Foo</p>')
+            ->assertIdDoesntEqual('bar');
+    }
+
+    public function test_assert_id_doesnt_equal_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [p#foo] id equals the given value [foo].');
+
+        $this->getAssertableElement('<p id="foo">Foo</p>')
+            ->assertIdDoesntEqual('foo');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Class
     |--------------------------------------------------------------------------
     */
@@ -353,6 +389,42 @@ class AssertsElementTest extends TestCase
             ->assertClass(function (AssertableClassList $classes): bool {
                 return $classes->contains('baz');
             });
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Classes Empty
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_class_empty_passes(): void
+    {
+        $this->getAssertableElement('<p class="">Foo</p>')
+            ->assertClassEmpty();
+    }
+
+    public function test_assert_class_empty_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [p.foo] class list isn't empty.");
+
+        $this->getAssertableElement('<p class="foo">Foo</p>')
+            ->assertClassEmpty();
+    }
+
+    public function test_assert_class_not_empty_passes(): void
+    {
+        $this->getAssertableElement('<p class="foo">Foo</p>')
+            ->assertClassNotEmpty();
+    }
+
+    public function test_assert_class_not_empty_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [p] class list is empty.');
+
+        $this->getAssertableElement('<p class="">Foo</p>')
+            ->assertClassNotEmpty();
     }
 
     /*

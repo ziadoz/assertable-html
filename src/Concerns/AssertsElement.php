@@ -364,7 +364,7 @@ trait AssertsElement
     public function assertIdEquals(string $value, ?string $message = null): static
     {
         $this->attributes->assertEquals('id', $value, false, $message ?? sprintf(
-            "The element [%s] doesn't equal the given value [%s].",
+            "The element [%s] id doesn't equal the given value [%s].",
             $this->identifier(),
             $value,
         ));
@@ -376,7 +376,7 @@ trait AssertsElement
     public function assertIdDoesntEqual(string $value, ?string $message = null): static
     {
         $this->attributes->assertDoesntEqual('id', $value, false, $message ?? sprintf(
-            'The element [%s] equals the given value [%s].',
+            'The element [%s] id equals the given value [%s].',
             $this->identifier(),
             $value,
         ));
@@ -407,22 +407,28 @@ trait AssertsElement
 
     /*
     |--------------------------------------------------------------------------
-    | Assert Classes Empty
+    | Assert Class Empty
     |--------------------------------------------------------------------------
     */
 
     /** Assert the element's class list is empty. */
-    public function assertClassesEmpty(?string $message = null): static
+    public function assertClassEmpty(?string $message = null): static
     {
-        $this->classes->assertEmpty($message ?? "The class list isn't empty.");
+        $this->classes->assertEmpty($message ?? sprintf(
+            "The element [%s] class list isn't empty.",
+            $this->identifier(),
+        ));
 
         return $this;
     }
 
     /** Assert the element's class list isn't empty. */
-    public function assertClassesNotEmpty(?string $message = null): static
+    public function assertClassNotEmpty(?string $message = null): static
     {
-        $this->classes->assertNotEmpty($message ?? 'The class list is empty.');
+        $this->classes->assertNotEmpty($message ?? sprintf(
+            'The element [%s] class list is empty.',
+            $this->identifier(),
+        ));
 
         return $this;
     }
