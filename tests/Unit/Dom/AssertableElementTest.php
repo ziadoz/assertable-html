@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Unit\Dom;
 
+use Closure;
 use Dom\HTMLDocument;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -52,7 +53,7 @@ class AssertableElementTest extends TestCase
         $proxy = AssertableElement::proxy(HTMLDocument::createFromString('<p>Foo</p>', LIBXML_NOERROR)->querySelector('p'));
 
         $this->assertInstanceOf(AssertableElement::class, $proxy);
-        $this->assertInstanceOf(\Closure::class, new ReflectionClass($proxy)->getLazyInitializer($proxy));
+        $this->assertInstanceOf(Closure::class, new ReflectionClass($proxy)->getLazyInitializer($proxy));
     }
 
     /*
