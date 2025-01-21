@@ -683,6 +683,42 @@ class AssertsElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
+    | Assert Attributes Empty
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_attributes_empty_passes(): void
+    {
+        $this->getAssertableElement('<p>Foo</p>')
+            ->assertAttributesEmpty();
+    }
+
+    public function test_assert_attributes_empty_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [p.foo] attribute list isn't empty.");
+
+        $this->getAssertableElement('<p class="foo">Foo</p>')
+            ->assertAttributesEmpty();
+    }
+
+    public function test_assert_attributes_not_empty_passes(): void
+    {
+        $this->getAssertableElement('<p class="foo">Foo</p>')
+            ->assertAttributesNotEmpty();
+    }
+
+    public function test_assert_attributes_not_empty_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [p] attribute list is empty.');
+
+        $this->getAssertableElement('<p>Foo</p>')
+            ->assertAttributesNotEmpty();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Attribute Present/Missing
     |--------------------------------------------------------------------------
     */

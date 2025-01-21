@@ -638,7 +638,10 @@ trait AssertsElement
     /** Assert the element's attributes list is empty. */
     public function assertAttributesEmpty(?string $message = null): static
     {
-        $this->attributes->assertEmpty($message ?? "The attribute list isn't empty.");
+        $this->attributes->assertEmpty($message ?? sprintf(
+            "The element [%s] attribute list isn't empty.",
+            $this->identifier(),
+        ));
 
         return $this;
     }
@@ -646,7 +649,10 @@ trait AssertsElement
     /** Assert the element's attribute list isn't empty. */
     public function assertAttributesNotEmpty(?string $message = null): static
     {
-        $this->attributes->assertNotEmpty($message ?? 'The attribute list is empty.');
+        $this->attributes->assertNotEmpty($message ?? sprintf(
+            "The element [%s] attribute list is empty.",
+            $this->identifier(),
+        ));
 
         return $this;
     }
