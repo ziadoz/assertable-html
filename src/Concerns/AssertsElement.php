@@ -64,7 +64,7 @@ trait AssertsElement
     {
         PHPUnit::assertSame(
             $expected = strtolower($tag),
-            $actual = strtolower($this->element->tagName),
+            strtolower($this->element->tagName),
             $message ?? sprintf(
                 "The element [%s] tag doesn't match the given tag [%s].",
                 $this->identifier(),
