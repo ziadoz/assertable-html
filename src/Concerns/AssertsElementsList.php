@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
 
-trait AssertsElementList
+trait AssertsElementsList
 {
     /*
     |--------------------------------------------------------------------------
@@ -26,6 +26,34 @@ trait AssertsElementList
         PHPUnit::assertTrue(
             $callback($this),
             $message ?? "The element list doesn't pass the given callback.",
+        );
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Empty
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element list is empty. */
+    public function assertEmpty(?string $message = null): static
+    {
+        PHPUnit::assertTrue(
+            $this->empty(),
+            $message ?? "The element list isn't empty.",
+        );
+
+        return $this;
+    }
+
+    /** Assert the element list isn't empty. */
+    public function assertNotEmpty(?string $message = null): static
+    {
+        PHPUnit::assertFalse(
+            $this->empty(),
+            $message ?? 'The element list is empty.',
         );
 
         return $this;

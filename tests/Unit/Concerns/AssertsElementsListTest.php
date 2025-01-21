@@ -31,13 +31,53 @@ class AssertsElementsListTest extends TestCase
     public function test_assert_elements_fails(): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage("The element list doesn't pass the given callback");
+        $this->expectExceptionMessage("The element list doesn't pass the given callback.");
 
         AssertableDocument::createFromString('<p>Foo</p><p>Bar</p>', LIBXML_NOERROR)
             ->querySelectorAll('p')
             ->assertElements(function (AssertableElementsList $els): bool {
                 return count($els) === 0;
             });
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Empty
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_empty_passes(): void
+    {
+        AssertableDocument::createFromString('<ul></ul>', LIBXML_NOERROR)
+            ->querySelectorAll('li')
+            ->assertEmpty();
+    }
+
+    public function test_assert_empty_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element list isn't empty.");
+
+        AssertableDocument::createFromString('<ul><li>Foo</li><li>Bar</li></ul>', LIBXML_NOERROR)
+            ->querySelectorAll('li')
+            ->assertEmpty();
+    }
+
+    public function test_assert_not_empty_passes(): void
+    {
+        AssertableDocument::createFromString('<ul><li>Foo</li><li>Bar</li></ul>', LIBXML_NOERROR)
+            ->querySelectorAll('li')
+            ->assertNotEmpty();
+    }
+
+    public function test_assert_not_empty_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element list is empty.');
+
+        AssertableDocument::createFromString('<ul></ul>', LIBXML_NOERROR)
+            ->querySelectorAll('li')
+            ->assertNotEmpty();
     }
 
     /*

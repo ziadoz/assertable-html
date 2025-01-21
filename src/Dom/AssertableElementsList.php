@@ -13,12 +13,12 @@ use Dom\NodeList;
 use IteratorAggregate;
 use RuntimeException;
 use Traversable;
-use Ziadoz\AssertableHtml\Concerns\AssertsElementList;
+use Ziadoz\AssertableHtml\Concerns\AssertsElementsList;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;
 
 final readonly class AssertableElementsList implements ArrayAccess, Countable, IteratorAggregate
 {
-    use AssertsElementList;
+    use AssertsElementsList;
     use Scopeable;
 
     /** The assertable elements. */
