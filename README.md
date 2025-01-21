@@ -5,8 +5,8 @@ Assertable HTML is an elegantly designed PHPUnit library that makes performing a
 Here's a quick example:
 
 ```php
-use \Ziadoz\AssertableHtml\Dom\AssertableDocument;
-use \Ziadoz\AssertableHtml\Dom\AssertableElement;
+use Ziadoz\AssertableHtml\Dom\AssertableDocument;
+use Ziadoz\AssertableHtml\Dom\AssertableElement;
 
 // Make the response HTML an assertable document...
 $html = AssertableDocument::createFromString(<<<HTML
