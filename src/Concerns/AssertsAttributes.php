@@ -59,7 +59,7 @@ trait AssertsAttributes
     {
         PHPUnit::assertSame(
             $this->prepareArray($attributes),
-            $this->prepareArray($this->toArray()),
+            $this->prepareArray($this->toArray(), $normaliseWhitespace),
             $message ?? "The attributes list doesn't equal the given array.",
         );
 

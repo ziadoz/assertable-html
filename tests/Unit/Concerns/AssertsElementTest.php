@@ -7,6 +7,7 @@ namespace Ziadoz\AssertableHtml\Tests\Unit\Concerns;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
 use Ziadoz\AssertableHtml\Dom\AssertableClassList;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
@@ -543,9 +544,39 @@ class AssertsElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
-    | Assert Class Contains All
+    | Assert Class Contains Any / All
     |--------------------------------------------------------------------------
     */
+
+    public function test_assert_class_contains_any_passes(): void
+    {
+        $this->getAssertableElement('<p class="foo bar baz">Foo</p>')
+            ->assertClassContainsAny(['foo', 'bar']);
+    }
+
+    public function test_assert_class_contains_any_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [p.foo.bar.baz] class doesn't contain any of the given classes [qux nux].");
+
+        $this->getAssertableElement('<p class="foo bar baz">Foo</p>')
+            ->assertClassContainsAny(['qux', 'nux']);
+    }
+
+    public function test_assert_class_doesnt_contain_any_passes(): void
+    {
+        $this->getAssertableElement('<p class="foo bar">Foo</p>')
+            ->assertClassDoesntContainAny(['baz', 'qux']);
+    }
+
+    public function test_assert_class_doesnt_contain_any_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [p.foo.bar] class contains some of the given classes [foo bar].');
+
+        $this->getAssertableElement('<p class="foo bar">Foo</p>')
+            ->assertClassDoesntContainAny(['foo', 'bar']);
+    }
 
     public function test_assert_class_contains_all_passes(): void
     {
@@ -583,6 +614,25 @@ class AssertsElementTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
+    public function test_assert_attributes_passes(): void
+    {
+        $this->getAssertableElement('<p id="foo">Foo</p>')
+            ->assertAttributes(function (AssertableAttributesList $attributes): bool {
+                return $attributes['id'] === 'foo';
+            });
+    }
+
+    public function test_assert_attributes_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [p#foo] attributes don't pass the given callback.");
+
+        $this->getAssertableElement('<p id="foo">Foo</p>')
+            ->assertAttributes(function (AssertableAttributesList $attributes): bool {
+                return $attributes['id'] === 'bar';
+            });
+    }
+
     public function test_assert_attribute_passes(): void
     {
         $this->getAssertableElement('<p id="foo">Foo</p>')
@@ -596,6 +646,39 @@ class AssertsElementTest extends TestCase
 
         $this->getAssertableElement('<p id="foo">Foo</p>')
             ->assertAttribute('id', fn (?string $value): bool => $value === 'bar');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Attribute Array
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_attributes_equal_array_passes(): void
+    {
+        $this->getAssertableElement('<p id="foo" data-bar="  foo-bar  " aria-label="foo">Foo</p>')
+            ->assertAttributesEqualArray([
+                'id'         => 'foo',
+                'data-bar'   => '  foo-bar  ',
+                'aria-label' => 'foo',
+            ])->assertAttributesEqualArray([
+                'id'         => 'foo',
+                'data-bar'   => 'foo-bar',
+                'aria-label' => 'foo',
+            ], true);
+    }
+
+    public function test_assert_attributes_equal_array_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [p#foo] attributes don't equal the given array.");
+
+        $this->getAssertableElement('<p id="foo" data-bar="  foo-bar  " aria-label="foo">Foo</p>')
+            ->assertAttributesEqualArray([
+                'id'         => 'baz',
+                'data-baz'   => 'qux-nux',
+                'aria-label' => 'foo-bar',
+            ]);
     }
 
     /*

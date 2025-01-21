@@ -523,7 +523,7 @@ trait AssertsElement
 
     /*
     |--------------------------------------------------------------------------
-    | Assert Class Contains All
+    | Assert Class Contains Any / All
     |--------------------------------------------------------------------------
     */
 
@@ -622,7 +622,7 @@ trait AssertsElement
     public function assertAttributesEqualArray(array $attributes, bool $normaliseWhitespace = false, ?string $message = null): static
     {
         $this->attributes->assertEqualsArray($attributes, $normaliseWhitespace, $message ?? sprintf(
-            "The element [%s] attributes doesn't equal the given array.",
+            "The element [%s] attributes don't equal the given array.",
             $this->identifier(),
         ));
 
