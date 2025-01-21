@@ -6,7 +6,6 @@ namespace Ziadoz\AssertableHtml\Dom;
 
 use Dom\Element;
 use Dom\HTMLElement;
-use ReflectionClass;
 use Ziadoz\AssertableHtml\Concerns\AssertsElement;
 use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;

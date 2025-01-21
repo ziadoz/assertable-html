@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Unit\Dom;
 
-use Closure;
-use Dom\HTMLDocument;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
 use Ziadoz\AssertableHtml\Dom\AssertableClassList;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
