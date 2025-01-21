@@ -47,12 +47,12 @@ $html->with('nav', function (AssertableElement $nav) {
 });
 
 $html->with('#content', function (AssertableElement $div) {
-    $div->with('#content h2', function (AssertableElement $h2) {   
+    $div->with('h2', function (AssertableElement $h2) {   
         $h2->assertClassContainsAll(['subheading', 'welcome'])
             ->assertTextContains('Welcome');
     });
         
-    $div->elsewhere('#content h3', function (AssertableElement $h3) {
+    $div->elsewhere('#sidebar h3', function (AssertableElement $h3) {
         $h3->assertClassContainsAll(['subheading'])
             ->assertTextContains('Actions');
     });
