@@ -14,27 +14,27 @@ trait IdentifiesElement
     public function identifier(): string
     {
         return implode('', array_filter([
-            $this->formatTag($this->element),
-            $this->formatId($this->element),
-            $this->formatClasses($this->element),
+            $this->formatTag(),
+            $this->formatId(),
+            $this->formatClasses(),
         ]));
     }
 
     /** Return the element's formatted tag name. */
-    private function formatTag(HtmlElement|Element $element): string
+    private function formatTag(): string
     {
-        return mb_strtolower($element->tagName);
+        return mb_strtolower($this->element->tagName);
     }
 
     /** Return the element's formatted ID (if applicable). */
-    private function formatId(HtmlElement|Element $element): string
+    private function formatId(): string
     {
-        return trim($id = $element->id) !== '' ? '#' . Whitespace::normalise(trim($id)) : '';
+        return trim($id = $this->element->id) !== '' ? '#' . Whitespace::normalise(trim($id)) : '';
     }
 
     /** Return the elements format classes (if any). */
-    private function formatClasses(HtmlElement|Element $element): string
+    private function formatClasses(): string
     {
-        return implode('', array_map(fn (string $class): string => '.' . $class, iterator_to_array($element->classList)));
+        return implode('', array_map(fn (string $class): string => '.' . $class, iterator_to_array($this->element->classList)));
     }
 }
