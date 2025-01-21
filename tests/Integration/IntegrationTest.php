@@ -156,7 +156,7 @@ class IntegrationTest extends TestCase
             ->assertText(fn (AssertableText $text) => str_contains($text->value(true), 'is a test'));
 
         $html->querySelector('p')
-            ->assertClassesNotEmpty()
+            ->assertClassNotEmpty()
             ->assertClassPresent()
             ->assertClassEquals('lux pux nux')
             ->assertClassDoesntEqual('foo bar baz')
@@ -239,10 +239,10 @@ class IntegrationTest extends TestCase
 
         $html->querySelectorAll('ul li')
             ->assertCount(3)
-            ->assertLessThan(4)
-            ->assertLessThanOrEqual(4)
-            ->assertGreaterThan(1)
-            ->assertGreaterThanOrEqual(1)
+            ->assertCountLessThan(4)
+            ->assertCountLessThanOrEqual(4)
+            ->assertCountGreaterThan(1)
+            ->assertCountGreaterThanOrEqual(1)
             ->assertAny(fn (AssertableElement $el) => $el->matches('li'))
             ->assertAll(fn (AssertableElement $el) => $el->matches('li[id]'))
             ->assertElements(function (AssertableElementsList $els): bool {
