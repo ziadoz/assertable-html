@@ -16,6 +16,63 @@ class AssertsElementTest extends TestCase
 {
     /*
     |--------------------------------------------------------------------------
+    | Assert Exists
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_elements_exists_passes(): void
+    {
+        $this->getAssertableElement('<div><p>Foo</p></div>')
+            ->assertElementsExist('p');
+    }
+
+    public function test_assert_elements_exists_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [div] doesn't contain any elements matching the given selector [foo].");
+
+        $this->getAssertableElement('<div><p>Foo</p></div>')
+            ->assertElementsExist('foo');
+    }
+
+    public function test_assert_elements_dont_exist_passes(): void
+    {
+        $this->getAssertableElement('<div><p>Foo</p></div>')
+            ->assertElementsDontExist('foo');
+    }
+
+    public function test_assert_elements_dont_exist_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [div] contain [1] elements matching the given selector [p].');
+
+        $this->getAssertableElement('<div><p>Foo</p></div>')
+            ->assertElementsDontExist('p');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Tag
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_tag_passes(): void
+    {
+        $this->getAssertableElement('<foo-bar>Foo Bar</foo-bar>')
+            ->assertTag('foo-bar');
+    }
+
+    public function test_assert_tag_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [foo-bar] tag doesn't match the given tag [p].");
+
+        $this->getAssertableElement('<foo-bar>Foo Bar</foo-bar>')
+            ->assertTag('p');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert Element
     |--------------------------------------------------------------------------
     */

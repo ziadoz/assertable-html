@@ -14,6 +14,12 @@ use Ziadoz\AssertableHtml\Dom\AssertableText;
 
 trait AssertsElement
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Exists
+    |--------------------------------------------------------------------------
+    */
+
     /** Assert the element contains one or more elements matching the given selector. */
     public function assertElementsExist(string $selector, ?string $message = null): static
     {
@@ -60,10 +66,9 @@ trait AssertsElement
             $expected = strtolower($tag),
             $actual = strtolower($this->element->tagName),
             $message ?? sprintf(
-                "The element [%s] tag name [%s] doesn't match the given tag [%s].",
+                "The element [%s] tag doesn't match the given tag [%s].",
                 $this->identifier(),
                 $expected,
-                $actual,
             ),
         );
 
