@@ -18,27 +18,12 @@ class AssertableDocumentTest extends TestCase
     {
         $assertable = AssertableDocument::createFromString('<title>Foo - Bar</title>', LIBXML_NOERROR);
         $this->assertSame('Foo - Bar', $assertable->title);
-        $this->assertInstanceOf(AssertableElement::class, $assertable->head);
-        $this->assertInstanceOf(AssertableElement::class, $assertable->body);
     }
 
     public function test_get_html(): void
     {
         $assertable = AssertableDocument::createFromString('<p>Foo</p>', LIBXML_NOERROR);
         $this->assertSame('<html><head></head><body><p>Foo</p></body></html>', $assertable->getHtml());
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Proxy
-    |--------------------------------------------------------------------------
-    */
-
-    public function test_proxy(): void
-    {
-        $proxy = AssertableDocument::proxy(HTMLDocument::createFromString('<p>Foo</p>', LIBXML_NOERROR));
-        $this->assertInstanceOf(AssertableDocument::class, $proxy);
-        $this->assertInstanceOf(Closure::class, new ReflectionClass($proxy)->getLazyInitializer($proxy));
     }
 
     /*
@@ -62,6 +47,15 @@ class AssertableDocumentTest extends TestCase
         $this->assertInstanceOf(AssertableDocument::class, $assertable);
 
         @unlink($file);
+    }
+
+    public function test_create_from_document(): void
+    {
+        $document = HTMLDocument::createFromString('<p>Foo</p>', LIBXML_NOERROR);
+
+        $assertable = AssertableDocument::createFromDocument($document);
+        $this->assertInstanceOf(AssertableDocument::class, $assertable);
+        $this->assertSame($document->saveHtml(), $assertable->getHtml());
     }
 
     public function test_query_selector(): void

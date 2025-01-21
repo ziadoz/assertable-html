@@ -39,9 +39,6 @@ readonly class AssertableElement
     /** The element's text. */
     public AssertableText $text;
 
-    /** The element's assertable HTML document. */
-    public AssertableDocument $document;
-
     /** Create an assertable element. */
     public function __construct(private HTMLElement|Element $element)
     {
@@ -52,7 +49,6 @@ readonly class AssertableElement
         $this->tag = strtolower($this->element->tagName);
         $this->id = $this->element->id;
         $this->text = new AssertableText($this->element->textContent);
-        $this->document = AssertableDocument::proxy($this->element->ownerDocument);
     }
 
     /** Get the underlying HTML element. */
@@ -77,20 +73,6 @@ readonly class AssertableElement
     public function dd(): never
     {
         dd($this->getHtml());
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Proxy
-    |--------------------------------------------------------------------------
-    */
-
-    /** Create a lazy proxy assertable element for the given element. */
-    public static function proxy(HTMLElement|Element|null $element): ?static
-    {
-        return $element !== null
-            ? new ReflectionClass(static::class)->newLazyProxy(fn () => new static($element))
-            : null;
     }
 
     /*

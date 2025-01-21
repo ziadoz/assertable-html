@@ -19,20 +19,12 @@ final readonly class AssertableDocument
     use Whenable;
     use Withable;
 
-    /** The document's head. */
-    public ?AssertableElement $head;
-
-    /** The document's body. */
-    public ?AssertableElement $body;
-
     /** The document's page title. */
     public string $title;
 
     /** Create a new assertable document. */
     public function __construct(private HTMLDocument|Document $document)
     {
-        $this->head = AssertableElement::proxy($this->document->head);
-        $this->body = AssertableElement::proxy($this->document->body);
         $this->title = $this->document->title;
     }
 
@@ -56,18 +48,6 @@ final readonly class AssertableDocument
 
     /*
     |--------------------------------------------------------------------------
-    | Proxy
-    |--------------------------------------------------------------------------
-    */
-
-    /** Create a lazy proxy assertable element for the given element. */
-    public static function proxy(HTMLDocument|Document $document): self
-    {
-        return new ReflectionClass(self::class)->newLazyProxy(fn () => new self($document));
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | Native
     |--------------------------------------------------------------------------
     */
@@ -82,6 +62,12 @@ final readonly class AssertableDocument
     public static function createFromString(string $source, int $options = 0, ?string $overrideEncoding = null): self
     {
         return new self(HTMLDocument::createFromString($source, $options, $overrideEncoding));
+    }
+
+    /** Create an assertable document from an existing HTML document. */
+    public static function createFromDocument(HTMLDocument|Document $document): self
+    {
+        return new self(clone $document);
     }
 
     /** Return the assertable element matching the given selectors. */

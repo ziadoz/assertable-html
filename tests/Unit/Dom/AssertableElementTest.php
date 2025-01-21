@@ -44,20 +44,6 @@ class AssertableElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
-    | Proxy
-    |--------------------------------------------------------------------------
-    */
-
-    public function test_proxy(): void
-    {
-        $proxy = AssertableElement::proxy(HTMLDocument::createFromString('<p>Foo</p>', LIBXML_NOERROR)->querySelector('p'));
-
-        $this->assertInstanceOf(AssertableElement::class, $proxy);
-        $this->assertInstanceOf(Closure::class, new ReflectionClass($proxy)->getLazyInitializer($proxy));
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | Native
     |--------------------------------------------------------------------------
     */

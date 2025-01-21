@@ -28,7 +28,9 @@ trait Withable
      */
     public function elsewhere(string $selector, callable $callback): static
     {
-        $document = $this instanceof AssertableDocument ? $this : $this->document;
+        $document = $this instanceof AssertableDocument
+            ? $this
+            : AssertableDocument::createFromDocument($this->element->ownerDocument);
 
         $callback($document->querySelector($selector));
 
