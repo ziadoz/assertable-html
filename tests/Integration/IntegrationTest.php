@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Integration;
 
+use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
 use Ziadoz\AssertableHtml\Dom\AssertableClassList;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
-use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class IntegrationTest extends TestCase
 {

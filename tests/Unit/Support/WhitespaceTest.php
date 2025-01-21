@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Unit\Support;
 
+use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Support\Whitespace;
-use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class WhitespaceTest extends TestCase
 {

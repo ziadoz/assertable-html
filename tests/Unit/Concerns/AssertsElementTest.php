@@ -6,10 +6,10 @@ namespace Ziadoz\AssertableHtml\Tests\Unit\Concerns;
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
-use Ziadoz\AssertableHtml\Tests\TestCase;
 
 class AssertsElementTest extends TestCase
 {
