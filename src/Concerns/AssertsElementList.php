@@ -83,7 +83,7 @@ trait AssertsElementList
     }
 
     /** Assert the element list contains greater than the given number of elements. */
-    public function assertGreaterThan(int $count, ?string $message = null): static
+    public function assertCountGreaterThan(int $count, ?string $message = null): static
     {
         $this->assertNumberOfElements('>', $count, $message);
 
@@ -91,7 +91,7 @@ trait AssertsElementList
     }
 
     /** Assert the element list contains greater than or equal the given number of elements. */
-    public function assertGreaterThanOrEqual(int $count, ?string $message = null): static
+    public function assertCountGreaterThanOrEqual(int $count, ?string $message = null): static
     {
         $this->assertNumberOfElements('>=', $count, $message);
 
@@ -99,7 +99,7 @@ trait AssertsElementList
     }
 
     /** Assert the element list contains less than the given number of elements. */
-    public function assertLessThan(int $count, ?string $message = null): static
+    public function assertCountLessThan(int $count, ?string $message = null): static
     {
         $this->assertNumberOfElements('<', $count, $message);
 
@@ -107,7 +107,7 @@ trait AssertsElementList
     }
 
     /** Assert the element contains less than or equal the given number of elements. */
-    public function assertLessThanOrEqual(int $count, ?string $message = null): static
+    public function assertCountLessThanOrEqual(int $count, ?string $message = null): static
     {
         $this->assertNumberOfElements('<=', $count, $message);
 
@@ -116,7 +116,7 @@ trait AssertsElementList
 
     /*
     |--------------------------------------------------------------------------
-    | Assert Any/All
+    | Assert Any / All
     |--------------------------------------------------------------------------
     */
 
