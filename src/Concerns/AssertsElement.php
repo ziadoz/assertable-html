@@ -650,7 +650,7 @@ trait AssertsElement
     public function assertAttributesNotEmpty(?string $message = null): static
     {
         $this->attributes->assertNotEmpty($message ?? sprintf(
-            "The element [%s] attribute list is empty.",
+            'The element [%s] attribute list is empty.',
             $this->identifier(),
         ));
 
