@@ -235,7 +235,7 @@ trait AssertsAttributes
     /** Assert the given attribute doesn't end with the given suffix in the attribute list. */
     public function assertDoesntEndWith(string $attribute, string $suffix, bool $normaliseWhitespace = false, ?string $message = null): static
     {
-        PHPUnit::assertStringStartsNotWith(
+        PHPUnit::assertStringEndsNotWith(
             $suffix,
             $this->value($attribute, $normaliseWhitespace),
             $message ?? sprintf(
