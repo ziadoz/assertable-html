@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Ziadoz\AssertableHtml\Concerns;
 
 use Dom\Element;
-use Dom\HTMLElement;
 use Ziadoz\AssertableHtml\Support\Whitespace;
 
 trait IdentifiesElement
