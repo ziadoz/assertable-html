@@ -959,8 +959,8 @@ class AssertsElementTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function getAssertableElement(string $html, string $selector = 'body *:first-of-type'): AssertableElement
+    private function getAssertableElement(string $html): AssertableElement
     {
-        return AssertableDocument::createFromString($html, LIBXML_NOERROR)->querySelector($selector);
+        return AssertableDocument::createFromString($html, LIBXML_NOERROR)->querySelector('body *:first-of-type');
     }
 }
