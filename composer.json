@@ -32,5 +32,12 @@
         "tests": ["@php vendor/bin/phpunit"],
         "tests:unit": ["@php vendor/bin/phpunit --testsuite=unit"],
         "tests:integration": ["@php vendor/bin/phpunit --testsuite=integration"]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ziadoz\\AssertableHtml\\AssertableHtmlServiceProvider"
+            ]
+        }
     }
 }
