@@ -9,7 +9,7 @@ use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 trait AssertsHtml
 {
     /** Return a configured assertable HTML document. */
-    public function assertableDocument(string $html, int $options = 0, ?string $overrideEncoding = null): AssertableDocument
+    public function assertableHtml(string $html, int $options = 0, ?string $overrideEncoding = null): AssertableDocument
     {
         return is_file($html)
             ? AssertableDocument::createFromFile($html, $options, $overrideEncoding)
@@ -17,20 +17,34 @@ trait AssertsHtml
     }
 
     /** Return an assertable HTML document. */
-    public function assertHtml(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): void
+    public function assertHtml(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): static
     {
-        $this->assertableDocument($html, $options, $overrideEncoding)->scope($callback);
+        $this->assertableHtml($html, $options, $overrideEncoding)->scope($callback);
+
+        return $this;
     }
 
     /** Return an assertable HTML document scoped to <head>. */
-    public function assertHead(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): void
+    public function assertHead(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): static
     {
-        $this->assertableDocument($html, $options, $overrideEncoding)->with('head', $callback);
+        $this->assertableHtml($html, $options, $overrideEncoding)->with('head', $callback);
+
+        return $this;
     }
 
     /** Return an assertable HTML document scoped to <body>. */
-    public function assertBody(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): void
+    public function assertBody(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): static
     {
-        $this->assertableDocument($html, $options, $overrideEncoding)->with('body', $callback);
+        $this->assertableHtml($html, $options, $overrideEncoding)->with('body', $callback);
+
+        return $this;
+    }
+
+    /** Return an assertable HTML document scoped to the given selector. */
+    public function assertElement(string $html, string $selector, callable $callback, int $options = 0, ?string $overrideEncoding = null): static
+    {
+        $this->assertableHtml($html, $options, $overrideEncoding)->with($selector, $callback);
+
+        return $this;
     }
 }

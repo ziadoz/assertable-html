@@ -28,25 +28,25 @@ class AssertsHtmlTest extends TestCase
 
         $case = $this->getTestClass();
 
-        $case->assertableDocument($html)->scope(function (AssertableDocument $assertable) {
+        $case->assertableHtml($html)->scope(function (AssertableDocument $assertable) {
             $this->assertInstanceOf(AssertableDocument::class, $assertable);
         });
 
         $case->assertHtml($html, function (AssertableDocument $assertable): void {
             $this->assertInstanceOf(AssertableDocument::class, $assertable);
             $assertable->assertTitleEquals('Test Page Title');
-        });
-
-        $case->assertHead($html, function (AssertableElement $assertable): void {
+        })->assertHead($html, function (AssertableElement $assertable): void {
             $this->assertInstanceOf(AssertableElement::class, $assertable);
             $assertable->assertTag('head');
             $assertable->querySelector('meta[name="description"]')->assertAttributeEquals('content', 'Foo Bar');
-        });
-
-        $case->assertBody($html, function (AssertableElement $assertable): void {
+        })->assertBody($html, function (AssertableElement $assertable): void {
             $this->assertInstanceOf(AssertableElement::class, $assertable);
             $assertable->assertTag('body');
             $assertable->querySelector('p')->assertTextEquals('Foo');
+        })->assertElement($html, 'p', function (AssertableElement $assertable): void {
+            $this->assertInstanceOf(AssertableElement::class, $assertable);
+            $assertable->assertTag('p');
+            $assertable->assertTextEquals('Foo');
         });
     }
 
