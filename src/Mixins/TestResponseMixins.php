@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ziadoz\AssertableHtml\Mixins;
 
 use Closure;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 
 class TestResponseMixins
@@ -13,7 +14,11 @@ class TestResponseMixins
     public function assertsHtml(): Closure
     {
         return function (callable $callback, int $options = 0, ?string $overrideEncoding = null): void {
-            AssertableDocument::createFromString($this->getContent(), $options, $overrideEncoding)->scope($callback);
+            AssertableDocument::createFromString(
+                $this->baseResponse instanceof StreamedResponse ? $this->streamedContent() : $this->getContent(),
+                $options,
+                $overrideEncoding
+            )->scope($callback);
         };
     }
 
@@ -21,7 +26,11 @@ class TestResponseMixins
     public function assertsHead(): Closure
     {
         return function (callable $callback, int $options = 0, ?string $overrideEncoding = null): void {
-            AssertableDocument::createFromString($this->getContent(), $options, $overrideEncoding)->with('head', $callback);
+            AssertableDocument::createFromString(
+                $this->baseResponse instanceof StreamedResponse ? $this->streamedContent() : $this->getContent(),
+                $options,
+                $overrideEncoding
+            )->with('head', $callback);
         };
     }
 
@@ -29,7 +38,11 @@ class TestResponseMixins
     public function assertsBody(): Closure
     {
         return function (callable $callback, int $options = 0, ?string $overrideEncoding = null): void {
-            AssertableDocument::createFromString($this->getContent(), $options, $overrideEncoding)->with('body', $callback);
+            AssertableDocument::createFromString(
+                $this->baseResponse instanceof StreamedResponse ? $this->streamedContent() : $this->getContent(),
+                $options,
+                $overrideEncoding
+            )->with('body', $callback);
         };
     }
 }
