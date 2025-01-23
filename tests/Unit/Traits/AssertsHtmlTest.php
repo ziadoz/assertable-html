@@ -13,19 +13,7 @@ class AssertsHtmlTest extends TestCase
 {
     public function test_trait(): void
     {
-        $html = <<<'HTML'
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Test Page Title</title>
-                <meta name="description" content="Foo Bar">
-            </head>
-            <body>
-                <p>Foo</p>
-            </body>
-            </html>
-        HTML;
-
+        $html = $this->getTestHtml();
         $case = $this->getTestClass();
 
         $case->assertableHtml($html)->scope(function (AssertableDocument $assertable) {
@@ -56,5 +44,21 @@ class AssertsHtmlTest extends TestCase
         {
             use AssertsHtml;
         };
+    }
+
+    private function getTestHtml(): string
+    {
+        return <<<'HTML'
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Test Page Title</title>
+                <meta name="description" content="Foo Bar">
+            </head>
+            <body>
+                <p>Foo</p>
+            </body>
+            </html>
+        HTML;
     }
 }
