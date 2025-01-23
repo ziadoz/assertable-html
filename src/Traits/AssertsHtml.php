@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Testing;
+namespace Ziadoz\AssertableHtml\Traits;
 
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 

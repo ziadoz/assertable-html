@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Tests\Unit\Testing;
+namespace Ziadoz\AssertableHtml\Tests\Unit\Traits;
 
 use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
-use Ziadoz\AssertableHtml\Testing\AssertsHtml;
+use Ziadoz\AssertableHtml\Traits\AssertsHtml;
 
 class AssertsHtmlTest extends TestCase
 {
