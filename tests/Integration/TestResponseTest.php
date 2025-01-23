@@ -13,7 +13,7 @@ use Ziadoz\AssertableHtml\Dom\AssertableElement;
 
 class TestResponseTest extends TestCase
 {
-    public function test_test_response(): void
+    public function test_response(): void
     {
         $response = $this->getTestResponse();
 
