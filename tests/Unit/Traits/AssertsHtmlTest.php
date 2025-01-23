@@ -31,18 +31,18 @@ class AssertsHtmlTest extends TestCase
             </html>
         HTML;
 
-        $case->assertsHtml($html, function (AssertableDocument $assertable): void {
+        $case->assertHtml($html, function (AssertableDocument $assertable): void {
             $this->assertInstanceOf(AssertableDocument::class, $assertable);
             $assertable->assertTitleEquals('Test Page Title');
         });
 
-        $case->assertsHead($html, function (AssertableElement $assertable): void {
+        $case->assertHead($html, function (AssertableElement $assertable): void {
             $this->assertInstanceOf(AssertableElement::class, $assertable);
             $assertable->assertTag('head');
             $assertable->querySelector('meta[name="description"]')->assertAttributeEquals('content', 'Foo Bar');
         });
 
-        $case->assertsBody($html, function (AssertableElement $assertable): void {
+        $case->assertBody($html, function (AssertableElement $assertable): void {
             $this->assertInstanceOf(AssertableElement::class, $assertable);
             $assertable->assertTag('body');
             $assertable->querySelector('p')->assertTextEquals('Foo');

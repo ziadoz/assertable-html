@@ -17,19 +17,19 @@ trait AssertsHtml
     }
 
     /** Return an assertable HTML document. */
-    public function assertsHtml(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): void
+    public function assertHtml(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): void
     {
         $this->assertable($html, $options, $overrideEncoding)->scope($callback);
     }
 
     /** Return an assertable HTML document scoped to <head>. */
-    public function assertsHead(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): void
+    public function assertHead(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): void
     {
         $this->assertable($html, $options, $overrideEncoding)->with('head', $callback);
     }
 
     /** Return an assertable HTML document scoped to <body>. */
-    public function assertsBody(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): void
+    public function assertBody(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): void
     {
         $this->assertable($html, $options, $overrideEncoding)->with('body', $callback);
     }

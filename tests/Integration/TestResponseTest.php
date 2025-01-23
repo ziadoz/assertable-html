@@ -20,18 +20,18 @@ class TestResponseTest extends TestCase
     {
         $response = $makeResponse();
 
-        $response->assertsHtml(function (AssertableDocument $assertable): void {
+        $response->assertHtml(function (AssertableDocument $assertable): void {
             $this->assertInstanceOf(AssertableDocument::class, $assertable);
             $assertable->assertTitleEquals('Test Page Title');
         });
 
-        $response->assertsHead(function (AssertableElement $assertable): void {
+        $response->assertHead(function (AssertableElement $assertable): void {
             $this->assertInstanceOf(AssertableElement::class, $assertable);
             $assertable->assertTag('head');
             $assertable->querySelector('meta[name="description"]')->assertAttributeEquals('content', 'Foo Bar');
         });
 
-        $response->assertsBody(function (AssertableElement $assertable): void {
+        $response->assertBody(function (AssertableElement $assertable): void {
             $this->assertInstanceOf(AssertableElement::class, $assertable);
             $assertable->assertTag('body');
             $assertable->querySelector('p')->assertTextEquals('Foo');
