@@ -23,6 +23,7 @@ class AssertsHtmlTest extends TestCase
             <html>
             <head>
                 <title>Test Page Title</title>
+                <meta name="description" content="Foo Bar">
             </head>
             <body>
                 <p>Foo</p>
@@ -32,16 +33,19 @@ class AssertsHtmlTest extends TestCase
 
         $case->assertsHtml($html, function (AssertableDocument $assertable): void {
             $this->assertInstanceOf(AssertableDocument::class, $assertable);
+            $assertable->assertTitleEquals('Test Page Title');
         });
 
         $case->assertsHead($html, function (AssertableElement $assertable): void {
             $this->assertInstanceOf(AssertableElement::class, $assertable);
-            $this->assertSame('head', $assertable->tag);
+            $assertable->assertTag('head');
+            $assertable->querySelector('meta[name="description"]')->assertAttributeEquals('content', 'Foo Bar');
         });
 
         $case->assertsBody($html, function (AssertableElement $assertable): void {
             $this->assertInstanceOf(AssertableElement::class, $assertable);
-            $this->assertSame('body', $assertable->tag);
+            $assertable->assertTag('body');
+            $assertable->querySelector('p')->assertTextEquals('Foo');
         });
     }
 }
