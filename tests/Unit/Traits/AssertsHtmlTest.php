@@ -13,11 +13,6 @@ class AssertsHtmlTest extends TestCase
 {
     public function test_trait(): void
     {
-        $case = new class
-        {
-            use AssertsHtml;
-        };
-
         $html = <<<'HTML'
             <!DOCTYPE html>
             <html>
@@ -30,6 +25,12 @@ class AssertsHtmlTest extends TestCase
             </body>
             </html>
         HTML;
+
+        $case = $this->getTestClass();
+
+        $case->assertableDocument($html)->scope(function (AssertableDocument $assertable) {
+            $this->assertInstanceOf(AssertableDocument::class, $assertable);
+        });
 
         $case->assertHtml($html, function (AssertableDocument $assertable): void {
             $this->assertInstanceOf(AssertableDocument::class, $assertable);
@@ -47,5 +48,13 @@ class AssertsHtmlTest extends TestCase
             $assertable->assertTag('body');
             $assertable->querySelector('p')->assertTextEquals('Foo');
         });
+    }
+
+    private function getTestClass(): object
+    {
+        return new class
+        {
+            use AssertsHtml;
+        };
     }
 }
