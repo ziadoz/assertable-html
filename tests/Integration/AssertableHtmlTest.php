@@ -12,7 +12,7 @@ use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
 
-class IntegrationTest extends TestCase
+class AssertableHtmlTest extends TestCase
 {
     public function test_assertable_html(): void
     {
