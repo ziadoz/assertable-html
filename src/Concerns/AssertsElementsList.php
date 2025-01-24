@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Concerns;
 
-use InvalidArgumentException;
-use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 trait AssertsElementsList
@@ -65,47 +63,15 @@ trait AssertsElementsList
     |--------------------------------------------------------------------------
     */
 
-    /**
-     * Assert the element list contains the expected number of elements.
-     *
-     * @throws InvalidArgumentException
-     * @throws OutOfBoundsException
-     */
-    public function assertNumberOfElements(string $comparison, int $count, ?string $message = null): static
-    {
-        if ($count < 0) {
-            throw new InvalidArgumentException('Expected number of elements in a list cannot be less than zero');
-        }
-
-        $message ??= sprintf(
-            "The element list doesn't have %s [%d] elements.",
-            match ($comparison) {
-                '='     => 'exactly',
-                '>'     => 'greater than',
-                '>='    => 'greater than or equal to',
-                '<'     => 'less than',
-                '<='    => 'less than or equal to',
-                default => throw new OutOfBoundsException('Invalid comparison operator: ' . $comparison),
-            },
-            $count,
-        );
-
-        match ($comparison) {
-            '='     => PHPUnit::assertCount($count, $this, $message),
-            '>'     => PHPUnit::assertGreaterThan($count, count($this), $message),
-            '>='    => PHPUnit::assertGreaterThanOrEqual($count, count($this), $message),
-            '<'     => PHPUnit::assertLessThan($count, count($this), $message),
-            '<='    => PHPUnit::assertLessThanOrEqual($count, count($this), $message),
-            default => throw new OutOfBoundsException('Invalid comparison operator: ' . $comparison),
-        };
-
-        return $this;
-    }
-
     /** Assert the element list contains the given number of elements. */
     public function assertCount(int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements('=', $count, $message);
+        $this->countNotNegative($count);
+
+        PHPUnit::assertCount($count, $this, $message ?? sprintf(
+            "The element list doesn't have exactly [%d] elements.",
+            $count,
+        ));
 
         return $this;
     }
@@ -113,7 +79,12 @@ trait AssertsElementsList
     /** Assert the element list contains greater than the given number of elements. */
     public function assertCountGreaterThan(int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements('>', $count, $message);
+        $this->countNotNegative($count);
+
+        PHPUnit::assertGreaterThan($count, count($this), $message ?? sprintf(
+            "The element list doesn't have greater than [%d] elements.",
+            $count,
+        ));
 
         return $this;
     }
@@ -121,7 +92,12 @@ trait AssertsElementsList
     /** Assert the element list contains greater than or equal the given number of elements. */
     public function assertCountGreaterThanOrEqual(int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements('>=', $count, $message);
+        $this->countNotNegative($count);
+
+        PHPUnit::assertGreaterThanOrEqual($count, count($this), $message ?? sprintf(
+            "The element list doesn't have greater than or equal to [%d] elements.",
+            $count,
+        ));
 
         return $this;
     }
@@ -129,7 +105,12 @@ trait AssertsElementsList
     /** Assert the element list contains less than the given number of elements. */
     public function assertCountLessThan(int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements('<', $count, $message);
+        $this->countNotNegative($count);
+
+        PHPUnit::assertLessThan($count, count($this), $message ?? sprintf(
+            "The element list doesn't have less than [%d] elements.",
+            $count,
+        ));
 
         return $this;
     }
@@ -137,9 +118,22 @@ trait AssertsElementsList
     /** Assert the element contains less than or equal the given number of elements. */
     public function assertCountLessThanOrEqual(int $count, ?string $message = null): static
     {
-        $this->assertNumberOfElements('<=', $count, $message);
+        $this->countNotNegative($count);
+
+        PHPUnit::assertLessThanOrEqual($count, count($this), $message ?? sprintf(
+            "The element list doesn't have less than or equal to [%d] elements.",
+            $count,
+        ));
 
         return $this;
+    }
+
+    /** Ensure the given count value is not negative, which makes no sense. */
+    private function countNotNegative(int $count): void
+    {
+        if ($count < 0) {
+            PHPUnit::fail('Expected number of elements in a list cannot be less than zero.');
+        }
     }
 
     /*

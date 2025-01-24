@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Concerns;
 
-use InvalidArgumentException;
-use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
 use Ziadoz\AssertableHtml\Dom\AssertableClassList;
@@ -141,40 +139,15 @@ trait AssertsElement
     |--------------------------------------------------------------------------
     */
 
-    /**
-     * Assert the element the expected number of elements matching the given selector.
-     *
-     * @throws InvalidArgumentException
-     * @throws OutOfBoundsException
-     */
-    public function assertNumberOfElements(string $selector, string $comparison, int $count, ?string $message = null): static
-    {
-        $this->querySelectorAll($selector)->assertNumberOfElements(
-            $comparison,
-            $count,
-            sprintf(
-                $message ?? "The element [%s] doesn't have %s [%d] elements matching the selector [%s].",
-                $this->identifier(),
-                match ($comparison) {
-                    '='     => 'exactly',
-                    '>'     => 'greater than',
-                    '>='    => 'greater than or equal to',
-                    '<'     => 'less than',
-                    '<='    => 'less than or equal to',
-                    default => throw new OutOfBoundsException('Invalid comparison operator: ' . $comparison),
-                },
-                $count,
-                $selector,
-            ),
-        );
-
-        return $this;
-    }
-
     /** Assert the element contains the exact number of elements matching the given selector. */
     public function assertElementsCount(string $selector, int $count, ?string $message = null): static
     {
-        $this->querySelectorAll($selector)->assertNumberOfElements('=', $count, $message);
+        $this->querySelectorAll($selector)->assertCount($count, $message ?? sprintf(
+            "The element [%s] doesn't have exactly [%d] elements matching the given selector [%s].",
+            $this->identifier(),
+            $count,
+            $selector,
+        ));
 
         return $this;
     }
@@ -182,7 +155,12 @@ trait AssertsElement
     /** Assert the element contains greater than the number of elements matching the given selector. */
     public function assertElementsCountGreaterThan(string $selector, int $count, ?string $message = null): static
     {
-        $this->querySelectorAll($selector)->assertNumberOfElements('>', $count, $message);
+        $this->querySelectorAll($selector)->assertCountGreaterThan($count, $message ?? sprintf(
+            "The element [%s] doesn't have greater than [%d] elements matching the given selector [%s].",
+            $this->identifier(),
+            $count,
+            $selector,
+        ));
 
         return $this;
     }
@@ -190,7 +168,12 @@ trait AssertsElement
     /** Assert the element contains greater than or equal the number of elements matching the given selector. */
     public function assertElementsCountGreaterThanOrEqual(string $selector, int $count, ?string $message = null): static
     {
-        $this->querySelectorAll($selector)->assertNumberOfElements('>=', $count, $message);
+        $this->querySelectorAll($selector)->assertCountGreaterThanOrEqual($count, $message ?? sprintf(
+            "The element [%s] doesn't have greater than or equal to [%d] elements matching the given selector [%s].",
+            $this->identifier(),
+            $count,
+            $selector,
+        ));
 
         return $this;
     }
@@ -198,7 +181,12 @@ trait AssertsElement
     /** Assert the element contains less than the number of elements matching the given selector. */
     public function assertElementsCountLessThan(string $selector, int $count, ?string $message = null): static
     {
-        $this->querySelectorAll($selector)->assertNumberOfElements('<', $count, $message);
+        $this->querySelectorAll($selector)->assertCountLessThan($count, $message ?? sprintf(
+            "The element [%s] doesn't have less than [%d] elements matching the given selector [%s].",
+            $this->identifier(),
+            $count,
+            $selector,
+        ));
 
         return $this;
     }
@@ -206,7 +194,12 @@ trait AssertsElement
     /** Assert the element contains less than or equal the number of elements matching the given selector. */
     public function assertElementsCountLessThanOrEqual(string $selector, int $count, ?string $message = null): static
     {
-        $this->querySelectorAll($selector)->assertNumberOfElements('<=', $count, $message);
+        $this->querySelectorAll($selector)->assertCountLessThanOrEqual($count, $message ?? sprintf(
+            "The element [%s] doesn't have less than or equal to [%d] elements matching the given selector [%s].",
+            $this->identifier(),
+            $count,
+            $selector,
+        ));
 
         return $this;
     }

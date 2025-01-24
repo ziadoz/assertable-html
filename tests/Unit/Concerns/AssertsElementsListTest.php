@@ -86,7 +86,7 @@ class AssertsElementsListTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_assert_number_of_elements_passes(): void
+    public function test_assert_count_comparisons_pass(): void
     {
         $assertable = AssertableDocument::createFromString(<<<'HTML'
         <ul>
@@ -97,12 +97,6 @@ class AssertsElementsListTest extends TestCase
         </ul>
         HTML, LIBXML_NOERROR)->querySelectorAll('li');
 
-        $assertable->assertNumberOfElements('=', 4);
-        $assertable->assertNumberOfElements('>', 1);
-        $assertable->assertNumberOfElements('>=', 4);
-        $assertable->assertNumberOfElements('<', 5);
-        $assertable->assertNumberOfElements('<=', 4);
-
         $assertable->assertCount(4);
         $assertable->assertCountGreaterThan(1);
         $assertable->assertCountGreaterThanOrEqual(4);
@@ -110,25 +104,31 @@ class AssertsElementsListTest extends TestCase
         $assertable->assertCountLessThanOrEqual(4);
     }
 
-    #[DataProvider('assert_number_of_elements_fails_data_provider')]
-    public function test_assert_number_of_elements_fails(string $comparison, int $expected, string $message): void
+    #[DataProvider('assert_count_comparisons_fail_data_provider')]
+    public function test_assert_count_comparisons_fail(string $comparison, int $expected, string $message): void
     {
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage($message);
 
-        AssertableDocument::createFromString(<<<'HTML'
+        $assertable = AssertableDocument::createFromString(<<<'HTML'
         <ul>
             <li>Foo</li>
             <li>Bar</li>
             <li>Baz</li>
             <li>Qux</li>
         </ul>
-        HTML, LIBXML_NOERROR)
-            ->querySelectorAll('li')
-            ->assertNumberOfElements($comparison, $expected);
+        HTML, LIBXML_NOERROR)->querySelectorAll('li');
+
+        match ($comparison) {
+            '='  => $assertable->assertCount($expected),
+            '>'  => $assertable->assertCountGreaterThan($expected),
+            '>=' => $assertable->assertCountGreaterThanOrEqual($expected),
+            '<'  => $assertable->assertCountLessThan($expected),
+            '<=' => $assertable->assertCountLessThanOrEqual($expected),
+        };
     }
 
-    public static function assert_number_of_elements_fails_data_provider(): iterable
+    public static function assert_count_comparisons_fail_data_provider(): iterable
     {
         yield 'equals' => [
             '=', 1, "The element list doesn't have exactly [1] elements.",

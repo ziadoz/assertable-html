@@ -139,7 +139,6 @@ class AssertableHtmlTest extends TestCase
             ->assertDoesntMatchSelector('span[data-foo-bar]');
 
         $html->querySelector('ul')
-            ->assertNumberOfElements('li', '=', 3)
             ->assertElementsCount('li', 3)
             ->assertElementsCountGreaterThan('li', 1)
             ->assertElementsCountGreaterThanOrEqual('li', 3)
