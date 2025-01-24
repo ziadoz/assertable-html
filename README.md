@@ -10,53 +10,73 @@ use Ziadoz\AssertableHtml\Dom\AssertableElement;
 
 // Make the response HTML an assertable document...
 $html = AssertableDocument::createFromString(<<<HTML
-    <h1>Dashboard</h1>
+    <h1 class="heading">Dashboard</h1>
+
     <nav>
-        <a href="/profile" class="nav-link">Profile</a>
+        <a href="/dashboard" class="nav-link active">Dashboard</a>
+        <a href="/settings" class="nav-link">Settings</a>
         <a href="/logout" class="nav-link">Logout</a>
     </nav>
+
     <div id="content">
-        <h2 class="subheading welcome">Welcome, Archie</h2>
-        <!-- ... -->
-    </div>
-    <div id="sidebar">
-        <h3 class="subheading">Actions</h3>
-        <!-- ... -->
+        <h2 class="heading subheading">Welcome, Archie</h2>
+        
+        <search>
+            <form method="post" action="/search">
+                <!-- ... -->
+
+                <input type="hidden" name="csrf" value="...">
+                <button type="Submit">Search</button>
+            </form>
+        </search>
     </div>
 HTML, LIBXML_NOERROR);
 
+// Assert on the <h1> element...
+$html->querySelector('h1')->assertTextEquals('Dashboard');
 
-// Start performing assertions...
-$html->querySelector('h1')
-    ->assertTextEquals('Dashboard');
-
+// Start asserting on the <nav> element...
 $html->with('nav', function (AssertableElement $nav) {
+    // Assert there are 3 navigation links with the correct classes... 
     $links = $nav->querySelectorAll('a')
-        ->assertCount(2)
+        ->assertCount(3)
         ->assertAll(function (AssertableElement $a) {
             $a->classes->contains('nav-link');
         });
 
-    $links[0]->assertAttributeEquals('href', '/profile')
-        ->assertTextEquals('Profile');
-        
-    $links[1]->assertAttributeEquals('href', '/logout')
-        ->assertTextEquals('Settings');
-        
+    // Assert each link has the correct URL and "active" style class...
+    $links[0]->assertAttributeEquals('href', '/dashboard')
+        ->assertTextEquals('Dashboard')
+        ->assertClassContains('active');
+
+    $links[1]->assertAttributeEquals('href', '/settings')
+        ->assertTextEquals('Settings')
+        ->assertClassDoesntContain('active');
+
+    $links[2]->assertAttributeEquals('href', '/logout')
+        ->assertTextEquals('Logout')
+        ->assertClassDoesntContain('active');
+
     // More assertions within <nav>...
 });
 
+// Start asserting on the <div id="content"> element...
 $html->with('#content', function (AssertableElement $div) {
-    $div->with('h2', function (AssertableElement $h2) {   
-        $h2->assertClassContainsAll(['subheading', 'welcome'])
-            ->assertTextContains('Welcome');
+    // Assert the sub-heading...
+    $div->querySelector('h2')
+        ->assertClassContainsAll(['heading', 'subheading'])
+        ->assertTextContains('Welcome');
+
+    $div->with('search form', function (AssertableElement $form) {
+        // Assert the form posts to the correct endpoint...
+        $form->assertAttributeEquals('method', 'post')
+            ->assertAttributeStartsWith('action', '/search');
+            
+        // Assert there's a submit button and hidden CSRF token...
+        $form->assertElementsExist('button[type="submit"]')
+            ->assertElementsExist('input[type="hidden"][name="csrf"]');
     });
-        
-    $div->elsewhere('#sidebar h3', function (AssertableElement $h3) {
-        $h3->assertClassContainsAll(['subheading'])
-            ->assertTextContains('Actions');
-    });
-    
+
     // More assertions within <div id="content">...
 });
 
