@@ -10,12 +10,12 @@ use Dom\NamedNodeMap;
 use IteratorAggregate;
 use RuntimeException;
 use Traversable;
-use Ziadoz\AssertableHtml\Concerns\AssertsAttributes;
+use Ziadoz\AssertableHtml\Concerns\AssertsAttributesList;
 use Ziadoz\AssertableHtml\Support\Whitespace;
 
 final readonly class AssertableAttributesList implements ArrayAccess, Countable, IteratorAggregate
 {
-    use AssertsAttributes;
+    use AssertsAttributesList;
 
     /** The element attributes */
     private array $attributes;

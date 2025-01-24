@@ -8,7 +8,7 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
-use Ziadoz\AssertableHtml\Dom\AssertableClassList;
+use Ziadoz\AssertableHtml\Dom\AssertableClassesList;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
@@ -378,7 +378,7 @@ class AssertsElementTest extends TestCase
     public function test_assert_class_passes(): void
     {
         $this->getAssertableElement('<p class="foo bar">Foo</p>')
-            ->assertClass(function (AssertableClassList $classes): bool {
+            ->assertClass(function (AssertableClassesList $classes): bool {
                 return $classes->contains('foo');
             });
     }
@@ -389,7 +389,7 @@ class AssertsElementTest extends TestCase
         $this->expectExceptionMessage("The element [p.foo.bar] class doesn't pass the given callback.");
 
         $this->getAssertableElement('<p class="foo bar">Foo</p>')
-            ->assertClass(function (AssertableClassList $classes): bool {
+            ->assertClass(function (AssertableClassesList $classes): bool {
                 return $classes->contains('baz');
             });
     }

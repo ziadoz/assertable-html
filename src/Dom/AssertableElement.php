@@ -25,7 +25,7 @@ readonly class AssertableElement
     public string $html;
 
     /** The element's classes. */
-    public AssertableClassList $classes;
+    public AssertableClassesList $classes;
 
     /** The element's attributes. */
     public AssertableAttributesList $attributes;
@@ -44,7 +44,7 @@ readonly class AssertableElement
     {
         // Properties
         $this->html = $this->element->innerHTML;
-        $this->classes = new AssertableClassList($this->element->classList);
+        $this->classes = new AssertableClassesList($this->element->classList);
         $this->attributes = new AssertableAttributesList($this->element->attributes);
         $this->tag = strtolower($this->element->tagName);
         $this->id = $this->element->id;

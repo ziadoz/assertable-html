@@ -11,11 +11,11 @@ use IteratorAggregate;
 use RuntimeException;
 use Stringable;
 use Traversable;
-use Ziadoz\AssertableHtml\Concerns\AssertsClassList;
+use Ziadoz\AssertableHtml\Concerns\AssertsClassesList;
 
-final readonly class AssertableClassList implements ArrayAccess, Countable, IteratorAggregate, Stringable
+final readonly class AssertableClassesList implements ArrayAccess, Countable, IteratorAggregate, Stringable
 {
-    use AssertsClassList;
+    use AssertsClassesList;
 
     /** Create a list of assertable classes. */
     public function __construct(private TokenList $classes)

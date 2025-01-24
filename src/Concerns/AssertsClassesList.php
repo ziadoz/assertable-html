@@ -6,7 +6,7 @@ namespace Ziadoz\AssertableHtml\Concerns;
 
 use PHPUnit\Framework\Assert as PHPUnit;
 
-trait AssertsClassList
+trait AssertsClassesList
 {
     /*
     |--------------------------------------------------------------------------

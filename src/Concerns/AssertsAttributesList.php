@@ -7,7 +7,7 @@ namespace Ziadoz\AssertableHtml\Concerns;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Support\Whitespace;
 
-trait AssertsAttributes
+trait AssertsAttributesList
 {
     /*
     |--------------------------------------------------------------------------

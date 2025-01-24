@@ -7,7 +7,7 @@ namespace Ziadoz\AssertableHtml\Tests\Unit\Dom;
 use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 
-class AssertableClassListTest extends TestCase
+class AssertableClassesListTest extends TestCase
 {
     public function test_class_list(): void
     {

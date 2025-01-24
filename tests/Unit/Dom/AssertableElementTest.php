@@ -7,7 +7,7 @@ namespace Ziadoz\AssertableHtml\Tests\Unit\Dom;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
-use Ziadoz\AssertableHtml\Dom\AssertableClassList;
+use Ziadoz\AssertableHtml\Dom\AssertableClassesList;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
@@ -23,7 +23,7 @@ class AssertableElementTest extends TestCase
         )->querySelector('p');
 
         $this->assertSame('<strong>Foo</strong>', $assertable->html);
-        $this->assertInstanceOf(AssertableClassList::class, $assertable->classes);
+        $this->assertInstanceOf(AssertableClassesList::class, $assertable->classes);
         $this->assertSame(['foo', 'bar'], $assertable->classes->toArray());
         $this->assertInstanceOf(AssertableAttributesList::class, $assertable->attributes);
         $this->assertSame(['id' => 'foo', 'class' => 'foo bar', 'data-baz' => 'qux'], $assertable->attributes->toArray());

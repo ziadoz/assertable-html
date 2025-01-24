@@ -6,7 +6,7 @@ namespace Ziadoz\AssertableHtml\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
-use Ziadoz\AssertableHtml\Dom\AssertableClassList;
+use Ziadoz\AssertableHtml\Dom\AssertableClassesList;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
@@ -170,7 +170,7 @@ class AssertableHtmlTest extends TestCase
             ->assertClassDoesntContainAll(['pux', 'lux', 'nux', 'foo', 'bar', 'baz'])
             ->assertClassContainsAny(['foo', 'bar', 'lux'])
             ->assertClassDoesntContainAny(['foo', 'bar', 'baz'])
-            ->assertClass(function (AssertableClassList $classes): bool {
+            ->assertClass(function (AssertableClassesList $classes): bool {
                 return $classes->contains('lux') &&
                     $classes->contains('pux') &&
                     $classes->contains('nux');
@@ -236,7 +236,7 @@ class AssertableHtmlTest extends TestCase
 
         /*
         |--------------------------------------------------------------------------
-        | Assertable HTML Element Element
+        | Assertable HTML Element List
         |--------------------------------------------------------------------------
         */
 
@@ -296,7 +296,7 @@ class AssertableHtmlTest extends TestCase
 
         /*
         |--------------------------------------------------------------------------
-        | Assertable Class List
+        | Assertable Classes List
         |--------------------------------------------------------------------------
         */
 
@@ -311,7 +311,7 @@ class AssertableHtmlTest extends TestCase
             ->assertDoesntContainAny(['foo', 'bar', 'baz'])
             ->assertValueEquals('lux pux nux')
             ->assertValueDoesntEqual('foo bar baz')
-            ->assertClasses(function (AssertableClassList $classes): bool {
+            ->assertClasses(function (AssertableClassesList $classes): bool {
                 return $classes->contains('lux');
             });
 

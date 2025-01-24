@@ -6,7 +6,7 @@ namespace Ziadoz\AssertableHtml\Concerns;
 
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
-use Ziadoz\AssertableHtml\Dom\AssertableClassList;
+use Ziadoz\AssertableHtml\Dom\AssertableClassesList;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
 
@@ -386,7 +386,7 @@ trait AssertsElement
     /**
      * Assert the element's class passes the given callback.
      *
-     * @param  callable(AssertableClassList $classes): bool  $callback
+     * @param  callable(AssertableClassesList $classes): bool  $callback
      */
     public function assertClass(callable $callback, ?string $message = null): static
     {
