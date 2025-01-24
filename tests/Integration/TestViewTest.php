@@ -18,6 +18,10 @@ class TestViewTest extends TestCase
 
         $view = $this->getTestView();
 
+        $view->assertableElement()->scope(function (AssertableElement $assertable) {
+            $this->assertInstanceOf(AssertableElement::class, $assertable);
+        });
+
         $view->assertsElement(function (AssertableElement $assertable) {
             $assertable->querySelector('div')->assertIdEquals('component');
 
