@@ -56,7 +56,7 @@ class AssertableHtmlTest extends TestCase
 
         /*
         |--------------------------------------------------------------------------
-        | With / Elsewhere / Scope
+        | With / Many / Elsewhere / Scope
         |--------------------------------------------------------------------------
         */
 
@@ -71,7 +71,7 @@ class AssertableHtmlTest extends TestCase
                 $el->assertTextEquals('This is a test div.', true);
             });
 
-            $el->querySelectorAll('li')->scope(function (AssertableElementsList $els): void {
+            $el->many('li', function (AssertableElementsList $els): void {
                 $els[0]->assertTextEquals('Foo');
                 $els[1]->assertTextEquals('Bar');
                 $els[2]->assertTextEquals('Baz');
@@ -86,6 +86,10 @@ class AssertableHtmlTest extends TestCase
             $el->elsewhere('ul', function (AssertableElement $el): void {
                 $el->assertElementsCount('li[id]', 3);
             });
+        })->many('p, span', function (AssertableElementsList $els): void {
+            $els->assertCount(2);
+            $els[0]->assertTag('p');
+            $els[1]->assertTag('span');
         })->elsewhere('p', function (AssertableElement $el): void {
             $el->assertTextEquals('I am a test paragraph.');
         })->scope(function (AssertableDocument $doc): void {
