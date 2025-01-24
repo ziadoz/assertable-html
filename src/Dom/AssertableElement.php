@@ -6,6 +6,7 @@ namespace Ziadoz\AssertableHtml\Dom;
 
 use Dom\Element;
 use Dom\HTMLElement;
+use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Concerns\AssertsElement;
 use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;
@@ -101,11 +102,17 @@ readonly class AssertableElement
     }
 
     /** Return the assertable element matches the given selectors. */
-    public function querySelector(string $selectors): ?static
+    public function querySelector(string $selectors): static
     {
-        return ($element = $this->element->querySelector($selectors)) !== null
-            ? new static($element)
-            : null;
+        if (($element = $this->element->querySelector($selectors)) === null) {
+            PHPUnit::fail(sprintf(
+                "The element [%s] doesn't contain an element matching the given selectors [%s].",
+                $this->identifier(),
+                $selectors,
+            ));
+        }
+
+        return new static($element);
     }
 
     /** Return assertable elements matches the given selectors. */

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Unit\Dom;
 
+use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
 use Ziadoz\AssertableHtml\Dom\AssertableClassList;
@@ -69,7 +70,16 @@ class AssertableElementTest extends TestCase
             ->querySelector('div');
 
         $this->assertInstanceOf(AssertableElement::class, $assertable->querySelector('li'));
-        $this->assertNull($assertable->querySelector('foo'));
+    }
+
+    public function test_query_selector_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [div] doesn't contain an element matching the given selectors [foo].");
+
+        AssertableDocument::createFromString('<div><ul><li>Foo</li></ul></div>', LIBXML_NOERROR)
+            ->querySelector('div')
+            ->querySelector('foo');
     }
 
     public function test_query_selector_all(): void
