@@ -75,11 +75,28 @@ The fluent interface API is similar, but not identical, to PHP 8.4's new HTML do
 
 You can install the package using Composer:
 
-```
+```bash
 composer install ziadoz/assertable-html
 ```
 
-### 🎁 Laravel
+If you're using Laravel, Assertable HTML will be automatically discovered. You can still register it manually if needed:
+
+```php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use Ziadoz\AssertableHtml\AssertableHtmlServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        $this->app->register(AssertableHtmlServiceProvider::class);
+    }
+}
+```
 
 ## 🔨 Usage
 
