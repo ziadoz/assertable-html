@@ -58,8 +58,8 @@ Assertable HTML mixes in several new methods onto the `TestResponse`, `TestView`
 // Responses...
 public function testWelcomePage(): void
 {
-	$response = $this->get('/');
-	$response->assertBody(function (AssertableElement $body) {
+    $response = $this->get('/');
+    $response->assertBody(function (AssertableElement $body) {
         $body->querySelector('h1')
             ->assertTextEquals('Welcome, Archie!');
     });
