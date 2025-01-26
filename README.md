@@ -31,6 +31,41 @@ You can install the package using Composer:
 composer install ziadoz/assertable-html
 ```
 
+### PHPUnit Installation
+
+If you're using PHPUnit, simply include the trait in your test class:
+
+```php
+<?php
+
+use PHPUnit\Framework\TestCase;
+use Ziadoz\AssertableHtml\Traits\AssertsHtml;
+use Ziadoz\AssertableHtml\Dom\AssertableDocument;
+
+class MyTest extends TestCase
+{
+    use AssertsHtml;
+    
+    public function testHtml(): void
+    {
+        $html = <<<'HTML'
+        <html>
+            <body>
+                <h1>Welcome, Archie!</h1>
+            </body>
+        </html>
+        HTML;
+        
+        $this->assertHtml($html, function (AssertableDocument $html) {
+            $html->querySelector('h1')
+                ->assertTextEquals('Welcome, Archie!');
+        });
+        
+        // Available methods: assertableHtml(), assertHtml(), assertHead(), assertBody(), assertElement()
+    }
+}
+```
+
 ### Laravel Installation
 
 If you're using Laravel, Assertable HTML will be automatically discovered. You can still register it manually if needed:
@@ -63,6 +98,8 @@ public function testResponse(): void
         $body->querySelector('h1')
             ->assertTextEquals('Welcome, Archie!');
     });
+    
+    // Available methods: assertableHtml(), assertHtml(), assertHead(), assertBody(), assertElement()
 };
 
 // Views...
