@@ -56,7 +56,7 @@ Assertable HTML mixes in several new methods onto the `TestResponse`, `TestView`
 
 ```php
 // Responses...
-public function testWelcomePage(): void
+public function testResponse(): void
 {
     $response = $this->get('/');
     $response->assertBody(function (AssertableElement $body) {
@@ -66,7 +66,7 @@ public function testWelcomePage(): void
 };
 
 // Views...
-public function testListView(): void
+public function testView(): void
 {
 	$view = $this->view('list']);
 	$view->assertElement(function (AssertableElement $div) {
