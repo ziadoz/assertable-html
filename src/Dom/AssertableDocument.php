@@ -105,7 +105,7 @@ final readonly class AssertableDocument
     }
 
     /** Promote any PHP errors that occur in the given callback to custom exceptions. */
-    public static function promoteErrorsToExceptions(callable $callback): mixed
+    private static function promoteErrorsToExceptions(callable $callback): mixed
     {
         try {
             set_error_handler(function (int $severity, string $message, string $file, int $line): never {
