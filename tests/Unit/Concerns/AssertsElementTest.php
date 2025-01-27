@@ -45,7 +45,7 @@ class AssertsElementTest extends TestCase
     public function test_assert_elements_dont_exist_fails(): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage('The element [div] contain [1] elements matching the given selector [p].');
+        $this->expectExceptionMessage('The element [div] contains elements matching the given selector [p].');
 
         $this->getAssertableElement('<div><p>Foo</p></div>')
             ->assertElementsDontExist('p');

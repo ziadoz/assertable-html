@@ -21,15 +21,11 @@ trait AssertsElement
     /** Assert the element contains one or more elements matching the given selector. */
     public function assertElementsExist(string $selector, ?string $message = null): static
     {
-        PHPUnit::assertGreaterThan(
-            0,
-            count($this->element->querySelectorAll($selector)),
-            $message ?? sprintf(
-                "The element [%s] doesn't contain any elements matching the given selector [%s].",
-                $this->identifier(),
-                $selector,
-            ),
-        );
+        $this->assertElementsCountGreaterThan($selector, 0, $message ?? sprintf(
+            "The element [%s] doesn't contain any elements matching the given selector [%s].",
+            $this->identifier(),
+            $selector,
+        ));
 
         return $this;
     }
@@ -37,16 +33,11 @@ trait AssertsElement
     /** Assert the element doesn't contain any elements matching the given selector. */
     public function assertElementsDontExist(string $selector, ?string $message = null): static
     {
-        PHPUnit::assertSame(
-            0,
-            $total = count($this->element->querySelectorAll($selector)),
-            $message ?? sprintf(
-                'The element [%s] contain [%d] elements matching the given selector [%s].',
-                $this->identifier(),
-                $total,
-                $selector,
-            ),
-        );
+        $this->assertElementsCount($selector, 0, $message ?? sprintf(
+            'The element [%s] contains elements matching the given selector [%s].',
+            $this->identifier(),
+            $selector,
+        ));
 
         return $this;
     }
