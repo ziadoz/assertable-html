@@ -18,7 +18,7 @@ class AssertsDocumentTest extends TestCase
 
     public function test_assert_title_equals_passes(): void
     {
-        AssertableDocument::createFromString('<title>Foo - Bar</title>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<title>Foo - Bar</title>', LIBXML_HTML_NOIMPLIED)
             ->assertTitleEquals('Foo - Bar');
     }
 
@@ -27,13 +27,13 @@ class AssertsDocumentTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The page title doesn't equal the given title.");
 
-        AssertableDocument::createFromString('<title>Foo - Bar</title>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<title>Foo - Bar</title>', LIBXML_HTML_NOIMPLIED)
             ->assertTitleEquals('Baz - Qux');
     }
 
     public function test_assert_title_doesnt_equal_passes(): void
     {
-        AssertableDocument::createFromString('<title>Foo - Bar</title>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<title>Foo - Bar</title>', LIBXML_HTML_NOIMPLIED)
             ->assertTitleDoesntEqual('Baz - Qux');
     }
 
@@ -42,7 +42,7 @@ class AssertsDocumentTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The page title equals the given title.');
 
-        AssertableDocument::createFromString('<title>Foo - Bar</title>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<title>Foo - Bar</title>', LIBXML_HTML_NOIMPLIED)
             ->assertTitleDoesntEqual('Foo - Bar');
     }
 }

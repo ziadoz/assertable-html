@@ -11,7 +11,7 @@ class AssertableAttributeListTest extends TestCase
 {
     public function test_attribute_list(): void
     {
-        $assertable = AssertableDocument::createFromString('<p class="foo" id="bar" data-bar="  foo-bar  " aria-label="foo">Foo</p>', LIBXML_NOERROR)
+        $assertable = AssertableDocument::createFromString('<p class="foo" id="bar" data-bar="  foo-bar  " aria-label="foo">Foo</p>', LIBXML_HTML_NOIMPLIED)
             ->querySelector('p')
             ->attributes;
 

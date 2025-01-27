@@ -11,7 +11,7 @@ class AssertableClassesListTest extends TestCase
 {
     public function test_class_list(): void
     {
-        $assertable = AssertableDocument::createFromString('<p class="  foo  bar  baz  ">Foo</p>', LIBXML_NOERROR)
+        $assertable = AssertableDocument::createFromString('<p class="  foo  bar  baz  ">Foo</p>', LIBXML_HTML_NOIMPLIED)
             ->querySelector('p')
             ->classes;
 

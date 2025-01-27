@@ -19,7 +19,7 @@ class AssertableElementListTest extends TestCase
             <li id="baz">Baz</li>
         </ul>
         <p id="qux">Qux</p>
-        HTML, LIBXML_NOERROR)->querySelectorAll('li, p');
+        HTML, LIBXML_HTML_NOIMPLIED)->querySelectorAll('li, p');
 
         // HTML
         $this->assertSame(<<<'HTML'

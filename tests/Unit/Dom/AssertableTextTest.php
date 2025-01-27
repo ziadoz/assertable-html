@@ -11,7 +11,7 @@ class AssertableTextTest extends TestCase
 {
     public function test_text(): void
     {
-        $assertable = AssertableDocument::createFromString('<p>  <strong>Foo</strong>  Bar  </p>', LIBXML_NOERROR)
+        $assertable = AssertableDocument::createFromString('<p>  <strong>Foo</strong>  Bar  </p>', LIBXML_HTML_NOIMPLIED)
             ->querySelector('p')
             ->text;
 

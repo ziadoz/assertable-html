@@ -963,6 +963,6 @@ class AssertsElementTest extends TestCase
 
     private function getAssertableElement(string $html): AssertableElement
     {
-        return AssertableDocument::createFromString($html, LIBXML_NOERROR)->querySelector('body *:first-of-type');
+        return AssertableDocument::createFromString($html, LIBXML_HTML_NOIMPLIED)->querySelector('*:first-of-type');
     }
 }
