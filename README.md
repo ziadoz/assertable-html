@@ -93,20 +93,20 @@ Assertable HTML mixes in several new methods onto the `TestResponse`, `TestView`
 // Responses...
 public function testResponse(): void
 {
-    $response = $this->get('/');
-    $response->assertBody(function (AssertableElement $body) {
+    // Available methods: assertableHtml(), assertHtml(), assertHead(), assertBody(), assertElement()
+
+    $this->get('/')->assertBody(function (AssertableElement $body) {
         $body->querySelector('h1')
             ->assertTextEquals('Welcome, Archie!');
     });
-    
-    // Available methods: assertableHtml(), assertHtml(), assertHead(), assertBody(), assertElement()
 };
 
 // Views...
 public function testView(): void
 {
-	$view = $this->view('list']);
-	$view->assertElement(function (AssertableElement $div) {
+    // Available methods: assertableHtml(), assertElement()
+
+    $this->view('nav')->assertElement(function (AssertableElement $div) {
         $div->assertTag('div');
 
         $lis = $div->querySelectorAll('ul li')
@@ -120,7 +120,22 @@ public function testView(): void
 }
 
 // Components...
-// @todo: Pending open pull request...
+public function testComponent: void
+{
+    // Available methods: assertableHtml(), assertElement()
+
+    $this->component('action')->assertElement(function (AssertableElement $form) {
+        $form->assertTag('form')
+            ->assertAttributeEquals('method', 'post')
+            ->assertAttributeEquals('action', '/action');
+        
+        $form->with('input[name="name"]', function (AssertableElement $input) {
+            $input->assertAttributeEquals('value', 'My New Action');
+            $input->assertAttributePresent('required');
+            $input->assertClassContains('form-input');
+        });
+    });
+}
 ```
 
 ## ⏰ Quick Start
