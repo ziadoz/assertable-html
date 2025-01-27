@@ -234,9 +234,9 @@ echo $elements->attributes->toArray(); // ['id' => 'foo', 'class' => 'foo']
 
 The `text`, `classes` and `attributes` properties refer to further assertable classes:
 
-- `text`: `Ziadoz\AssertableHtml\Dom\AssertableText`
-- `classes`: `Ziadoz\AssertableHtml\Dom\AssertableClassesList`
-- `attributes`: `Ziadoz\AssertableHtml\Dom\AssertableAttributesList`
+- `text`: `Ziadoz\AssertableHtml\Dom\AssertableText`.
+- `classes`: `Ziadoz\AssertableHtml\Dom\AssertableClassesList`.
+- `attributes`: `Ziadoz\AssertableHtml\Dom\AssertableAttributesList`.
 
 You can perform assertions using these classes, however, in most cases the element has a proxy method that makes it more convenient to do from the element:
 
@@ -291,16 +291,29 @@ $document->getElementsByTagName('li');
 $document->getElementById('bar');
 ```
 
-Sometimes your assertions need room to breathe. For this you can use `with()`, `many()` and `elsewhere()` to scope your selector elements into a callback for better readability.
+Sometimes your assertions need room to breathe. For this you can use `with()`, `many()`, `elsewhere()` and `scope()` to filter elements into a callback for better readability.
 
-- `with()`: Returns the first matching element like `querySelector()`
-- `many()`: Returns every matching element like `querySelectorAll()`
-- `elsewhere()`: Jumps out to the document scope and returns the first matching elementlike `querySelector()`
+- `with()`: The first matching element in the current scope like `querySelector()`.
+- `many()`: Every matching element like in the current scope `querySelectorAll()`,
+- `elsewhere()`: The first matching element in the document scope like `querySelector()`.
+- `scope()`: The current element.
 
 Let's give them a try:
 
-```
+```php
+$document = AssertableDocument::createFromString(<<<'HTML'
+    <div id="outer">
+        <div id="inner">
+            <div class="innermost"></div>
+            <div class="innermost"></div>
+            <div class="innermost"></div>
+        </div>
+    </div>
+HTML, LIBXML_HTML_NOIMPLIED);
 
+$document->with('div#inner', function (AssertableElement $element) {
+    // $element
+});
 ```
 
 ## 👏 Thanks
