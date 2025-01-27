@@ -48,6 +48,8 @@ class MyTest extends TestCase
     
     public function testHtml(): void
     {
+        // Available methods: assertableHtml(), assertHtml(), assertHead(), assertBody(), assertElement()
+    
         $html = <<<'HTML'
         <html>
             <body>
@@ -60,8 +62,6 @@ class MyTest extends TestCase
             $html->querySelector('h1')
                 ->assertTextEquals('Welcome, Archie!');
         });
-        
-        // Available methods: assertableHtml(), assertHtml(), assertHead(), assertBody(), assertElement()
     }
 }
 ```
