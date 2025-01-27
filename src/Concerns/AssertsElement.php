@@ -58,7 +58,7 @@ trait AssertsElement
     */
 
     /** Assert the element's tag matches the given tag. */
-    public function assertTag(string $tag, ?string $message = null): static
+    public function assertTagEquals(string $tag, ?string $message = null): static
     {
         PHPUnit::assertSame(
             $expected = strtolower($tag),

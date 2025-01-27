@@ -88,8 +88,8 @@ class AssertableHtmlTest extends TestCase
             });
         })->many('p, span', function (AssertableElementsList $els): void {
             $els->assertCount(2);
-            $els[0]->assertTag('p');
-            $els[1]->assertTag('span');
+            $els[0]->assertTagEquals('p');
+            $els[1]->assertTagEquals('span');
         })->elsewhere('p', function (AssertableElement $el): void {
             $el->assertTextEquals('I am a test paragraph.');
         })->scope(function (AssertableDocument $doc): void {
@@ -232,7 +232,7 @@ class AssertableHtmlTest extends TestCase
             });
 
         $html->querySelector('my-web-component')
-            ->assertTag('my-web-component');
+            ->assertTagEquals('my-web-component');
 
         /*
         |--------------------------------------------------------------------------

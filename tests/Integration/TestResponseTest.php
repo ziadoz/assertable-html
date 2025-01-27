@@ -34,13 +34,13 @@ class TestResponseTest extends TestCase
         $response->assertHtml(function (AssertableDocument $assertable): void {
             $assertable->assertTitleEquals('Test Page Title');
         })->assertHead(function (AssertableElement $assertable): void {
-            $assertable->assertTag('head');
+            $assertable->assertTagEquals('head');
             $assertable->querySelector('meta[name="description"]')->assertAttributeEquals('content', 'Foo Bar');
         })->assertBody(function (AssertableElement $assertable): void {
-            $assertable->assertTag('body');
+            $assertable->assertTagEquals('body');
             $assertable->querySelector('p')->assertTextEquals('Foo');
         })->assertElement('p', function (AssertableElement $assertable): void {
-            $assertable->assertTag('p');
+            $assertable->assertTagEquals('p');
             $assertable->assertTextEquals('Foo');
         });
     }
