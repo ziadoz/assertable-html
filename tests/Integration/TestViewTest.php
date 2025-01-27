@@ -24,6 +24,8 @@ class TestViewTest extends TestCase
         });
 
         $view->assertsElement(function (AssertableElement $assertable) {
+            $this->assertInstanceOf(AssertableElement::class, $assertable);
+
             $assertable->querySelector('div')->assertIdEquals('component');
 
             $lis = $assertable->querySelectorAll('li')
@@ -36,6 +38,8 @@ class TestViewTest extends TestCase
             $lis[1]->assertIdEquals('bar')->assertTextContains('Bar');
             $lis[2]->assertIdEquals('baz')->assertTextContains('Baz');
             $lis[3]->assertIdEquals('qux')->assertTextContains('Qux');
+        })->assertsElement(function (AssertableElement $assertable) {
+            $this->assertInstanceOf(AssertableElement::class, $assertable);
         });
     }
 

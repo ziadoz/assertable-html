@@ -21,8 +21,10 @@ class TestViewMixins
     /** Return an assertable HTML element. */
     public function assertsElement(): Closure
     {
-        return function (callable $callback, int $options = 0, ?string $overrideEncoding = null): void {
+        return function (callable $callback, int $options = 0, ?string $overrideEncoding = null): static {
             AssertableDocument::createFromString((string) $this, $options | LIBXML_NOERROR, $overrideEncoding)->with('body', $callback);
+
+            return $this;
         };
     }
 }
