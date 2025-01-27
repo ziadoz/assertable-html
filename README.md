@@ -202,7 +202,7 @@ $html = AssertableDocument::createFromString(<<<HTML
             </form>
         </search>
     </div>
-HTML, LIBXML_NOERROR);
+HTML, LIBXML_HTML_NOIMPLIED);
 
 // Assert on the <h1> element...
 $html->querySelector('h1')->assertTextEquals('Dashboard');
