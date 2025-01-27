@@ -7,6 +7,7 @@ namespace Ziadoz\AssertableHtml\Tests\Integration;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Orchestra\Testbench\TestCase;
 use Ziadoz\AssertableHtml\AssertableHtmlServiceProvider;
+use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 
 class TestViewTest extends TestCase
@@ -19,15 +20,14 @@ class TestViewTest extends TestCase
 
         $view = $this->view('view');
 
-        $view->assertableElement()->scope(function (AssertableElement $assertable) {
-            $this->assertInstanceOf(AssertableElement::class, $assertable);
-        });
+        // Assertable Element
+        $assertable = $view->assertableElement();
+        $assertable->querySelector('div')->assertIdEquals('component');
 
-        $view->assertsElement(function (AssertableElement $assertable) {
-            $this->assertInstanceOf(AssertableElement::class, $assertable);
-
+        // Assert Element
+        $view->assertElement(function (AssertableDocument $assertable) {
             $assertable->querySelector('div')->assertIdEquals('component');
-
+        })->assertElement(function (AssertableDocument $assertable) {
             $lis = $assertable->querySelectorAll('li')
                 ->assertCount(4)
                 ->assertAll(function (AssertableElement $el): bool {
@@ -38,8 +38,6 @@ class TestViewTest extends TestCase
             $lis[1]->assertIdEquals('bar')->assertTextContains('Bar');
             $lis[2]->assertIdEquals('baz')->assertTextContains('Baz');
             $lis[3]->assertIdEquals('qux')->assertTextContains('Qux');
-        })->assertsElement(function (AssertableElement $assertable) {
-            $this->assertInstanceOf(AssertableElement::class, $assertable);
         });
     }
 
