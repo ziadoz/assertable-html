@@ -88,7 +88,7 @@ readonly class AssertableElement
     }
 
     /** Return the closest matching assertable element. */
-    public function closest(string $selector): ?static
+    public function closest(string $selector): static
     {
         if (($element = $this->element->closest($selector)) === null) {
             PHPUnit::fail(sprintf(

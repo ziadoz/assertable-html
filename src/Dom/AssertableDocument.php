@@ -86,7 +86,7 @@ final readonly class AssertableDocument
     }
 
     /** Return an assertable element matching the given ID. */
-    public function getElementById(string $id): ?AssertableElement
+    public function getElementById(string $id): AssertableElement
     {
         if (($element = $this->document->getElementById($id)) === null) {
             PHPUnit::fail(sprintf(
