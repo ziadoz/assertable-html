@@ -22,11 +22,11 @@ class TestViewTest extends TestCase
 
         // Assertable Element
         $assertable = $view->assertableElement();
-        $assertable->querySelector('div')->assertIdEquals('component');
+        $assertable->querySelector('div')->assertIdEquals('view');
 
         // Assert Element
         $view->assertElement(function (AssertableDocument $assertable) {
-            $assertable->querySelector('div')->assertIdEquals('component');
+            $assertable->querySelector('div')->assertIdEquals('view');
         })->assertElement(function (AssertableDocument $assertable) {
             $lis = $assertable->querySelectorAll('li')
                 ->assertCount(4)

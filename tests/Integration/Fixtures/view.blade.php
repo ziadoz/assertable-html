@@ -1,4 +1,4 @@
-<div id="component">
+<div id="view">
     <ul>
         @foreach (['foo', 'bar', 'baz', 'qux'] as $id)
             <li @class(['bullet-point']) id="{{ $id }}">
