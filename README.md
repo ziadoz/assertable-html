@@ -46,10 +46,9 @@ class MyTest extends TestCase
 {
     use AssertsHtml;
     
+    // Available methods: assertableHtml(), assertHtml(), assertHead(), assertBody(), assertElement()
     public function testHtml(): void
-    {
-        // Available methods: assertableHtml(), assertHtml(), assertHead(), assertBody(), assertElement()
-    
+    {        
         $html = <<<'HTML'
         <html>
             <body>
@@ -63,6 +62,17 @@ class MyTest extends TestCase
                 ->assertTextEquals('Welcome, Archie!');
         });
     }
+}
+```
+
+Alternatively you can use the `AssertableDocument::createFromString()` and `AssertableDocument::createFromFile()` methods directly as needed:
+
+```php
+public function testHtml(): void
+{
+    AssertableDocument::createFromString('<p>Foo</p>', LIBXML_HTML_NOIMPLIED)
+        ->querySelector('p')
+        ->assertTextEquals('Foo');
 }
 ```
 
@@ -95,9 +105,11 @@ Assertable HTML mixes in several new methods onto the `TestResponse`, `TestView`
 public function testResponse(): void
 {
     /* 
-    <div>
-        <h1>Welcome, Archie!</h1>
-    </div>
+    <html>
+        <body>
+            <h1>Welcome, Archie!</h1>
+        </body>
+    </html>
     */
 
     $this->get('/')->assertBody(function (AssertableElement $body) {
@@ -141,7 +153,7 @@ public function testComponent: void
 {
     /*
     <form method="post" action="/foo/bar">
-        <input name="action" value="My New Action" class="form-input" required>form-input
+        <input name="action" value="My New Action" class="form-input" required>
         <!-- ... -->
     </form>
     */
