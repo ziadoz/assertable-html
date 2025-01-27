@@ -12,7 +12,7 @@ use Ziadoz\AssertableHtml\Concerns\AssertsDocument;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
-use Ziadoz\AssertableHtml\Exceptions\UnableToParseHtml;
+use Ziadoz\AssertableHtml\Exceptions\UnableToCreateAssertableDocument;
 
 final readonly class AssertableDocument
 {
@@ -109,7 +109,7 @@ final readonly class AssertableDocument
     {
         try {
             set_error_handler(function (int $severity, string $message, string $file, int $line): never {
-                throw new UnableToParseHtml(
+                throw new UnableToCreateAssertableDocument(
                     'Unable to parse HTML document for assertion.',
                     previous: new ErrorException($message, $severity, $severity, $file, $line),
                 );

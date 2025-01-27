@@ -6,6 +6,6 @@ namespace Ziadoz\AssertableHtml\Exceptions;
 
 use Exception;
 
-class UnableToParseHtml extends Exception
+class UnableToCreateAssertableDocument extends Exception
 {
 }

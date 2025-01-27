@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
-use Ziadoz\AssertableHtml\Exceptions\UnableToParseHtml;
+use Ziadoz\AssertableHtml\Exceptions\UnableToCreateAssertableDocument;
 
 class AssertableDocumentTest extends TestCase
 {
@@ -39,7 +39,7 @@ class AssertableDocumentTest extends TestCase
 
     public function test_create_from_string_throws_exception(): void
     {
-        $this->expectException(UnableToParseHtml::class);
+        $this->expectException(UnableToCreateAssertableDocument::class);
         $this->expectExceptionMessage('Unable to parse HTML document for assertion.');
 
         AssertableDocument::createFromString('~~~><~~~I am invalid HTML~~~><~~~');
@@ -60,7 +60,7 @@ class AssertableDocumentTest extends TestCase
 
     public function test_create_from_file_throws_exception(): void
     {
-        $this->expectException(UnableToParseHtml::class);
+        $this->expectException(UnableToCreateAssertableDocument::class);
         $this->expectExceptionMessage('Unable to parse HTML document for assertion.');
 
         try {
