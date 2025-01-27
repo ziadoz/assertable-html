@@ -106,7 +106,15 @@ class AssertableDocumentTest extends TestCase
         $assertable = AssertableDocument::createFromString('<p id="foo">Foo</p>', LIBXML_NOERROR);
 
         $this->assertInstanceOf(AssertableElement::class, $assertable->getElementById('foo'));
-        $this->assertNull($assertable->getElementById('bar'));
+    }
+
+    public function test_get_element_by_id_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The document doesn't contain an element matching the given ID [bar].");
+
+        $assertable = AssertableDocument::createFromString('<p id="foo">Foo</p>', LIBXML_NOERROR)
+            ->getElementById('bar');
     }
 
     public function test_get_element_by_tag_name(): void

@@ -88,9 +88,14 @@ final readonly class AssertableDocument
     /** Return an assertable element matching the given ID. */
     public function getElementById(string $id): ?AssertableElement
     {
-        return ($element = $this->document->getElementById($id)) !== null
-            ? new AssertableElement($element)
-            : null;
+        if (($element = $this->document->getElementById($id)) === null) {
+            PHPUnit::fail(sprintf(
+                "The document doesn't contain an element matching the given ID [%s].",
+                $id,
+            ));
+        }
+
+        return new AssertableElement($element);
     }
 
     /** Return assertable elements matching the given tag. */
