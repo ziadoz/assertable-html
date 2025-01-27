@@ -43,7 +43,7 @@ trait Withable
     {
         $document = $this instanceof AssertableDocument
             ? $this
-            : AssertableDocument::createFromDocument($this->element->ownerDocument);
+            : AssertableDocument::createFromString($this->element->ownerDocument->saveHtml());
 
         $callback($document->querySelector($selector));
 

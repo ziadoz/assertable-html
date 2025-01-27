@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Unit\Dom;
 
-use Dom\HTMLDocument;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
+use Ziadoz\AssertableHtml\Exceptions\UnableToParseHtml;
 
 class AssertableDocumentTest extends TestCase
 {
@@ -37,24 +37,40 @@ class AssertableDocumentTest extends TestCase
         $this->assertInstanceOf(AssertableDocument::class, $assertable);
     }
 
-    public function test_create_from_file(): void
+    public function test_create_from_string_throws_exception(): void
     {
-        $file = tempnam(sys_get_temp_dir(), 'assertable-html');
-        file_put_contents($file, '<p>Foo.</p>');
+        $this->expectException(UnableToParseHtml::class);
+        $this->expectExceptionMessage('Unable to parse HTML document for assertion.');
 
-        $assertable = AssertableDocument::createFromFile($file, LIBXML_NOERROR);
-        $this->assertInstanceOf(AssertableDocument::class, $assertable);
-
-        @unlink($file);
+        AssertableDocument::createFromString('~~~><~~~I am invalid HTML~~~><~~~');
     }
 
-    public function test_create_from_document(): void
+    public function test_create_from_file(): void
     {
-        $document = HTMLDocument::createFromString('<p>Foo</p>', LIBXML_NOERROR);
+        try {
+            $file = tempnam(sys_get_temp_dir(), 'assertable-html');
+            file_put_contents($file, '<p>Foo.</p>');
 
-        $assertable = AssertableDocument::createFromDocument($document);
-        $this->assertInstanceOf(AssertableDocument::class, $assertable);
-        $this->assertSame($document->saveHtml(), $assertable->getHtml());
+            $assertable = AssertableDocument::createFromFile($file, LIBXML_NOERROR);
+            $this->assertInstanceOf(AssertableDocument::class, $assertable);
+        } finally {
+            @unlink($file);
+        }
+    }
+
+    public function test_create_from_file_throws_exception(): void
+    {
+        $this->expectException(UnableToParseHtml::class);
+        $this->expectExceptionMessage('Unable to parse HTML document for assertion.');
+
+        try {
+            $file = tempnam(sys_get_temp_dir(), 'assertable-html');
+            file_put_contents($file, '~~~><~~~I am invalid HTML~~~><~~~');
+
+            AssertableDocument::createFromFile($file);
+        } finally {
+            @unlink($file);
+        }
     }
 
     public function test_query_selector(): void
