@@ -66,23 +66,23 @@ final readonly class AssertableDocument
         return self::promoteErrorsToExceptions(fn () => new self(HTMLDocument::createFromString($source, $options, $overrideEncoding)));
     }
 
-    /** Return the assertable element matching the given selectors. */
-    public function querySelector(string $selectors): AssertableElement
+    /** Return the assertable element matching the given selector. */
+    public function querySelector(string $selector): AssertableElement
     {
-        if (($element = $this->document->querySelector($selectors)) === null) {
+        if (($element = $this->document->querySelector($selector)) === null) {
             PHPUnit::fail(sprintf(
-                "The document doesn't contain an element matching the given selectors [%s].",
-                $selectors,
+                "The document doesn't contain an element matching the given selector [%s].",
+                $selector,
             ));
         }
 
         return new AssertableElement($element);
     }
 
-    /** Return assertable elements matching the given selectors. */
-    public function querySelectorAll(string $selectors): AssertableElementsList
+    /** Return assertable elements matching the given selector. */
+    public function querySelectorAll(string $selector): AssertableElementsList
     {
-        return new AssertableElementsList($this->document->querySelectorAll($selectors));
+        return new AssertableElementsList($this->document->querySelectorAll($selector));
     }
 
     /** Return an assertable element matching the given ID. */

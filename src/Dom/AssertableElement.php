@@ -88,37 +88,37 @@ readonly class AssertableElement
     }
 
     /** Return the closest matching assertable element. */
-    public function closest(string $selectors): ?static
+    public function closest(string $selector): ?static
     {
-        return ($element = $this->element->closest($selectors)) !== null
+        return ($element = $this->element->closest($selector)) !== null
             ? new static($element)
             : null;
     }
 
-    /** Return whether the assertable element matches the given selectors. */
-    public function matches(string $selectors): bool
+    /** Return whether the assertable element matches the given selector. */
+    public function matches(string $selector): bool
     {
-        return $this->element->matches($selectors);
+        return $this->element->matches($selector);
     }
 
-    /** Return the assertable element matches the given selectors. */
-    public function querySelector(string $selectors): static
+    /** Return the assertable element matches the given selector. */
+    public function querySelector(string $selector): static
     {
-        if (($element = $this->element->querySelector($selectors)) === null) {
+        if (($element = $this->element->querySelector($selector)) === null) {
             PHPUnit::fail(sprintf(
-                "The element [%s] doesn't contain an element matching the given selectors [%s].",
+                "The element [%s] doesn't contain an element matching the given selector [%s].",
                 $this->identifier(),
-                $selectors,
+                $selector,
             ));
         }
 
         return new static($element);
     }
 
-    /** Return assertable elements matches the given selectors. */
-    public function querySelectorAll(string $selectors): AssertableElementsList
+    /** Return assertable elements matches the given selector. */
+    public function querySelectorAll(string $selector): AssertableElementsList
     {
-        return new AssertableElementsList($this->element->querySelectorAll($selectors));
+        return new AssertableElementsList($this->element->querySelectorAll($selector));
     }
 
     /** Return assertable elements matches the given tag. */

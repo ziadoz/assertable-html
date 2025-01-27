@@ -75,7 +75,7 @@ class AssertableElementTest extends TestCase
     public function test_query_selector_fails(): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage("The element [div] doesn't contain an element matching the given selectors [foo].");
+        $this->expectExceptionMessage("The element [div] doesn't contain an element matching the given selector [foo].");
 
         AssertableDocument::createFromString('<div><ul><li>Foo</li></ul></div>', LIBXML_NOERROR)
             ->querySelector('div')
