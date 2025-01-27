@@ -40,7 +40,7 @@ class AssertableDocumentTest extends TestCase
     public function test_create_from_string_throws_exception(): void
     {
         $this->expectException(UnableToCreateAssertableDocument::class);
-        $this->expectExceptionMessage('Unable to parse HTML document for assertion.');
+        $this->expectExceptionMessage('Unable to create assertable HTML document.');
 
         AssertableDocument::createFromString('~~~><~~~I am invalid HTML~~~><~~~');
     }
@@ -61,7 +61,7 @@ class AssertableDocumentTest extends TestCase
     public function test_create_from_file_throws_exception(): void
     {
         $this->expectException(UnableToCreateAssertableDocument::class);
-        $this->expectExceptionMessage('Unable to parse HTML document for assertion.');
+        $this->expectExceptionMessage('Unable to create assertable HTML document.');
 
         try {
             $file = tempnam(sys_get_temp_dir(), 'assertable-html');

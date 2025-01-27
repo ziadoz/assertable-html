@@ -110,7 +110,7 @@ final readonly class AssertableDocument
         try {
             set_error_handler(function (int $severity, string $message, string $file, int $line): never {
                 throw new UnableToCreateAssertableDocument(
-                    'Unable to parse HTML document for assertion.',
+                    'Unable to create assertable HTML document.',
                     previous: new ErrorException($message, $severity, $severity, $file, $line),
                 );
             });
