@@ -23,7 +23,7 @@ trait AssertsElement
     {
         PHPUnit::assertGreaterThan(
             0,
-            $this->element->querySelectorAll($selector)->length,
+            count($this->element->querySelectorAll($selector)),
             $message ?? sprintf(
                 "The element [%s] doesn't contain any elements matching the given selector [%s].",
                 $this->identifier(),
@@ -39,7 +39,7 @@ trait AssertsElement
     {
         PHPUnit::assertSame(
             0,
-            $total = $this->element->querySelectorAll($selector)->length,
+            $total = count($this->element->querySelectorAll($selector)),
             $message ?? sprintf(
                 'The element [%s] contain [%d] elements matching the given selector [%s].',
                 $this->identifier(),
