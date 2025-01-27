@@ -68,7 +68,7 @@ class MyTest extends TestCase
 
 ### Laravel Installation
 
-If you're using Laravel, Assertable HTML will be automatically discovered. You can still register it manually if needed:
+If you're using Laravel, Assertable HTML will be automatically discovered, however you can register it manually if needed:
 
 ```php
 <?php
@@ -91,9 +91,14 @@ Assertable HTML mixes in several new methods onto the `TestResponse`, `TestView`
 
 ```php
 // Responses...
+// Available methods: assertableHtml(), assertHtml(), assertHead(), assertBody(), assertElement()
 public function testResponse(): void
 {
-    // Available methods: assertableHtml(), assertHtml(), assertHead(), assertBody(), assertElement()
+    /* 
+    <div>
+        <h1>Welcome, Archie!</h1>
+    </div>
+    */
 
     $this->get('/')->assertBody(function (AssertableElement $body) {
         $body->querySelector('h1')
@@ -102,11 +107,21 @@ public function testResponse(): void
 };
 
 // Views...
+// Available methods: assertableHtml(), assertElement()
 public function testView(): void
-{
-    // Available methods: assertableHtml(), assertElement()
+{ 
+    /*
+    <nav>
+        <ul>
+            <li class="nav-link">Foo<li>
+            <li class="nav-link active-link">Bar<li>
+            <li class="nav-link">Baz<li>
+            <li class="nav-link">Qux<li>
+        </ul>
+    </nav>
+    */
 
-    $this->view('nav')->assertElement(function (AssertableElement $div) {
+    $this->view('nav')->assertElement(function (AssertableDocument $div) {
         $div->assertTag('div');
 
         $lis = $div->querySelectorAll('ul li')
@@ -120,14 +135,21 @@ public function testView(): void
 }
 
 // Components...
+// Available methods: assertableHtml(), assertElement()
+// Note: Only available in Laravel >= 11.41.0
 public function testComponent: void
 {
-    // Available methods: assertableHtml(), assertElement()
+    /*
+    <form method="post" action="/foo/bar">
+        <input name="action" value="My New Action" class="form-input" required>form-input
+        <!-- ... -->
+    </form>
+    */
 
-    $this->component('action')->assertElement(function (AssertableElement $form) {
+    $this->component('action')->assertElement(function (AssertableDocument $form) {
         $form->assertTag('form')
             ->assertAttributeEquals('method', 'post')
-            ->assertAttributeEquals('action', '/action');
+            ->assertAttributeEquals('action', '/foo/bar');
         
         $form->with('input[name="name"]', function (AssertableElement $input) {
             $input->assertAttributeEquals('value', 'My New Action');
@@ -220,7 +242,6 @@ $html->with('#content', function (AssertableElement $div) {
 
 ```
 
-
 ## 🔨 Usage
 
 ### Basics
@@ -235,4 +256,6 @@ This package wouldn't be possible without the following people and projects:
 
 - Rachel ❤️, Archie 🐶 and Rigby 🐶
 - Niels Dossche (PHP 8.4 HTML parsing API author)
+- [Laravel DOM Assertions](https://github.com/sinnbeck/laravel-dom-assertions) for showing me the possibilities of HTML assertions
+- [Laravel Dusk](https://github.com/laravel/dusk) for showing me the `with()` and `elsewhere()` scoping syntax
 - [Lexbor](https://github.com/lexbor/lexbor) (the library that powers PHP 8.4's HTML parsing API)
