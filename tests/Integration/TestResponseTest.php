@@ -5,20 +5,26 @@ declare(strict_types=1);
 namespace Ziadoz\AssertableHtml\Tests\Integration;
 
 use Closure;
+use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Testing\TestResponse;
+use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Ziadoz\AssertableHtml\AssertableHtmlServiceProvider;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 
 class TestResponseTest extends TestCase
 {
+    use MakesHttpRequests;
+
     #[DataProvider('response_data_provider')]
     public function test_response(Closure $makeResponse): void
     {
-        $response = $makeResponse();
+        Route::get('/', $makeResponse);
+
+        $response = $this->get('/');
 
         $response->assertableHtml()->scope(function (AssertableDocument $assertable) {
             $this->assertInstanceOf(AssertableDocument::class, $assertable);
@@ -53,49 +59,45 @@ class TestResponseTest extends TestCase
         ];
     }
 
-    private static function getTestResponse(): TestResponse
+    private static function getTestResponse(): \Illuminate\Http\Response
     {
-        return TestResponse::fromBaseResponse(
-            Response::make(<<<'HTML'
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Test Page Title</title>
-                     <meta name="description" content="Foo Bar">
-                </head>
-                <body>
-                    <p>Foo</p>
-                </body>
-                </html>
-            HTML),
-        );
+        return Response::make(<<<'HTML'
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Test Page Title</title>
+             <meta name="description" content="Foo Bar">
+        </head>
+        <body>
+            <p>Foo</p>
+        </body>
+        </html>
+        HTML);
     }
 
-    private static function getTestStreamedResponse(): TestResponse
+    private static function getTestStreamedResponse(): StreamedResponse
     {
-        return TestResponse::fromBaseResponse(
-            Response::stream(function () {
-                echo <<< 'TOP'
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Test Page Title</title>
-                     <meta name="description" content="Foo Bar">
-                </head>
-                TOP;
-                ob_flush();
+        return Response::stream(function () {
+            echo <<< 'TOP'
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Test Page Title</title>
+                 <meta name="description" content="Foo Bar">
+            </head>
+            TOP;
+            ob_flush();
 
-                echo <<<'BOTTOM'
-                <body>
-                    <p>Foo</p>
-                </body>
-                </html>
-                BOTTOM;
-                ob_flush();
+            echo <<<'BOTTOM'
+            <body>
+                <p>Foo</p>
+            </body>
+            </html>
+            BOTTOM;
+            ob_flush();
 
-                flush();
-            }),
-        );
+            flush();
+        });
     }
 
     protected function getPackageProviders($app): array
