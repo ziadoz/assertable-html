@@ -90,9 +90,15 @@ readonly class AssertableElement
     /** Return the closest matching assertable element. */
     public function closest(string $selector): ?static
     {
-        return ($element = $this->element->closest($selector)) !== null
-            ? new static($element)
-            : null;
+        if (($element = $this->element->closest($selector)) === null) {
+            PHPUnit::fail(sprintf(
+                "The element [%s] doesn't have a closest element matching the given selector [%s].",
+                $this->identifier(),
+                $selector,
+            ));
+        }
+
+        return new static($element);
     }
 
     /** Return whether the assertable element matches the given selector. */

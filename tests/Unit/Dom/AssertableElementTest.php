@@ -61,7 +61,17 @@ class AssertableElementTest extends TestCase
             ->querySelector('div');
 
         $this->assertInstanceOf(AssertableElement::class, $assertable->querySelector('li')->closest('ul'));
-        $this->assertNull($assertable->querySelector('li')->closest('foo'));
+    }
+
+    public function test_closest_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [li] doesn't have a closest element matching the given selector [foo].");
+
+        AssertableDocument::createFromString('<div><ul><li>Foo</li></ul></div>', LIBXML_NOERROR)
+            ->querySelector('div')
+            ->querySelector('li')
+            ->closest('foo');
     }
 
     public function test_query_selector(): void
