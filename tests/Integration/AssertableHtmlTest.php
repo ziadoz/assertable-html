@@ -236,6 +236,19 @@ class AssertableHtmlTest extends TestCase
 
         /*
         |--------------------------------------------------------------------------
+        | Assertable HTML Element (Short)
+        |--------------------------------------------------------------------------
+        */
+
+        $html->querySelector('div')
+            ->assert()
+            ->text('This is a test div.')
+            ->id('foo-bar')
+            ->attr('data-bar', 'baz-buz')
+            ->attr('data-qux', fn (?string $value): bool => str_contains($value, 'lux'));
+
+        /*
+        |--------------------------------------------------------------------------
         | Assertable HTML Element List
         |--------------------------------------------------------------------------
         */

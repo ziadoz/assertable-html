@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ziadoz\AssertableHtml\Concerns;
 
 use PHPUnit\Framework\Assert as PHPUnit;
+use Ziadoz\AssertableHtml\Assertions\Short;
 use Ziadoz\AssertableHtml\Dom\AssertableAttributesList;
 use Ziadoz\AssertableHtml\Dom\AssertableClassesList;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
@@ -12,6 +13,17 @@ use Ziadoz\AssertableHtml\Dom\AssertableText;
 
 trait AssertsElement
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Short
+    |--------------------------------------------------------------------------
+    */
+
+    public function assert(): Short
+    {
+        return new Short($this);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Assert Exists
