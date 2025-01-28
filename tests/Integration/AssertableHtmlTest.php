@@ -242,6 +242,7 @@ class AssertableHtmlTest extends TestCase
 
         $html->querySelectorAll('ul li')
             ->assertCount(3)
+            ->assertNotCount(42)
             ->assertCountLessThan(4)
             ->assertCountLessThanOrEqual(4)
             ->assertCountGreaterThan(1)
