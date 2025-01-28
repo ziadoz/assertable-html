@@ -225,7 +225,7 @@ $element = $document->querySelector('li:first-of-type')
     ->assertTextEquals('Foo');
 ```
 
-An assertable elment has a handful of properties you can access:
+An assertable element has a handful of properties you can access:
 
 ```php
 echo $element->tag;                    // 'Foo'
@@ -241,6 +241,31 @@ The `text`, `classes` and `attributes` properties refer to further assertable cl
 - `text`: `Ziadoz\AssertableHtml\Dom\AssertableText`.
 - `classes`: `Ziadoz\AssertableHtml\Dom\AssertableClassesList`.
 - `attributes`: `Ziadoz\AssertableHtml\Dom\AssertableAttributesList`.
+
+```php
+// Text
+echo $element->text->value();                         // '  Foo  Bar  '
+echo $element->text->value(normaliseWhitespace: true) // 'Foo Bar'
+
+// Classes
+echo $element->classes->value();                          // '  foo  bar  '
+echo $element->classes->value(normaliseWhitespace: true); // 'foo bar'
+
+$element->classes->toArray();           // ['foo', 'bar']
+$element->classes->empty();             // false
+$element->classes->contains('foo');     // true
+$element->classes->any(['foo', 'qux']); // true
+$element->classes->all(['foo', 'qux']); // false
+
+// Attributes
+echo $element->attributes->value('data-foo');                            // '  bar  '
+echo $element->attributes->value('data-foo', normaliseWhitespace: true); // 'bar'
+
+$element->attributes->toArray();       // ['class' => 'foo bar', 'data-foo' => 'bar']
+$element->attributes->empty();         // false
+$element->attributes->names();         // ['class', 'data-foo']
+$element->attributes->has('data-foo'); // true
+```
 
 You can perform assertions using these classes, however, in most cases the element has a proxy method that makes it more convenient to do from the element:
 
