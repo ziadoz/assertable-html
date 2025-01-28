@@ -21,19 +21,49 @@ class AssertsElementTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_assert_elements_exists_passes(): void
+    public function test_assert_one_element_exists_passes(): void
     {
         $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertElementsExist('p');
+            ->assertOneElementExists('p');
     }
 
-    public function test_assert_elements_exists_fails(): void
+    public function test_assert_one_element_exists_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [div] doesn't contain exactly one element matching the given selector [foo].");
+
+        $this->getAssertableElement('<div><p>Foo</p></div>')
+            ->assertOneElementExists('foo');
+    }
+
+    public function test_assert_element_doesnt_exist_passes(): void
+    {
+        $this->getAssertableElement('<div><p>Foo</p></div>')
+            ->assertElementDoesntExist('foo');
+    }
+
+    public function test_assert_element_doesnt_exist_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [div] contains elements matching the given selector [p].');
+
+        $this->getAssertableElement('<div><p>Foo</p><p>Bar</p></div>')
+            ->assertElementDoesntExist('p');
+    }
+
+    public function test_assert_many_elements_exists_passes(): void
+    {
+        $this->getAssertableElement('<div><p>Foo</p><p>Bar</p></div>')
+            ->assertManyElementsExist('p');
+    }
+
+    public function test_assert_many_elements_exists_fails(): void
     {
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [div] doesn't contain any elements matching the given selector [foo].");
 
         $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertElementsExist('foo');
+            ->assertManyElementsExist('foo');
     }
 
     public function test_assert_elements_dont_exist_passes(): void

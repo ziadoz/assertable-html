@@ -18,8 +18,20 @@ trait AssertsElement
     |--------------------------------------------------------------------------
     */
 
+    /** Assert the element contains exactly one element matching the given selector. */
+    public function assertOneElementExists(string $selector, ?string $message = null): static
+    {
+        $this->querySelectorAll($selector)->assertCount(1, $message ?? sprintf(
+            "The element [%s] doesn't contain exactly one element matching the given selector [%s].",
+            $this->identifier(),
+            $selector,
+        ));
+
+        return $this;
+    }
+
     /** Assert the element contains one or more elements matching the given selector. */
-    public function assertElementsExist(string $selector, ?string $message = null): static
+    public function assertManyElementsExist(string $selector, ?string $message = null): static
     {
         $this->querySelectorAll($selector)->assertCountGreaterThan(0, $message ?? sprintf(
             "The element [%s] doesn't contain any elements matching the given selector [%s].",
@@ -30,14 +42,22 @@ trait AssertsElement
         return $this;
     }
 
-    /** Assert the element doesn't contain any elements matching the given selector. */
-    public function assertElementsDontExist(string $selector, ?string $message = null): static
+    /** Assert the element doesn't contain one or more elements matching the given selector. */
+    public function assertElementDoesntExist(string $selector, ?string $message = null): static
     {
         $this->querySelectorAll($selector)->assertCount(0, $message ?? sprintf(
             'The element [%s] contains elements matching the given selector [%s].',
             $this->identifier(),
             $selector,
         ));
+
+        return $this;
+    }
+
+    /** Assert the element doesn't contain any elements matching the given selector. */
+    public function assertElementsDontExist(string $selector, ?string $message = null): static
+    {
+        $this->assertElementDoesntExist($selector, $message);
 
         return $this;
     }
