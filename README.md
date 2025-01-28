@@ -404,7 +404,7 @@ If you're using an IDE such as PhpStorm or VSCode, it should auto-complete the d
 All assertions include a final `$message` parameter, which allows you to customise the failure message in your tests for your application:
 
 ```php
-$document->assertElementsExist('img.avatar');
+$document->assertElementDoesntExist('img.avatar', 'The profile page is missing an avatar image.');
 ```
 
 ### Flexible Assertions
@@ -434,7 +434,7 @@ Every assertable class has a flexible assertion available, just in case:
 If you ever need to see the HTML of the element(s) you're working with, you can call `dump()` and `dd()` on the assertable instance:
 
 ```php
-$element->quertSelector('p')->dump(); 
+$element->querySelector('p')->dump(); 
 // <p>Foo</p>
 
 $element->querySelectorAll('p, span')->dump();
@@ -445,7 +445,7 @@ $element->querySelectorAll('p, span')->dump();
 You can also call `getHtml()` to retrieve the HTML as a string:
 
 ```php
-echo $element->quertSelector('p')->getHtml(); // <p>Foo</p>
+echo $element->querySelector('p')->getHtml(); // <p>Foo</p>
 ```
 
 ## 👏 Thanks
