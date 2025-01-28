@@ -21,7 +21,7 @@ trait AssertsElement
     /** Assert the element contains one or more elements matching the given selector. */
     public function assertElementsExist(string $selector, ?string $message = null): static
     {
-        $this->assertElementsCountGreaterThan($selector, 0, $message ?? sprintf(
+        $this->querySelectorAll($selector)->assertCountGreaterThan(0, $message ?? sprintf(
             "The element [%s] doesn't contain any elements matching the given selector [%s].",
             $this->identifier(),
             $selector,
@@ -33,7 +33,7 @@ trait AssertsElement
     /** Assert the element doesn't contain any elements matching the given selector. */
     public function assertElementsDontExist(string $selector, ?string $message = null): static
     {
-        $this->assertElementsCount($selector, 0, $message ?? sprintf(
+        $this->querySelectorAll($selector)->assertCount(0, $message ?? sprintf(
             'The element [%s] contains elements matching the given selector [%s].',
             $this->identifier(),
             $selector,
