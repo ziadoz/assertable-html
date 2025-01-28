@@ -76,6 +76,19 @@ trait AssertsElementsList
         return $this;
     }
 
+    /** Assert the element list doesn't contain the given number of elements. */
+    public function assertNotCount(int $count, ?string $message = null): static
+    {
+        $this->countNotNegative($count);
+
+        PHPUnit::assertNotCount($count, $this, $message ?? sprintf(
+            'The element list has exactly [%d] elements.',
+            $count,
+        ));
+
+        return $this;
+    }
+
     /** Assert the element list contains greater than the given number of elements. */
     public function assertCountGreaterThan(int $count, ?string $message = null): static
     {

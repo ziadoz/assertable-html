@@ -143,6 +143,19 @@ trait AssertsElement
         return $this;
     }
 
+    /** Assert the element doesn't contain the exact number of elements matching the given selector. */
+    public function assertElementsNotCount(string $selector, int $count, ?string $message = null): static
+    {
+        $this->querySelectorAll($selector)->assertNotCount($count, $message ?? sprintf(
+            'The element [%s] has exactly [%d] elements matching the given selector [%s].',
+            $this->identifier(),
+            $count,
+            $selector,
+        ));
+
+        return $this;
+    }
+
     /** Assert the element contains greater than the number of elements matching the given selector. */
     public function assertElementsCountGreaterThan(string $selector, int $count, ?string $message = null): static
     {

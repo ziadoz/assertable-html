@@ -174,6 +174,7 @@ class AssertsElementTest extends TestCase
 
         match ($comparison) {
             '='  => $assertable->assertElementsCount($selector, $expected),
+            '!=' => $assertable->assertElementsNotCount($selector, $expected),
             '>'  => $assertable->assertElementsCountGreaterThan($selector, $expected),
             '>=' => $assertable->assertElementsCountGreaterThanOrEqual($selector, $expected),
             '<'  => $assertable->assertElementsCountLessThan($selector, $expected),
@@ -185,6 +186,10 @@ class AssertsElementTest extends TestCase
     {
         yield 'equals' => [
             'li', '=', 1, "The element [ul] doesn't have exactly [1] elements matching the given selector [li].",
+        ];
+
+        yield 'not equals' => [
+            'li', '!=', 4, 'The element [ul] has exactly [4] elements matching the given selector [li].',
         ];
 
         yield 'greater than' => [

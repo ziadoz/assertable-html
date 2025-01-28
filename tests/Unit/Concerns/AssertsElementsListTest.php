@@ -98,6 +98,7 @@ class AssertsElementsListTest extends TestCase
         HTML, LIBXML_HTML_NOIMPLIED)->querySelectorAll('li');
 
         $assertable->assertCount(4);
+        $assertable->assertNotCount(42);
         $assertable->assertCountGreaterThan(1);
         $assertable->assertCountGreaterThanOrEqual(4);
         $assertable->assertCountLessThan(5);
@@ -121,6 +122,7 @@ class AssertsElementsListTest extends TestCase
 
         match ($comparison) {
             '='  => $assertable->assertCount($expected),
+            '!=' => $assertable->assertNotCount($expected),
             '>'  => $assertable->assertCountGreaterThan($expected),
             '>=' => $assertable->assertCountGreaterThanOrEqual($expected),
             '<'  => $assertable->assertCountLessThan($expected),
@@ -132,6 +134,10 @@ class AssertsElementsListTest extends TestCase
     {
         yield 'equals' => [
             '=', 1, "The element list doesn't have exactly [1] elements.",
+        ];
+
+        yield 'not equals' => [
+            '!=', 4, 'The element list has exactly [4] elements.',
         ];
 
         yield 'greater than' => [
