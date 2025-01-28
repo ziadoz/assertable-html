@@ -283,7 +283,7 @@ The `querySelectorAll()` method returns a `Ziadoz\AssertableHtml\Dom\AssertableE
 ```php
 $elements = $document->querySelectorAll('ul > li');
 
-// Acces using methods...
+// Access using methods...
 echo $elements->first()->id; // foo
 echo $elements->nth(1)->id   // bar
 echo $elements->nth(2)->id   // baz
