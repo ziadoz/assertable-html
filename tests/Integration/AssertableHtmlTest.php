@@ -242,10 +242,20 @@ class AssertableHtmlTest extends TestCase
 
         $html->querySelector('div')
             ->assert()
+            ->element(fn (AssertableElement $element): bool => $element->tag === 'div')
+            ->tag('div')
+            ->text()
             ->text('This is a test div.')
+            ->text(fn (AssertableText $text): bool => str_starts_with($text->value(true), 'This is a'))
+            ->id()
             ->id('foo-bar')
+            ->attr('data-bar')
             ->attr('data-bar', 'baz-buz')
             ->attr('data-qux', fn (?string $value): bool => str_contains($value, 'lux'));
+
+        $html->querySelector('p')
+            ->assert()
+            ->class('lux');
 
         /*
         |--------------------------------------------------------------------------

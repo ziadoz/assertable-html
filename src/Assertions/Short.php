@@ -22,14 +22,16 @@ final readonly class Short
 
     public function tag(string $tag): self
     {
-        $this->assertable->assertTagEquals($tag);
+        $this->assertable->assertTag($tag);
 
         return $this;
     }
 
-    public function text(string|callable $value): self
+    public function text(string|callable|null $value = null): self
     {
-        if (is_string($value)) {
+        if (is_null($value)) {
+            $this->assertable->assertTextDoesntEqual('');
+        } elseif (is_string($value)) {
             $this->assertable->assertTextContains($value, true);
         } else {
             $this->assertable->assertText($value);
@@ -49,9 +51,11 @@ final readonly class Short
         return $this;
     }
 
-    public function attr(string $attribute, string|callable $value): self
+    public function attr(string $attribute, string|callable|null $value = null): self
     {
-        if (is_string($value)) {
+        if (is_null($value)) {
+            $this->assertable->assertAttributePresent($attribute);
+        } elseif (is_string($value)) {
             $this->assertable->assertAttributeContains($attribute, $value);
         } else {
             $this->assertable->assertAttribute($attribute, $value);
@@ -60,9 +64,11 @@ final readonly class Short
         return $this;
     }
 
-    public function id(string|callable $value): self
+    public function id(string|callable|null $value = null): self
     {
-        if (is_string($value)) {
+        if (is_null($value)) {
+            $this->assertable->assertAttributePresent('id');
+        } elseif (is_string($value)) {
             $this->assertable->assertIdEquals($value);
         } else {
             $this->assertable->assertAttribute('id', $value);
@@ -71,9 +77,11 @@ final readonly class Short
         return $this;
     }
 
-    public function class(string|callable $value): self
+    public function class(string|callable|null $value = null): self
     {
-        if (is_string($value)) {
+        if (is_null($value)) {
+            $this->assertable->assertAttributePresent('class');
+        } elseif (is_string($value)) {
             $this->assertable->assertClassContains($value);
         } else {
             $this->assertable->assertAttribute('class', $value);
