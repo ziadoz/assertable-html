@@ -87,19 +87,34 @@ class AssertsElementTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_assert_tag_passes(): void
+    public function test_assert_tag_equals_passes(): void
     {
         $this->getAssertableElement('<foo-bar>Foo Bar</foo-bar>')
             ->assertTagEquals('foo-bar');
     }
 
-    public function test_assert_tag_fails(): void
+    public function test_assert_tag_equals_fails(): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage("The element [foo-bar] tag doesn't match the given tag [p].");
+        $this->expectExceptionMessage("The element [foo-bar] tag doesn't equal the given tag [p].");
 
         $this->getAssertableElement('<foo-bar>Foo Bar</foo-bar>')
             ->assertTagEquals('p');
+    }
+
+    public function test_assert_tag_doesnt_equal_passes(): void
+    {
+        $this->getAssertableElement('<foo-bar>Foo Bar</foo-bar>')
+            ->assertTagDoesntEqual('p');
+    }
+
+    public function test_assert_tag_doesnt_equal_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [foo-bar] tag equals the given tag [foo-bar].');
+
+        $this->getAssertableElement('<foo-bar>Foo Bar</foo-bar>')
+            ->assertTagDoesntEqual('foo-bar');
     }
 
     /*

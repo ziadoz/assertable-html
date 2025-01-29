@@ -75,7 +75,23 @@ trait AssertsElement
             $expected = strtolower($tag),
             strtolower($this->element->tagName),
             $message ?? sprintf(
-                "The element [%s] tag doesn't match the given tag [%s].",
+                "The element [%s] tag doesn't equal the given tag [%s].",
+                $this->identifier(),
+                $expected,
+            ),
+        );
+
+        return $this;
+    }
+
+    /** Assert the element's tag matches the given tag. */
+    public function assertTagDoesntEqual(string $tag, ?string $message = null): static
+    {
+        PHPUnit::assertNotSame(
+            $expected = strtolower($tag),
+            strtolower($this->element->tagName),
+            $message ?? sprintf(
+                'The element [%s] tag equals the given tag [%s].',
                 $this->identifier(),
                 $expected,
             ),

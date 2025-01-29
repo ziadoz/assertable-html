@@ -242,7 +242,8 @@ class AssertableHtmlTest extends TestCase
             });
 
         $html->querySelector('my-web-component')
-            ->assertTagEquals('my-web-component');
+            ->assertTagEquals('my-web-component')
+            ->assertTagDoesntEqual('foo-bar');
 
         /*
         |--------------------------------------------------------------------------
