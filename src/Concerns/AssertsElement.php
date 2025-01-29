@@ -389,6 +389,34 @@ trait AssertsElement
 
     /*
     |--------------------------------------------------------------------------
+    | Assert ID Present/Missing
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element has an ID. */
+    public function assertIdPresent(): static
+    {
+        $this->attributes->assertPresent('id', sprintf(
+            'The element [%s] is missing the id attribute.',
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element is missing an ID. */
+    public function assertIdMissing(): static
+    {
+        $this->attributes->assertMissing('id', sprintf(
+            'The element [%s] has the id attribute.',
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert ID Equals
     |--------------------------------------------------------------------------
     */

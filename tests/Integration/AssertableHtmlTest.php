@@ -169,6 +169,7 @@ class AssertableHtmlTest extends TestCase
             ->assertText(fn (AssertableText $text) => str_contains($text->value(true), 'is a test'));
 
         $html->querySelector('p')
+            ->assertIdPresent()
             ->assertClassNotEmpty()
             ->assertClassPresent()
             ->assertClassEquals('lux pux nux')

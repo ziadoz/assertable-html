@@ -385,6 +385,42 @@ class AssertsElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
+    | Assert ID Present/Missing
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_id_present_passes(): void
+    {
+        $this->getAssertableElement('<p id="foo">Foo</p>')
+            ->assertIdPresent();
+    }
+
+    public function test_assert_id_present_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [p] is missing the id attribute.');
+
+        $this->getAssertableElement('<p>Foo</p>')
+            ->assertIdPresent();
+    }
+
+    public function test_assert_id_missing_passes(): void
+    {
+        $this->getAssertableElement('<p>Foo</p>')
+            ->assertIdMissing();
+    }
+
+    public function test_assert_id_missing_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [p#foo] has the id attribute.');
+
+        $this->getAssertableElement('<p id="foo">Foo</p>')
+            ->assertIdMissing();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Assert ID Equals
     |--------------------------------------------------------------------------
     */
