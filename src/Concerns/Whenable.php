@@ -17,9 +17,9 @@ trait Whenable
     {
         $condition = is_callable($condition) ? $condition($this) : $condition;
 
-        if ($condition && $callback) {
+        if ($condition) {
             $callback($this);
-        } elseif (! $condition && $default) {
+        } elseif ($default) {
             $default($this);
         }
 
