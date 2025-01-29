@@ -373,6 +373,16 @@ $document->with('div#inner', function (AssertableElement $inner) {
 });
 ```
 
+The `when()` method makes it possible to perform assertions conditionally, which can be useful when working with data providers or more complex tests:
+
+```php
+$element->when(
+    $condition,                                                           // Condition can be a boolean, or a callable that evaluates to a boolean.
+    fn (AssertableElement $element) => $element->assertTextEquals('Foo'), // Called when condition is true
+    fn (AssertableElement $element) => $element->assertTextEquals('Bar'), // Called when condition is false
+);
+```
+
 ### Assertions
 
 Assertable HTML provides loads of assertions to help you test your HTML is exactly as expected. The majority of these assertions live on the `AssertableElement` instance, and can be categorised as follows:

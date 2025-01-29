@@ -104,18 +104,20 @@ class AssertableHtmlTest extends TestCase
 
         $html->when(true, function (AssertableDocument $doc): void {
             $doc->querySelectorAll('ul li')->assertCount(3);
-        });
-
-        $html->when(false, null, function (AssertableDocument $doc): void {
+        })->when(false, null, function (AssertableDocument $doc): void {
             $doc->querySelectorAll('ul li')->assertCount(3);
         });
 
         $html->querySelector('ul')->when(true, function (AssertableElement $el): void {
             $el->assertTextEquals('Foo Bar Baz', true);
+        })->when(true, null, function (AssertableElement $el): void {
+            $el->assertTextEquals('Foo Bar Baz', true);
         });
 
-        $html->querySelector('ul')->when(true, null, function (AssertableElement $el): void {
-            $el->assertTextEquals('Foo Bar Baz', true);
+        $html->querySelectorAll('ul li')->when(true, function (AssertableElementsList $els): void {
+            $els->assertCount(3);
+        })->when(false, null, function (AssertableElementsList $els): void {
+            $els->assertCount(3);
         });
 
         /*

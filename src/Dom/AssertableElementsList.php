@@ -15,11 +15,13 @@ use RuntimeException;
 use Traversable;
 use Ziadoz\AssertableHtml\Concerns\AssertsElementsList;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;
+use Ziadoz\AssertableHtml\Concerns\Whenable;
 
 final readonly class AssertableElementsList implements ArrayAccess, Countable, IteratorAggregate
 {
     use AssertsElementsList;
     use Scopeable;
+    use Whenable;
 
     /** The assertable elements. */
     private array $elements;
