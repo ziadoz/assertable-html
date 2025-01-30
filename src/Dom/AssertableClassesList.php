@@ -7,7 +7,9 @@ namespace Ziadoz\AssertableHtml\Dom;
 use ArrayAccess;
 use Countable;
 use Dom\TokenList;
+use InvalidArgumentException;
 use IteratorAggregate;
+use OutOfBoundsException;
 use RuntimeException;
 use Stringable;
 use Traversable;
@@ -40,6 +42,41 @@ final readonly class AssertableClassesList implements ArrayAccess, Countable, It
     public function contains(string $class): bool
     {
         return $this->classes->contains($class);
+    }
+
+    /**
+     * Perform a callback on each class in the assertable class list.
+     *
+     * @param  callable(string $class, int $index): void  $callback
+     */
+    public function each(callable $callback): self
+    {
+        array_map($callback, array_values($this->toArray()), array_keys($this->toArray()));
+
+        return $this;
+    }
+
+    /**
+     * Perform a callback on each class in the assertable class list in sequence.
+     *
+     * @param  callable(string $class, int $sequence): void  ...$callbacks
+     */
+    public function sequence(callable ...$callbacks): self
+    {
+        if (count($callbacks) === 0) {
+            throw new InvalidArgumentException('No sequence callbacks given.');
+        }
+
+        foreach ($this as $index => $class) {
+            $callback = $callbacks[$index] ?? throw new OutOfBoundsException(sprintf(
+                'Missing sequence callback for class at position [%d].',
+                $index,
+            ));
+
+            $callback($class, $index);
+        }
+
+        return $this;
     }
 
     /** Return whether the assertable class list contains any of the given classes. */

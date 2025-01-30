@@ -46,12 +46,9 @@ class AssertableElementListTest extends TestCase
         });
 
         // Sequence
-        $assertable->sequence(
-            fn (AssertableElement $el, int $sequence) => $this->assertSame($ids[$sequence], $el->id),
-            fn (AssertableElement $el, int $sequence) => $this->assertSame($ids[$sequence], $el->id),
-            fn (AssertableElement $el, int $sequence) => $this->assertSame($ids[$sequence], $el->id),
-            fn (AssertableElement $el, int $sequence) => $this->assertSame($ids[$sequence], $el->id),
-        );
+        $assertable->sequence(...array_fill(0, 4, function (AssertableElement $el, int $sequence) use ($ids) {
+            $this->assertSame($ids[$sequence], $el->id);
+        }));
 
         // Array Access
         $this->assertTrue(isset($assertable[0]));

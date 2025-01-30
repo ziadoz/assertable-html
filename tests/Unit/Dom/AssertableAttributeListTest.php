@@ -45,12 +45,10 @@ class AssertableAttributeListTest extends TestCase
 
         // Sequence
         $attrs = [['class', 'foo'], ['id', 'bar'], ['data-bar', 'foo-bar'], ['aria-label', 'foo']];
-        $assertable->sequence(
-            ...array_fill(0, 4, function (string $attribute, ?string $value, int $sequence) use ($attrs) {
-                $this->assertSame($attrs[$sequence][0], $attribute);
-                $this->assertStringContainsString($attrs[$sequence][1], $value);
-            })
-        );
+        $assertable->sequence(...array_fill(0, 4, function (string $attribute, ?string $value, int $sequence) use ($attrs) {
+            $this->assertSame($attrs[$sequence][0], $attribute);
+            $this->assertStringContainsString($attrs[$sequence][1], $value);
+        }));
 
         // Array Access
         $this->assertTrue(isset($assertable['class']));

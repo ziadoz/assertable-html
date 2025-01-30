@@ -82,7 +82,11 @@ final readonly class AssertableAttributesList implements ArrayAccess, Countable,
         return $this->offsetExists($attribute);
     }
 
-    /** Perform a callback on each attribute in the assertable attribute list. */
+    /**
+     * Perform a callback on each attribute in the assertable attribute list.
+     *
+     * @param  callable(string $attribute, ?string $value, int $index): void  $callback
+     */
     public function each(callable $callback): self
     {
         array_map($callback, array_keys($this->attributes), array_values($this->attributes), range(0, count($this->attributes) - 1));
@@ -90,7 +94,11 @@ final readonly class AssertableAttributesList implements ArrayAccess, Countable,
         return $this;
     }
 
-    /** Perform a callback on each attribute in the assertable attribute list in sequence. */
+    /**
+     * Perform a callback on each attribute in the assertable attribute list in sequence.
+     *
+     * @param  callable(string $attribute, ?string $value, int $sequence): void  ...$callbacks
+     */
     public function sequence(callable ...$callbacks): self
     {
         if (count($callbacks) === 0) {

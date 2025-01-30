@@ -26,6 +26,18 @@ class AssertableClassesListTest extends TestCase
         $this->assertTrue($assertable->contains('foo'));
         $this->assertFalse($assertable->contains('qux'));
 
+        // Each
+        $classes = ['foo', 'bar', 'baz'];
+        $assertable->each(function (string $class, int $index) use ($classes): void {
+            $this->assertSame($classes[$index], $class);
+        });
+
+        // Sequence
+        $classes = ['foo', 'bar', 'baz'];
+        $assertable->sequence(...array_fill(0, 3, function (string $class, int $index) use ($classes) {
+            $this->assertSame($classes[$index], $class);
+        }));
+
         // Any
         $this->assertTrue($assertable->any(['foo', 'qux']));
         $this->assertFalse($assertable->any(['qux', 'lux']));

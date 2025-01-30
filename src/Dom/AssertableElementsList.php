@@ -98,7 +98,11 @@ final readonly class AssertableElementsList implements ArrayAccess, Countable, I
         return $this->offsetGet(count($this) - 1);
     }
 
-    /** Perform a callback on each assert element in the list. */
+    /**
+     * Perform a callback on each element in the assertable element list.
+     *
+     * @param  callable(AssertableElement $element, int $sequence): void  $callback
+     */
     public function each(callable $callback): self
     {
         array_map($callback, array_values($this->elements), array_keys($this->elements));
@@ -106,7 +110,11 @@ final readonly class AssertableElementsList implements ArrayAccess, Countable, I
         return $this;
     }
 
-    /** Perform a callback on each assertable element in the list in sequence. */
+    /**
+     * Perform a callback on each element in the assertable element list in sequence.
+     *
+     * @param  callable(AssertableElement $element, int $sequence): void  ...$callbacks
+     */
     public function sequence(callable ...$callbacks): self
     {
         if (count($callbacks) === 0) {

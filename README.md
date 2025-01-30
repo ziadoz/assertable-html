@@ -258,6 +258,16 @@ $element->classes->contains('foo');     // true
 $element->classes->any(['foo', 'qux']); // true
 $element->classes->all(['foo', 'qux']); // false
 
+$element->classes->each(function (string $class, int $index) {
+    echo $class; // 'foo'
+    echo $index; // 0
+});
+
+$element->classes->sequence(
+    fn (string $class, int $sequence): => $this->assertSame('foo', $class),
+    fn (string $class, int $sequence): => $this->assertSame('bar', $class),
+);
+
 // Attributes
 echo $element->attributes->value('data-foo');                            // '  bar  '
 echo $element->attributes->value('data-foo', normaliseWhitespace: true); // 'bar'
@@ -287,7 +297,7 @@ $element->assertIdEquals('foo');
 $element->assertAttributEquals('foo', 'foo');
 ```
 
-These classes can be useful when you want to perform more advanced custom assertions. We'll get to those later!
+These classes can be useful when you want to perform more advanced custom assertions.
 
 The `querySelectorAll()` method returns a `Ziadoz\AssertableHtml\Dom\AssertableElementsList` instance containing every matching element, which allows you to work with the matching elements as an array:
 
