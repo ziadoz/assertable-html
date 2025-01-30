@@ -266,6 +266,12 @@ $element->attributes->toArray();       // ['class' => 'foo bar', 'data-foo' => '
 $element->attributes->empty();         // false
 $element->attributes->names();         // ['class', 'data-foo']
 $element->attributes->has('data-foo'); // true
+
+$element->attributes->each(function (string $attribute, ?string $value, int $index) {
+    echo $attribute; // 'class'
+    echo $value;     // 'foo-bar'
+    echo $index;     // 0 
+}, normaliseWhitespace: true);
 ```
 
 You can perform assertions using these classes, however, in most cases the element has a proxy method that makes it more convenient to do from the element:

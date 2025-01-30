@@ -38,6 +38,18 @@ final readonly class AssertableAttributesList implements ArrayAccess, Countable,
         return $attributes;
     }
 
+    /** Dump the assertable class list. */
+    public function dump(): void
+    {
+        dump($this->toArray());
+    }
+
+    /** Dump and die the assertable class list. */
+    public function dd(): never
+    {
+        dd($this->toArray());
+    }
+
     /** Return the attribute (optionally whitespace normalised). */
     public function value(string $attribute, bool $normaliseWhitespace = false): string
     {
@@ -68,16 +80,16 @@ final readonly class AssertableAttributesList implements ArrayAccess, Countable,
         return $this->offsetExists($attribute);
     }
 
-    /** Dump the assertable class list. */
-    public function dump(): void
+    /** Perform a callback on each assert element in the list. */
+    public function each(callable $callback, bool $normaliseWhitespace = false): self
     {
-        dump($this->toArray());
-    }
+        $values = $normaliseWhitespace
+            ? array_map(fn (?string $value): string => Whitespace::normalise((string) $value), array_values($this->attributes))
+            : array_values($this->attributes);
 
-    /** Dump and die the assertable class list. */
-    public function dd(): never
-    {
-        dd($this->toArray());
+        array_map($callback, array_keys($this->attributes), $values, range(0, count($this->attributes) - 1));
+
+        return $this;
     }
 
     /** Return the assertable class list as an array. */

@@ -35,6 +35,13 @@ class AssertableAttributeListTest extends TestCase
         $this->assertTrue($assertable->has('aria-label'));
         $this->assertFalse($assertable->has('foo-bar'));
 
+        // Each
+        $attrs = [['class', 'foo'], ['id', 'bar'], ['data-bar', 'foo-bar'], ['aria-label', 'foo']];
+        $assertable->each(function (string $attribute, ?string $value, int $index) use ($attrs): void {
+            $this->assertSame($attrs[$index][0], $attribute);
+            $this->assertSame($attrs[$index][1], $value);
+        }, true);
+
         // Array Access
         $this->assertTrue(isset($assertable['class']));
         $this->assertSame('foo', $assertable['class']);
