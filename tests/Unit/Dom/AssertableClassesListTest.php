@@ -34,7 +34,6 @@ class AssertableClassesListTest extends TestCase
         });
 
         // Sequence
-        $classes = ['foo', 'bar', 'baz'];
         $assertable->sequence(...array_fill(0, 3, function (string $class, int $index) use ($classes) {
             $this->assertSame($classes[$index], $class);
         }));
