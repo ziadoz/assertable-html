@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Concerns;
 
+use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 trait AssertsElementsList
@@ -145,7 +146,7 @@ trait AssertsElementsList
     private function countNotNegative(int $count): void
     {
         if ($count < 0) {
-            PHPUnit::fail('Expected number of elements in a list cannot be less than zero.');
+            throw new OutOfBoundsException('Expected count of elements cannot be less than zero.');
         }
     }
 

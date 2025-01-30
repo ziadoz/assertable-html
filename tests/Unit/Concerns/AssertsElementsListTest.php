@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Unit\Concerns;
 
+use OutOfBoundsException;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -103,6 +104,16 @@ class AssertsElementsListTest extends TestCase
         $assertable->assertCountGreaterThanOrEqual(4);
         $assertable->assertCountLessThan(5);
         $assertable->assertCountLessThanOrEqual(4);
+    }
+
+    public function test_assert_count_comparisons_throws(): void
+    {
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('Expected count of elements cannot be less than zero.');
+
+        AssertableDocument::createFromString('<p>Foo</p>', LIBXML_HTML_NOIMPLIED)
+            ->querySelectorAll('p')
+            ->assertCount(-42);
     }
 
     #[DataProvider('assert_count_comparisons_fail_data_provider')]
