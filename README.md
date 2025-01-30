@@ -313,6 +313,10 @@ $elements->assertAll(function (AssertableElmeent $element) {
     return $element->attributes->has('class');
 })->assertAny(function (AssertableElmeent $element) {
     return $element->classes->contains('foo');
+})
+
+$element->each(function (AssertableElement $element) {
+    $element->assertClassContains('foo');
 });
 
 $elements[0]->assertIdEquals('foo')->assertTextEquals('Foo');
