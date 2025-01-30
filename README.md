@@ -473,11 +473,11 @@ $element->assertElement(function (AssertableElement $element) {
 
 Every assertable class has flexible assertions available, just in case:
 
-- `AssertableElement`: `assertElement()`, `assertText()`, `assertClass()`, `assertAttributes()` and `assertAttribute()`.
-- `AssertableElementsList`: `assertElements()`.
-- `AssertableClassesList`: `assertClasses()`.
-- `AssertableAttributesList`: `assertAttributes()` and `assertAttribute()`.
-- `AssertableText`: `assertText()`.
+- **AssertableElement:** `assertElement()`, `assertText()`, `assertClass()`, `assertAttributes()` and `assertAttribute()`.
+- **AssertableElementsList:** `assertElements()`.
+- **AssertableClassesList:** `assertClasses()`.
+- **AssertableAttributesList:** `assertAttributes()` and `assertAttribute()`.
+- **AssertableText:** `assertText()`.
 
 ### HTML Output
 
