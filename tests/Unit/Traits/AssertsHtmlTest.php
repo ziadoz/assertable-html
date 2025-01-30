@@ -25,15 +25,15 @@ class AssertsHtmlTest extends TestCase
             $assertable->assertTitleEquals('Test Page Title');
         })->assertHead($html, function (AssertableElement $assertable): void {
             $this->assertInstanceOf(AssertableElement::class, $assertable);
-            $assertable->assertTag('head');
+            $assertable->assertTagEquals('head');
             $assertable->querySelector('meta[name="description"]')->assertAttributeEquals('content', 'Foo Bar');
         })->assertBody($html, function (AssertableElement $assertable): void {
             $this->assertInstanceOf(AssertableElement::class, $assertable);
-            $assertable->assertTag('body');
+            $assertable->assertTagEquals('body');
             $assertable->querySelector('p')->assertTextEquals('Foo');
         })->assertElement($html, 'p', function (AssertableElement $assertable): void {
             $this->assertInstanceOf(AssertableElement::class, $assertable);
-            $assertable->assertTag('p');
+            $assertable->assertTagEquals('p');
             $assertable->assertTextEquals('Foo');
         });
     }

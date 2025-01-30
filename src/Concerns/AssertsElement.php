@@ -18,35 +18,50 @@ trait AssertsElement
     |--------------------------------------------------------------------------
     */
 
-    /** Assert the element contains one or more elements matching the given selector. */
-    public function assertElementsExist(string $selector, ?string $message = null): static
+    /** Assert the element contains exactly one element matching the given selector. */
+    public function assertOneElementExists(string $selector, ?string $message = null): static
     {
-        PHPUnit::assertGreaterThan(
-            0,
-            $this->element->querySelectorAll($selector)->length,
-            $message ?? sprintf(
-                "The element [%s] doesn't contain any elements matching the given selector [%s].",
-                $this->identifier(),
-                $selector,
-            ),
-        );
+        $this->querySelectorAll($selector)->assertCount(1, $message ?? sprintf(
+            "The element [%s] doesn't contain exactly one element matching the given selector [%s].",
+            $this->identifier(),
+            $selector,
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element doesn't contain exactly one elements matching the given selector. */
+    public function assertOneElementDoesntExist(string $selector, ?string $message = null): static
+    {
+        $this->querySelectorAll($selector)->assertNotCount(1, $message ?? sprintf(
+            'The element [%s] contains zero or more than one elements matching the given selector [%s].',
+            $this->identifier(),
+            $selector,
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element contains one or more elements matching the given selector. */
+    public function assertManyElementsExist(string $selector, ?string $message = null): static
+    {
+        $this->querySelectorAll($selector)->assertCountGreaterThan(0, $message ?? sprintf(
+            "The element [%s] doesn't contain any elements matching the given selector [%s].",
+            $this->identifier(),
+            $selector,
+        ));
 
         return $this;
     }
 
     /** Assert the element doesn't contain any elements matching the given selector. */
-    public function assertElementsDontExist(string $selector, ?string $message = null): static
+    public function assertManyElementsDontExist(string $selector, ?string $message = null): static
     {
-        PHPUnit::assertSame(
-            0,
-            $total = $this->element->querySelectorAll($selector)->length,
-            $message ?? sprintf(
-                'The element [%s] contain [%d] elements matching the given selector [%s].',
-                $this->identifier(),
-                $total,
-                $selector,
-            ),
-        );
+        $this->querySelectorAll($selector)->assertCount(0, $message ?? sprintf(
+            'The element [%s] contains one or more elements matching the given selector [%s].',
+            $this->identifier(),
+            $selector,
+        ));
 
         return $this;
     }
@@ -58,13 +73,29 @@ trait AssertsElement
     */
 
     /** Assert the element's tag matches the given tag. */
-    public function assertTag(string $tag, ?string $message = null): static
+    public function assertTagEquals(string $tag, ?string $message = null): static
     {
         PHPUnit::assertSame(
             $expected = strtolower($tag),
             strtolower($this->element->tagName),
             $message ?? sprintf(
-                "The element [%s] tag doesn't match the given tag [%s].",
+                "The element [%s] tag doesn't equal the given tag [%s].",
+                $this->identifier(),
+                $expected,
+            ),
+        );
+
+        return $this;
+    }
+
+    /** Assert the element's tag matches the given tag. */
+    public function assertTagDoesntEqual(string $tag, ?string $message = null): static
+    {
+        PHPUnit::assertNotSame(
+            $expected = strtolower($tag),
+            strtolower($this->element->tagName),
+            $message ?? sprintf(
+                'The element [%s] tag equals the given tag [%s].',
                 $this->identifier(),
                 $expected,
             ),
@@ -144,6 +175,19 @@ trait AssertsElement
     {
         $this->querySelectorAll($selector)->assertCount($count, $message ?? sprintf(
             "The element [%s] doesn't have exactly [%d] elements matching the given selector [%s].",
+            $this->identifier(),
+            $count,
+            $selector,
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element doesn't contain the exact number of elements matching the given selector. */
+    public function assertElementsNotCount(string $selector, int $count, ?string $message = null): static
+    {
+        $this->querySelectorAll($selector)->assertNotCount($count, $message ?? sprintf(
+            'The element [%s] has exactly [%d] elements matching the given selector [%s].',
             $this->identifier(),
             $count,
             $selector,
@@ -343,6 +387,34 @@ trait AssertsElement
     public function assertDontSeeIn(string $text, bool $normaliseWhitespace = false, ?string $message = null): static
     {
         $this->assertTextDoesntContain($text, $normaliseWhitespace, $message);
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert ID Present/Missing
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element has an ID. */
+    public function assertIdPresent(): static
+    {
+        $this->attributes->assertPresent('id', sprintf(
+            'The element [%s] is missing the id attribute.',
+            $this->identifier(),
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element is missing an ID. */
+    public function assertIdMissing(): static
+    {
+        $this->attributes->assertMissing('id', sprintf(
+            'The element [%s] has the id attribute.',
+            $this->identifier(),
+        ));
 
         return $this;
     }

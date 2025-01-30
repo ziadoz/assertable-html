@@ -20,7 +20,8 @@
         "php": "^8.4",
         "ext-dom": "*",
         "ext-libxml": "*",
-        "symfony/var-dumper": "^7.1"
+        "symfony/var-dumper": "^7.1",
+        "laravel/framework": "^11.41.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.3",

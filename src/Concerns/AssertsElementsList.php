@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Concerns;
 
+use OutOfBoundsException;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 trait AssertsElementsList
@@ -76,6 +77,19 @@ trait AssertsElementsList
         return $this;
     }
 
+    /** Assert the element list doesn't contain the given number of elements. */
+    public function assertNotCount(int $count, ?string $message = null): static
+    {
+        $this->countNotNegative($count);
+
+        PHPUnit::assertNotCount($count, $this, $message ?? sprintf(
+            'The element list has exactly [%d] elements.',
+            $count,
+        ));
+
+        return $this;
+    }
+
     /** Assert the element list contains greater than the given number of elements. */
     public function assertCountGreaterThan(int $count, ?string $message = null): static
     {
@@ -132,7 +146,7 @@ trait AssertsElementsList
     private function countNotNegative(int $count): void
     {
         if ($count < 0) {
-            PHPUnit::fail('Expected number of elements in a list cannot be less than zero.');
+            throw new OutOfBoundsException('Expected count of elements cannot be less than zero.');
         }
     }
 

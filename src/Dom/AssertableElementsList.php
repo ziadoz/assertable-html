@@ -10,16 +10,20 @@ use Dom\Element;
 use Dom\HTMLCollection;
 use Dom\HTMLElement;
 use Dom\NodeList;
+use InvalidArgumentException;
 use IteratorAggregate;
+use OutOfBoundsException;
 use RuntimeException;
 use Traversable;
 use Ziadoz\AssertableHtml\Concerns\AssertsElementsList;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;
+use Ziadoz\AssertableHtml\Concerns\Whenable;
 
 final readonly class AssertableElementsList implements ArrayAccess, Countable, IteratorAggregate
 {
     use AssertsElementsList;
     use Scopeable;
+    use Whenable;
 
     /** The assertable elements. */
     private array $elements;
@@ -94,10 +98,37 @@ final readonly class AssertableElementsList implements ArrayAccess, Countable, I
         return $this->offsetGet(count($this) - 1);
     }
 
-    /** Perform a callback on each assert element in the list. */
+    /**
+     * Perform a callback on each element in the assertable element list.
+     *
+     * @param  callable(AssertableElement $element, int $sequence): void  $callback
+     */
     public function each(callable $callback): self
     {
         array_map($callback, array_values($this->elements), array_keys($this->elements));
+
+        return $this;
+    }
+
+    /**
+     * Perform a callback on each element in the assertable element list in sequence.
+     *
+     * @param  callable(AssertableElement $element, int $sequence): void  ...$callbacks
+     */
+    public function sequence(callable ...$callbacks): self
+    {
+        if (count($callbacks) === 0) {
+            throw new InvalidArgumentException('No sequence callbacks given.');
+        }
+
+        foreach ($this as $index => $element) {
+            $callback = $callbacks[$index] ?? throw new OutOfBoundsException(sprintf(
+                'Missing sequence callback for element at position [%d].',
+                $index,
+            ));
+
+            $callback($element, $index);
+        }
 
         return $this;
     }

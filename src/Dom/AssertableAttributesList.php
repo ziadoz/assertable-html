@@ -7,7 +7,9 @@ namespace Ziadoz\AssertableHtml\Dom;
 use ArrayAccess;
 use Countable;
 use Dom\NamedNodeMap;
+use InvalidArgumentException;
 use IteratorAggregate;
+use OutOfBoundsException;
 use RuntimeException;
 use Traversable;
 use Ziadoz\AssertableHtml\Concerns\AssertsAttributesList;
@@ -36,6 +38,18 @@ final readonly class AssertableAttributesList implements ArrayAccess, Countable,
         }
 
         return $attributes;
+    }
+
+    /** Dump the assertable class list. */
+    public function dump(): void
+    {
+        dump($this->toArray());
+    }
+
+    /** Dump and die the assertable class list. */
+    public function dd(): never
+    {
+        dd($this->toArray());
     }
 
     /** Return the attribute (optionally whitespace normalised). */
@@ -68,16 +82,43 @@ final readonly class AssertableAttributesList implements ArrayAccess, Countable,
         return $this->offsetExists($attribute);
     }
 
-    /** Dump the assertable class list. */
-    public function dump(): void
+    /**
+     * Perform a callback on each attribute in the assertable attribute list.
+     *
+     * @param  callable(string $attribute, ?string $value, int $index): void  $callback
+     */
+    public function each(callable $callback): self
     {
-        dump($this->toArray());
+        array_map($callback, array_keys($this->attributes), array_values($this->attributes), range(0, count($this->attributes) - 1));
+
+        return $this;
     }
 
-    /** Dump and die the assertable class list. */
-    public function dd(): never
+    /**
+     * Perform a callback on each attribute in the assertable attribute list in sequence.
+     *
+     * @param  callable(string $attribute, ?string $value, int $sequence): void  ...$callbacks
+     */
+    public function sequence(callable ...$callbacks): self
     {
-        dd($this->toArray());
+        if (count($callbacks) === 0) {
+            throw new InvalidArgumentException('No sequence callbacks given.');
+        }
+
+        $index = 0;
+
+        foreach ($this as $attribute => $value) {
+            $callback = $callbacks[$index] ?? throw new OutOfBoundsException(sprintf(
+                'Missing sequence callback for attribute [%s] at position [%d].',
+                $attribute,
+                $index,
+            ));
+
+            $callback($attribute, $value, $index);
+            $index++;
+        }
+
+        return $this;
     }
 
     /** Return the assertable class list as an array. */

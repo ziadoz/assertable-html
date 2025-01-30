@@ -9,8 +9,9 @@ use Orchestra\Testbench\TestCase;
 use Ziadoz\AssertableHtml\AssertableHtmlServiceProvider;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
+use Ziadoz\AssertableHtml\Tests\Integration\Fixtures\Component;
 
-class TestViewTest extends TestCase
+class TestComponentTest extends TestCase
 {
     use InteractsWithViews;
 
@@ -18,26 +19,25 @@ class TestViewTest extends TestCase
     {
         config()->set('view.paths', [__DIR__ . '/Fixtures']);
 
-        $view = $this->view('view');
+        $component = $this->component(Component::class);
 
         // Assertable Element
-        $assertable = $view->assertableElement();
-        $assertable->querySelector('div')->assertIdEquals('view');
+        $assertable = $component->assertableElement();
+        $assertable->querySelector('nav')->assertIdEquals('component');
 
         // Assert Element
-        $view->assertElement(function (AssertableDocument $assertable) {
-            $assertable->querySelector('div')->assertIdEquals('view');
+        $component->assertElement(function (AssertableDocument $assertable) {
+            $assertable->querySelector('nav')->assertIdEquals('component');
         })->assertElement(function (AssertableDocument $assertable) {
-            $lis = $assertable->querySelectorAll('li')
-                ->assertCount(4)
+            $lis = $assertable->querySelectorAll('a')
+                ->assertCount(3)
                 ->assertAll(function (AssertableElement $el): bool {
-                    return $el->classes->contains('bullet-point');
+                    return $el->classes->contains('nav-link');
                 });
 
             $lis[0]->assertIdEquals('foo')->assertTextContains('Foo');
             $lis[1]->assertIdEquals('bar')->assertTextContains('Bar');
             $lis[2]->assertIdEquals('baz')->assertTextContains('Baz');
-            $lis[3]->assertIdEquals('qux')->assertTextContains('Qux');
         });
     }
 

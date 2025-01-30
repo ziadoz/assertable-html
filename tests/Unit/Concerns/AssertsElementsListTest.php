@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Unit\Concerns;
 
+use OutOfBoundsException;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +22,7 @@ class AssertsElementsListTest extends TestCase
 
     public function test_assert_elements_passes(): void
     {
-        AssertableDocument::createFromString('<p>Foo</p><p>Bar</p>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<p>Foo</p><p>Bar</p>', LIBXML_HTML_NOIMPLIED)
             ->querySelectorAll('p')
             ->assertElements(function (AssertableElementsList $els): bool {
                 return count($els) === 2;
@@ -33,7 +34,7 @@ class AssertsElementsListTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element list doesn't pass the given callback.");
 
-        AssertableDocument::createFromString('<p>Foo</p><p>Bar</p>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<p>Foo</p><p>Bar</p>', LIBXML_HTML_NOIMPLIED)
             ->querySelectorAll('p')
             ->assertElements(function (AssertableElementsList $els): bool {
                 return count($els) === 0;
@@ -48,7 +49,7 @@ class AssertsElementsListTest extends TestCase
 
     public function test_assert_empty_passes(): void
     {
-        AssertableDocument::createFromString('<ul></ul>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<ul></ul>', LIBXML_HTML_NOIMPLIED)
             ->querySelectorAll('li')
             ->assertEmpty();
     }
@@ -58,14 +59,14 @@ class AssertsElementsListTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element list isn't empty.");
 
-        AssertableDocument::createFromString('<ul><li>Foo</li><li>Bar</li></ul>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<ul><li>Foo</li><li>Bar</li></ul>', LIBXML_HTML_NOIMPLIED)
             ->querySelectorAll('li')
             ->assertEmpty();
     }
 
     public function test_assert_not_empty_passes(): void
     {
-        AssertableDocument::createFromString('<ul><li>Foo</li><li>Bar</li></ul>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<ul><li>Foo</li><li>Bar</li></ul>', LIBXML_HTML_NOIMPLIED)
             ->querySelectorAll('li')
             ->assertNotEmpty();
     }
@@ -75,7 +76,7 @@ class AssertsElementsListTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('The element list is empty.');
 
-        AssertableDocument::createFromString('<ul></ul>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<ul></ul>', LIBXML_HTML_NOIMPLIED)
             ->querySelectorAll('li')
             ->assertNotEmpty();
     }
@@ -95,13 +96,24 @@ class AssertsElementsListTest extends TestCase
             <li>Baz</li>
             <li>Qux</li>
         </ul>
-        HTML, LIBXML_NOERROR)->querySelectorAll('li');
+        HTML, LIBXML_HTML_NOIMPLIED)->querySelectorAll('li');
 
         $assertable->assertCount(4);
+        $assertable->assertNotCount(42);
         $assertable->assertCountGreaterThan(1);
         $assertable->assertCountGreaterThanOrEqual(4);
         $assertable->assertCountLessThan(5);
         $assertable->assertCountLessThanOrEqual(4);
+    }
+
+    public function test_assert_count_comparisons_throws(): void
+    {
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('Expected count of elements cannot be less than zero.');
+
+        AssertableDocument::createFromString('<p>Foo</p>', LIBXML_HTML_NOIMPLIED)
+            ->querySelectorAll('p')
+            ->assertCount(-42);
     }
 
     #[DataProvider('assert_count_comparisons_fail_data_provider')]
@@ -117,10 +129,11 @@ class AssertsElementsListTest extends TestCase
             <li>Baz</li>
             <li>Qux</li>
         </ul>
-        HTML, LIBXML_NOERROR)->querySelectorAll('li');
+        HTML, LIBXML_HTML_NOIMPLIED)->querySelectorAll('li');
 
         match ($comparison) {
             '='  => $assertable->assertCount($expected),
+            '!=' => $assertable->assertNotCount($expected),
             '>'  => $assertable->assertCountGreaterThan($expected),
             '>=' => $assertable->assertCountGreaterThanOrEqual($expected),
             '<'  => $assertable->assertCountLessThan($expected),
@@ -132,6 +145,10 @@ class AssertsElementsListTest extends TestCase
     {
         yield 'equals' => [
             '=', 1, "The element list doesn't have exactly [1] elements.",
+        ];
+
+        yield 'not equals' => [
+            '!=', 4, 'The element list has exactly [4] elements.',
         ];
 
         yield 'greater than' => [
@@ -159,7 +176,7 @@ class AssertsElementsListTest extends TestCase
 
     public function test_assert_any_passes(): void
     {
-        AssertableDocument::createFromString('<p class="foo">Foo</p><p class="bar">Bar</p>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<p class="foo">Foo</p><p class="bar">Bar</p>', LIBXML_HTML_NOIMPLIED)
             ->querySelectorAll('p')
             ->assertAny(function (AssertableElement $el): bool {
                 return $el->matches('.foo');
@@ -171,7 +188,7 @@ class AssertsElementsListTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('No elements in the list match the given callback.');
 
-        AssertableDocument::createFromString('<p class="foo">Foo</p><p class="bar">Bar</p>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<p class="foo">Foo</p><p class="bar">Bar</p>', LIBXML_HTML_NOIMPLIED)
             ->querySelectorAll('p')
             ->assertAny(function (AssertableElement $el): bool {
                 return $el->matches('.baz');
@@ -180,7 +197,7 @@ class AssertsElementsListTest extends TestCase
 
     public function test_assert_all_passes(): void
     {
-        AssertableDocument::createFromString('<p class="foo">Foo</p><p class="foo">Bar</p>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<p class="foo">Foo</p><p class="foo">Bar</p>', LIBXML_HTML_NOIMPLIED)
             ->querySelectorAll('p')
             ->assertAll(function (AssertableElement $el): bool {
                 return $el->matches('.foo');
@@ -192,7 +209,7 @@ class AssertsElementsListTest extends TestCase
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('Not every element in the list matches the given callback.');
 
-        AssertableDocument::createFromString('<p class="foo">Foo</p><p class="bar">Bar</p>', LIBXML_NOERROR)
+        AssertableDocument::createFromString('<p class="foo">Foo</p><p class="bar">Bar</p>', LIBXML_HTML_NOIMPLIED)
             ->querySelectorAll('p')
             ->assertAll(function (AssertableElement $el): bool {
                 return $el->matches('.foo');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Unit\Dom;
 
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
@@ -19,7 +20,7 @@ class AssertableElementListTest extends TestCase
             <li id="baz">Baz</li>
         </ul>
         <p id="qux">Qux</p>
-        HTML, LIBXML_NOERROR)->querySelectorAll('li, p');
+        HTML, LIBXML_HTML_NOIMPLIED)->querySelectorAll('li, p');
 
         // HTML
         $this->assertSame(<<<'HTML'
@@ -44,6 +45,11 @@ class AssertableElementListTest extends TestCase
             $this->assertSame($ids[$index], $el->id);
         });
 
+        // Sequence
+        $assertable->sequence(...array_fill(0, 4, function (AssertableElement $el, int $sequence) use ($ids) {
+            $this->assertSame($ids[$sequence], $el->id);
+        }));
+
         // Array Access
         $this->assertTrue(isset($assertable[0]));
         $this->assertSame('foo', $assertable[0]->id);
@@ -57,5 +63,17 @@ class AssertableElementListTest extends TestCase
 
         // Count
         $this->assertCount(4, $assertable);
+    }
+
+    public function test_sequence_throws(): void
+    {
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('Missing sequence callback for element at position [1].');
+
+        AssertableDocument::createFromString('<p>Foo</p><p>Bar</p>', LIBXML_HTML_NOIMPLIED)
+            ->querySelectorAll('p')
+            ->sequence(
+                fn (AssertableElement $el, int $sequence) => $el->assertTextEquals('Foo'),
+            );
     }
 }

@@ -88,8 +88,8 @@ class AssertableHtmlTest extends TestCase
             });
         })->many('p, span', function (AssertableElementsList $els): void {
             $els->assertCount(2);
-            $els[0]->assertTag('p');
-            $els[1]->assertTag('span');
+            $els[0]->assertTagEquals('p');
+            $els[1]->assertTagEquals('span');
         })->elsewhere('p', function (AssertableElement $el): void {
             $el->assertTextEquals('I am a test paragraph.');
         })->scope(function (AssertableDocument $doc): void {
@@ -104,18 +104,26 @@ class AssertableHtmlTest extends TestCase
 
         $html->when(true, function (AssertableDocument $doc): void {
             $doc->querySelectorAll('ul li')->assertCount(3);
-        });
-
-        $html->when(false, null, function (AssertableDocument $doc): void {
+        })->when(false, function (AssertableDocument $doc): void {
+            // Never called...
+        }, function (AssertableDocument $doc): void {
             $doc->querySelectorAll('ul li')->assertCount(3);
         });
 
         $html->querySelector('ul')->when(true, function (AssertableElement $el): void {
             $el->assertTextEquals('Foo Bar Baz', true);
+        })->when(true, function (AssertableElement $el): void {
+            // Never called...
+        }, function (AssertableElement $el): void {
+            $el->assertTextEquals('Foo Bar Baz', true);
         });
 
-        $html->querySelector('ul')->when(true, null, function (AssertableElement $el): void {
-            $el->assertTextEquals('Foo Bar Baz', true);
+        $html->querySelectorAll('ul li')->when(true, function (AssertableElementsList $els): void {
+            $els->assertCount(3);
+        })->when(false, function (AssertableElementsList $els): void {
+            // Never called...
+        }, function (AssertableElementsList $els): void {
+            $els->assertCount(3);
         });
 
         /*
@@ -127,8 +135,10 @@ class AssertableHtmlTest extends TestCase
         $html->assertTitleEquals('Test Page Title');
 
         $html->querySelector('body')
-            ->assertElementsExist('div')
-            ->assertElementsDontExist('foo');
+            ->assertOneElementExists('p')
+            ->assertOneElementDoesntExist('foo')
+            ->assertManyElementsExist('div')
+            ->assertManyElementsDontExist('foo');
 
         $html->querySelector('div')
             ->assertElement(function (AssertableElement $el): bool {
@@ -159,6 +169,7 @@ class AssertableHtmlTest extends TestCase
             ->assertText(fn (AssertableText $text) => str_contains($text->value(true), 'is a test'));
 
         $html->querySelector('p')
+            ->assertIdPresent()
             ->assertClassNotEmpty()
             ->assertClassPresent()
             ->assertClassEquals('lux pux nux')
@@ -232,7 +243,8 @@ class AssertableHtmlTest extends TestCase
             });
 
         $html->querySelector('my-web-component')
-            ->assertTag('my-web-component');
+            ->assertTagEquals('my-web-component')
+            ->assertTagDoesntEqual('foo-bar');
 
         /*
         |--------------------------------------------------------------------------
@@ -242,6 +254,7 @@ class AssertableHtmlTest extends TestCase
 
         $html->querySelectorAll('ul li')
             ->assertCount(3)
+            ->assertNotCount(42)
             ->assertCountLessThan(4)
             ->assertCountLessThanOrEqual(4)
             ->assertCountGreaterThan(1)

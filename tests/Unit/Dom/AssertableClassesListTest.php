@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Unit\Dom;
 
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 
@@ -11,7 +12,7 @@ class AssertableClassesListTest extends TestCase
 {
     public function test_class_list(): void
     {
-        $assertable = AssertableDocument::createFromString('<p class="  foo  bar  baz  ">Foo</p>', LIBXML_NOERROR)
+        $assertable = AssertableDocument::createFromString('<p class="  foo  bar  baz  ">Foo</p>', LIBXML_HTML_NOIMPLIED)
             ->querySelector('p')
             ->classes;
 
@@ -25,6 +26,17 @@ class AssertableClassesListTest extends TestCase
         // Contains
         $this->assertTrue($assertable->contains('foo'));
         $this->assertFalse($assertable->contains('qux'));
+
+        // Each
+        $classes = ['foo', 'bar', 'baz'];
+        $assertable->each(function (string $class, int $index) use ($classes): void {
+            $this->assertSame($classes[$index], $class);
+        });
+
+        // Sequence
+        $assertable->sequence(...array_fill(0, 3, function (string $class, int $index) use ($classes) {
+            $this->assertSame($classes[$index], $class);
+        }));
 
         // Any
         $this->assertTrue($assertable->any(['foo', 'qux']));
@@ -52,5 +64,18 @@ class AssertableClassesListTest extends TestCase
 
         // Array
         $this->assertSame(['foo', 'bar', 'baz'], $assertable->toArray());
+    }
+
+    public function test_sequence_throws(): void
+    {
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('Missing sequence callback for class at position [1].');
+
+        AssertableDocument::createFromString('<p class="foo bar baz">Foo</p>', LIBXML_HTML_NOIMPLIED)
+            ->querySelector('p')
+            ->classes
+            ->sequence(
+                fn (string $class, int $sequence) => $this->assertSame('foo', $class),
+            );
     }
 }

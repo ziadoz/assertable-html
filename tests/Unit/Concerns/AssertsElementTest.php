@@ -21,34 +21,64 @@ class AssertsElementTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_assert_elements_exists_passes(): void
+    public function test_assert_one_element_exists_passes(): void
     {
         $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertElementsExist('p');
+            ->assertOneElementExists('p');
     }
 
-    public function test_assert_elements_exists_fails(): void
+    public function test_assert_one_element_exists_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [div] doesn't contain exactly one element matching the given selector [foo].");
+
+        $this->getAssertableElement('<div><p>Foo</p></div>')
+            ->assertOneElementExists('foo');
+    }
+
+    public function test_assert_one_element_doesnt_exist_passes(): void
+    {
+        $this->getAssertableElement('<div><p>Foo</p><p>Bar</p></div>')
+            ->assertOneElementDoesntExist('p');
+    }
+
+    public function test_assert_one_element_doesnt_exist_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [div] contains zero or more than one elements matching the given selector [p].');
+
+        $this->getAssertableElement('<div><p>Foo</p></div>')
+            ->assertOneElementDoesntExist('p');
+    }
+
+    public function test_assert_many_elements_exists_passes(): void
+    {
+        $this->getAssertableElement('<div><p>Foo</p><p>Bar</p></div>')
+            ->assertManyElementsExist('p');
+    }
+
+    public function test_assert_many_elements_exists_fails(): void
     {
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage("The element [div] doesn't contain any elements matching the given selector [foo].");
 
         $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertElementsExist('foo');
+            ->assertManyElementsExist('foo');
     }
 
-    public function test_assert_elements_dont_exist_passes(): void
+    public function test_assert_many_elements_dont_exist_passes(): void
     {
         $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertElementsDontExist('foo');
+            ->assertManyElementsDontExist('foo');
     }
 
-    public function test_assert_elements_dont_exist_fails(): void
+    public function test_assert_many_elements_dont_exist_fails(): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage('The element [div] contain [1] elements matching the given selector [p].');
+        $this->expectExceptionMessage('The element [div] contains one or more elements matching the given selector [p].');
 
         $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertElementsDontExist('p');
+            ->assertManyElementsDontExist('p');
     }
 
     /*
@@ -57,19 +87,34 @@ class AssertsElementTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function test_assert_tag_passes(): void
+    public function test_assert_tag_equals_passes(): void
     {
         $this->getAssertableElement('<foo-bar>Foo Bar</foo-bar>')
-            ->assertTag('foo-bar');
+            ->assertTagEquals('foo-bar');
     }
 
-    public function test_assert_tag_fails(): void
+    public function test_assert_tag_equals_fails(): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage("The element [foo-bar] tag doesn't match the given tag [p].");
+        $this->expectExceptionMessage("The element [foo-bar] tag doesn't equal the given tag [p].");
 
         $this->getAssertableElement('<foo-bar>Foo Bar</foo-bar>')
-            ->assertTag('p');
+            ->assertTagEquals('p');
+    }
+
+    public function test_assert_tag_doesnt_equal_passes(): void
+    {
+        $this->getAssertableElement('<foo-bar>Foo Bar</foo-bar>')
+            ->assertTagDoesntEqual('p');
+    }
+
+    public function test_assert_tag_doesnt_equal_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [foo-bar] tag equals the given tag [foo-bar].');
+
+        $this->getAssertableElement('<foo-bar>Foo Bar</foo-bar>')
+            ->assertTagDoesntEqual('foo-bar');
     }
 
     /*
@@ -174,6 +219,7 @@ class AssertsElementTest extends TestCase
 
         match ($comparison) {
             '='  => $assertable->assertElementsCount($selector, $expected),
+            '!=' => $assertable->assertElementsNotCount($selector, $expected),
             '>'  => $assertable->assertElementsCountGreaterThan($selector, $expected),
             '>=' => $assertable->assertElementsCountGreaterThanOrEqual($selector, $expected),
             '<'  => $assertable->assertElementsCountLessThan($selector, $expected),
@@ -185,6 +231,10 @@ class AssertsElementTest extends TestCase
     {
         yield 'equals' => [
             'li', '=', 1, "The element [ul] doesn't have exactly [1] elements matching the given selector [li].",
+        ];
+
+        yield 'not equals' => [
+            'li', '!=', 4, 'The element [ul] has exactly [4] elements matching the given selector [li].',
         ];
 
         yield 'greater than' => [
@@ -331,6 +381,42 @@ class AssertsElementTest extends TestCase
 
         $this->getAssertableElement('<p>Hello, <strong>World!</strong></p>')
             ->assertTextDoesntContain('Hello, World!');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert ID Present/Missing
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_id_present_passes(): void
+    {
+        $this->getAssertableElement('<p id="foo">Foo</p>')
+            ->assertIdPresent();
+    }
+
+    public function test_assert_id_present_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [p] is missing the id attribute.');
+
+        $this->getAssertableElement('<p>Foo</p>')
+            ->assertIdPresent();
+    }
+
+    public function test_assert_id_missing_passes(): void
+    {
+        $this->getAssertableElement('<p>Foo</p>')
+            ->assertIdMissing();
+    }
+
+    public function test_assert_id_missing_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [p#foo] has the id attribute.');
+
+        $this->getAssertableElement('<p id="foo">Foo</p>')
+            ->assertIdMissing();
     }
 
     /*
@@ -963,6 +1049,6 @@ class AssertsElementTest extends TestCase
 
     private function getAssertableElement(string $html): AssertableElement
     {
-        return AssertableDocument::createFromString($html, LIBXML_NOERROR)->querySelector('body *:first-of-type');
+        return AssertableDocument::createFromString($html, LIBXML_HTML_NOIMPLIED)->querySelector('*:first-of-type');
     }
 }
