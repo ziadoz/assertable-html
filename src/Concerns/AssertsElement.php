@@ -18,7 +18,7 @@ trait AssertsElement
     |--------------------------------------------------------------------------
     */
 
-    /** Assert the element contains exactly one element matching the given selector. */
+    /** Assert the element contains exactly one child element matching the given selector. */
     public function assertOneElementExists(string $selector, ?string $message = null): static
     {
         $this->querySelectorAll($selector)->assertCount(1, $message ?? sprintf(
@@ -30,7 +30,7 @@ trait AssertsElement
         return $this;
     }
 
-    /** Assert the element doesn't contain exactly one elements matching the given selector. */
+    /** Assert the element doesn't contain exactly one child element matching the given selector. */
     public function assertOneElementDoesntExist(string $selector, ?string $message = null): static
     {
         $this->querySelectorAll($selector)->assertNotCount(1, $message ?? sprintf(
@@ -42,7 +42,7 @@ trait AssertsElement
         return $this;
     }
 
-    /** Assert the element contains one or more elements matching the given selector. */
+    /** Assert the element contains one or more child elements matching the given selector. */
     public function assertManyElementsExist(string $selector, ?string $message = null): static
     {
         $this->querySelectorAll($selector)->assertCountGreaterThan(0, $message ?? sprintf(
@@ -54,11 +54,17 @@ trait AssertsElement
         return $this;
     }
 
-    /** Assert the element doesn't contain any elements matching the given selector. */
+    /** Assert the element doesn't contain any child elements matching the given selector. */
     public function assertManyElementsDontExist(string $selector, ?string $message = null): static
     {
+        return $this->assertElementDoesntExist($selector, $message);
+    }
+
+    /** Assert the element doesn't contain any child elements matching the given selector. */
+    public function assertElementDoesntExist(string $selector, ?string $message = null): static
+    {
         $this->querySelectorAll($selector)->assertCount(0, $message ?? sprintf(
-            'The element [%s] contains one or more elements matching the given selector [%s].',
+            'The element [%s] contains elements matching the given selector [%s].',
             $this->identifier(),
             $selector,
         ));

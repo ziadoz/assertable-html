@@ -452,7 +452,7 @@ If you're using an IDE such as PhpStorm or VSCode, it should auto-complete the d
 All assertions include a final `$message` parameter, which allows you to customise the failure message in your tests for your application:
 
 ```php
-$document->assertOneElementDoesntExist('img.avatar', 'The profile page is missing an avatar image.');
+$document->assertElementDoesntExist('img.avatar', 'The profile page is missing an avatar image.');
 ```
 
 This can be useful when you need to identify test failures that are specific to your web application. 
