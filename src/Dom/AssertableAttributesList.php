@@ -7,7 +7,9 @@ namespace Ziadoz\AssertableHtml\Dom;
 use ArrayAccess;
 use Countable;
 use Dom\NamedNodeMap;
+use InvalidArgumentException;
 use IteratorAggregate;
+use OutOfBoundsException;
 use RuntimeException;
 use Traversable;
 use Ziadoz\AssertableHtml\Concerns\AssertsAttributesList;
@@ -80,14 +82,33 @@ final readonly class AssertableAttributesList implements ArrayAccess, Countable,
         return $this->offsetExists($attribute);
     }
 
-    /** Perform a callback on each assert element in the list. */
-    public function each(callable $callback, bool $normaliseWhitespace = false): self
+    /** Perform a callback on each attribute in the assertable attribute list. */
+    public function each(callable $callback): self
     {
-        $values = $normaliseWhitespace
-            ? array_map(fn (?string $value): string => Whitespace::normalise((string) $value), array_values($this->attributes))
-            : array_values($this->attributes);
+        array_map($callback, array_keys($this->attributes), array_values($this->attributes), range(0, count($this->attributes) - 1));
 
-        array_map($callback, array_keys($this->attributes), $values, range(0, count($this->attributes) - 1));
+        return $this;
+    }
+
+    /** Perform a callback on each attribute in the assertable attribute list in sequence. */
+    public function sequence(callable ...$callbacks): self
+    {
+        if (count($callbacks) === 0) {
+            throw new InvalidArgumentException('No sequence callbacks given.');
+        }
+
+        $index = 0;
+
+        foreach ($this as $attribute => $value) {
+            $callback = $callbacks[$index] ?? throw new OutOfBoundsException(sprintf(
+                'Missing sequence callback for attribute [%s] at position [%d].',
+                $attribute,
+                $index,
+            ));
+
+            $callback($attribute, $value, $index);
+            $index++;
+        }
 
         return $this;
     }

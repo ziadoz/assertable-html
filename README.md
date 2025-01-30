@@ -271,7 +271,12 @@ $element->attributes->each(function (string $attribute, ?string $value, int $ind
     echo $attribute; // 'class'
     echo $value;     // 'foo-bar'
     echo $index;     // 0 
-}, normaliseWhitespace: true);
+});
+
+$element->attributes->sequence(
+    fn (string $attribute, ?string $value, int $sequence): => $this->assertSame('class', $attribute),
+    fn (string $attribute, ?string $value, int $sequence): => $this->assertSame('data-foo', $attribute),
+);
 ```
 
 You can perform assertions using these classes, however, in most cases the element has a proxy method that makes it more convenient to do from the element:
