@@ -319,6 +319,13 @@ $element->each(function (AssertableElement $element) {
     $element->assertClassContains('foo');
 });
 
+$element->sequence(
+    fn (AssertableElement $el, int $sequence) => $el->assertTextEquals('Foo'),
+    fn (AssertableElement $el, int $sequence) => $el->assertTextEquals('Bar'),
+    fn (AssertableElement $el, int $sequence) => $el->assertTextEquals('Baz'),
+    fn (AssertableElement $el, int $sequence) => $el->assertTextEquals('Qux'),
+);
+
 $elements[0]->assertIdEquals('foo')->assertTextEquals('Foo');
 $elements[1]->assertIdEquals('bar')->assertTextEquals('Bar');
 $elements[2]->assertIdEquals('baz')->assertTextEquals('Baz');

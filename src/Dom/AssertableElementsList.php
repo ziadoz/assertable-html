@@ -10,7 +10,9 @@ use Dom\Element;
 use Dom\HTMLCollection;
 use Dom\HTMLElement;
 use Dom\NodeList;
+use InvalidArgumentException;
 use IteratorAggregate;
+use OutOfBoundsException;
 use RuntimeException;
 use Traversable;
 use Ziadoz\AssertableHtml\Concerns\AssertsElementsList;
@@ -100,6 +102,25 @@ final readonly class AssertableElementsList implements ArrayAccess, Countable, I
     public function each(callable $callback): self
     {
         array_map($callback, array_values($this->elements), array_keys($this->elements));
+
+        return $this;
+    }
+
+    /** Perform a callback on each assertable element in the list in sequence. */
+    public function sequence(callable ...$callbacks): self
+    {
+        if (count($callbacks) === 0) {
+            throw new InvalidArgumentException('No sequence callbacks given.');
+        }
+
+        foreach ($this as $index => $element) {
+            $callback = $callbacks[$index] ?? throw new OutOfBoundsException(sprintf(
+                'Missing sequence callback for element at position [%d].',
+                $index,
+            ));
+
+            $callback($element, $index);
+        }
 
         return $this;
     }
