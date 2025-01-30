@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Tests\Unit\Dom;
 
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 
@@ -64,5 +65,18 @@ class AssertableClassesListTest extends TestCase
 
         // Array
         $this->assertSame(['foo', 'bar', 'baz'], $assertable->toArray());
+    }
+
+    public function test_sequence_throws(): void
+    {
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('Missing sequence callback for class at position [1].');
+
+        AssertableDocument::createFromString('<p class="foo bar baz">Foo</p>', LIBXML_HTML_NOIMPLIED)
+            ->querySelector('p')
+            ->classes
+            ->sequence(
+                fn (string $class, int $sequence) => $this->assertSame('foo', $class),
+            );
     }
 }
