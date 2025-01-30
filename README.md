@@ -364,9 +364,9 @@ $document->getElementById('bar');
 
 Sometimes your assertions need room to breathe. For this you can use `with()`, `many()`, `elsewhere()` and `scope()` to filter elements into a callback for better readability.
 
-- `with()`: The first matching element in the current scope using `querySelector()`.
-- `many()`: Every matching element like in the current scope using `querySelectorAll()`,
-- `elsewhere()`: The first matching element in the document scope using `querySelector()`.
+- `with()`: The first matching element in the **current** scope using `querySelector()`.
+- `many()`: Every matching element in the **current** scope using `querySelectorAll()`,
+- `elsewhere()`: The first matching element in the **document** scope using `querySelector()`.
 - `scope()`: The current element.
 
 Let's give them a try:
@@ -409,9 +409,12 @@ The `when()` method makes it possible to perform assertions conditionally, which
 
 ```php
 $element->when(
-    $condition,                                                           // Condition can be a boolean, or a callable that evaluates to a boolean.
-    fn (AssertableElement $element) => $element->assertTextEquals('Foo'), // Called when condition is true
-    fn (AssertableElement $element) => $element->assertTextEquals('Bar'), // Called when condition is false
+    // Condition can be a boolean, or a callable that evaluates to a boolean...
+    $condition,                                                           
+    // Called when condition is true...
+    fn (AssertableElement $element) => $element->assertTextEquals('Foo'),
+    // Called when condition is false... 
+    fn (AssertableElement $element) => $element->assertTextEquals('Bar'),
 );
 ```
 
@@ -419,12 +422,12 @@ $element->when(
 
 Assertable HTML provides loads of assertions to help you test your HTML is exactly as expected. The majority of these assertions live on the `AssertableElement` instance, and can be categorised as follows:
 
-- **Exists**: Assert child elements do or don't exist.
+- **Exists**: Assert one or many child elements do or don't exist.
 - **Tag**: `Assert the element's tag.
 - **Matches**: Assert the element does or doesn't match a selector.
 - **Count**: Assert the number of child elements matching a selector.
 - **Text**: Assert the element's text.
-- **IDs:** Assert the elmeent's ID attribute.
+- **IDs:** Assert the element's ID attribute.
 - **Classes:** Assert the element's classes.
 - **Attributes:** Assert the element's attributes.
 
@@ -449,14 +452,14 @@ If you're using an IDE such as PhpStorm or VSCode, it should auto-complete the d
 All assertions include a final `$message` parameter, which allows you to customise the failure message in your tests for your application:
 
 ```php
-$document->assertElementDoesntExist('img.avatar', 'The profile page is missing an avatar image.');
+$document->assertOneElementDoesntExist('img.avatar', 'The profile page is missing an avatar image.');
 ```
 
 This can be useful when you need to identify test failures that are specific to your web application. 
 
 ### Flexible Assertions
 
-Sometimes you have a scenario that just isn't possible to test with a built in assertion. For those scenarios Assertable HTML provides various assertions that accept a callback. If the callback returns `true`, the test will pass, otherwise it will fail:
+Sometimes you have a scenario that just isn't possible to test with a built-in assertion. For those scenarios Assertable HTML provides various assertions that accept a callback. If the callback returns `true`, the test will pass, otherwise it will fail:
 
 ```php
 $element->assertElement(function (AssertableElement $element) {
@@ -468,7 +471,7 @@ $element->assertElement(function (AssertableElement $element) {
 });
 ```
 
-Every assertable class has a flexible assertion available, just in case:
+Every assertable class has flexible assertions available, just in case:
 
 - `AssertableElement`: `assertElement()`, `assertText()`, `assertClass()`, `assertAttributes()` and `assertAttribute()`.
 - `AssertableElementsList`: `assertElements()`.
