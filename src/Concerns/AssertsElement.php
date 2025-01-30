@@ -43,10 +43,10 @@ trait AssertsElement
     }
 
     /** Assert the element doesn't contain one or more elements matching the given selector. */
-    public function assertElementDoesntExist(string $selector, ?string $message = null): static
+    public function assertOneElementDoesntExist(string $selector, ?string $message = null): static
     {
-        $this->querySelectorAll($selector)->assertCount(0, $message ?? sprintf(
-            'The element [%s] contains elements matching the given selector [%s].',
+        $this->querySelectorAll($selector)->assertNotCount(1, $message ?? sprintf(
+            'The element [%s] contains zero or more than one elements matching the given selector [%s].',
             $this->identifier(),
             $selector,
         ));
@@ -55,9 +55,13 @@ trait AssertsElement
     }
 
     /** Assert the element doesn't contain any elements matching the given selector. */
-    public function assertElementsDontExist(string $selector, ?string $message = null): static
+    public function assertManyElementsDontExist(string $selector, ?string $message = null): static
     {
-        $this->assertElementDoesntExist($selector, $message);
+        $this->querySelectorAll($selector)->assertCount(0, $message ?? sprintf(
+            'The element [%s] contains one or more elements matching the given selector [%s].',
+            $this->identifier(),
+            $selector,
+        ));
 
         return $this;
     }

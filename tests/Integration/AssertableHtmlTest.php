@@ -136,9 +136,9 @@ class AssertableHtmlTest extends TestCase
 
         $html->querySelector('body')
             ->assertOneElementExists('p')
-            ->assertElementDoesntExist('foo')
+            ->assertOneElementDoesntExist('foo')
             ->assertManyElementsExist('div')
-            ->assertElementsDontExist('foo');
+            ->assertManyElementsDontExist('foo');
 
         $html->querySelector('div')
             ->assertElement(function (AssertableElement $el): bool {

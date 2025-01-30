@@ -36,19 +36,19 @@ class AssertsElementTest extends TestCase
             ->assertOneElementExists('foo');
     }
 
-    public function test_assert_element_doesnt_exist_passes(): void
+    public function test_assert_one_element_doesnt_exist_passes(): void
     {
-        $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertElementDoesntExist('foo');
+        $this->getAssertableElement('<div><p>Foo</p><p>Bar</p></div>')
+            ->assertOneElementDoesntExist('p');
     }
 
-    public function test_assert_element_doesnt_exist_fails(): void
+    public function test_assert_one_element_doesnt_exist_fails(): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage('The element [div] contains elements matching the given selector [p].');
+        $this->expectExceptionMessage('The element [div] contains zero or more than one elements matching the given selector [p].');
 
-        $this->getAssertableElement('<div><p>Foo</p><p>Bar</p></div>')
-            ->assertElementDoesntExist('p');
+        $this->getAssertableElement('<div><p>Foo</p></div>')
+            ->assertOneElementDoesntExist('p');
     }
 
     public function test_assert_many_elements_exists_passes(): void
@@ -66,19 +66,19 @@ class AssertsElementTest extends TestCase
             ->assertManyElementsExist('foo');
     }
 
-    public function test_assert_elements_dont_exist_passes(): void
+    public function test_assert_many_elements_dont_exist_passes(): void
     {
         $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertElementsDontExist('foo');
+            ->assertManyElementsDontExist('foo');
     }
 
-    public function test_assert_elements_dont_exist_fails(): void
+    public function test_assert_many_elements_dont_exist_fails(): void
     {
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage('The element [div] contains elements matching the given selector [p].');
+        $this->expectExceptionMessage('The element [div] contains one or more elements matching the given selector [p].');
 
         $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertElementsDontExist('p');
+            ->assertManyElementsDontExist('p');
     }
 
     /*
