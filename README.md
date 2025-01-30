@@ -462,6 +462,7 @@ This can be useful when you need to identify test failures that are specific to 
 Sometimes you have a scenario that just isn't possible to test with a built-in assertion. For those scenarios Assertable HTML provides various assertions that accept a callback. If the callback returns `true`, the test will pass, otherwise it will fail:
 
 ```php
+// This is a good place to use the $element->classes, $element->attributes and $element->text properties...
 $element->assertElement(function (AssertableElement $element) {
     return (
         $element->classes->contains('foo') &&
