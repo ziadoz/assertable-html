@@ -99,14 +99,25 @@ class AssertsElementsListTest extends TestCase
         HTML, LIBXML_HTML_NOIMPLIED)->querySelectorAll('li');
 
         $assertable->assertCount(4);
+        $assertable->assertNumberOfElements('=', 4);
+
         $assertable->assertNotCount(42);
+        $assertable->assertNumberOfElements('!=', 42);
+
         $assertable->assertCountGreaterThan(1);
+        $assertable->assertNumberOfElements('>', 1);
+
         $assertable->assertCountGreaterThanOrEqual(4);
+        $assertable->assertNumberOfElements('>=', 4);
+
         $assertable->assertCountLessThan(5);
+        $assertable->assertNumberOfElements('<', 5);
+
         $assertable->assertCountLessThanOrEqual(4);
+        $assertable->assertNumberOfElements('<=', 4);
     }
 
-    public function test_assert_count_comparisons_throws(): void
+    public function test_assert_count_comparisons_negative_throws(): void
     {
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage('Expected count of elements cannot be less than zero.');

@@ -135,10 +135,9 @@ class AssertableHtmlTest extends TestCase
         $html->assertTitleEquals('Test Page Title');
 
         $html->querySelector('body')
-            ->assertOneElementExists('p')
-            ->assertOneElementDoesntExist('foo')
-            ->assertManyElementsExist('div')
-            ->assertManyElementsDontExist('foo');
+            ->assertNumberOfElements('p', '=', 1)
+            ->assertNumberOfElements('div, span', '>', 1)
+            ->assertNumberOfElements('foo', '=', 0);
 
         $html->querySelector('div')
             ->assertElement(function (AssertableElement $el): bool {

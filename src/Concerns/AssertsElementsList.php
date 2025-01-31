@@ -64,6 +64,19 @@ trait AssertsElementsList
     |--------------------------------------------------------------------------
     */
 
+    /** Assert the element list contains the expected number of elements. */
+    public function assertNumberOfElements(string $comparison, int $count, ?string $message = null): static
+    {
+        return match ($comparison) {
+            '='  => $this->assertCount($count, $message),
+            '!=' => $this->assertNotCount($count, $message),
+            '>'  => $this->assertCountGreaterThan($count, $message),
+            '>=' => $this->assertCountGreaterThanOrEqual($count, $message),
+            '<'  => $this->assertCountLessThan($count, $message),
+            '<=' => $this->assertCountLessThanOrEqual($count, $message),
+        };
+    }
+
     /** Assert the element list contains the given number of elements. */
     public function assertCount(int $count, ?string $message = null): static
     {

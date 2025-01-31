@@ -14,66 +14,6 @@ trait AssertsElement
 {
     /*
     |--------------------------------------------------------------------------
-    | Assert Exists
-    |--------------------------------------------------------------------------
-    */
-
-    /** Assert the element contains exactly one child element matching the given selector. */
-    public function assertOneElementExists(string $selector, ?string $message = null): static
-    {
-        $this->querySelectorAll($selector)->assertCount(1, $message ?? sprintf(
-            "The element [%s] doesn't contain exactly one element matching the given selector [%s].",
-            $this->identifier(),
-            $selector,
-        ));
-
-        return $this;
-    }
-
-    /** Assert the element doesn't contain exactly one child element matching the given selector. */
-    public function assertOneElementDoesntExist(string $selector, ?string $message = null): static
-    {
-        $this->querySelectorAll($selector)->assertNotCount(1, $message ?? sprintf(
-            'The element [%s] contains zero or more than one elements matching the given selector [%s].',
-            $this->identifier(),
-            $selector,
-        ));
-
-        return $this;
-    }
-
-    /** Assert the element contains one or more child elements matching the given selector. */
-    public function assertManyElementsExist(string $selector, ?string $message = null): static
-    {
-        $this->querySelectorAll($selector)->assertCountGreaterThan(0, $message ?? sprintf(
-            "The element [%s] doesn't contain any elements matching the given selector [%s].",
-            $this->identifier(),
-            $selector,
-        ));
-
-        return $this;
-    }
-
-    /** Assert the element doesn't contain any child elements matching the given selector. */
-    public function assertManyElementsDontExist(string $selector, ?string $message = null): static
-    {
-        return $this->assertElementDoesntExist($selector, $message);
-    }
-
-    /** Assert the element doesn't contain any child elements matching the given selector. */
-    public function assertElementDoesntExist(string $selector, ?string $message = null): static
-    {
-        $this->querySelectorAll($selector)->assertCount(0, $message ?? sprintf(
-            'The element [%s] contains elements matching the given selector [%s].',
-            $this->identifier(),
-            $selector,
-        ));
-
-        return $this;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | Assert Tag
     |--------------------------------------------------------------------------
     */
@@ -175,6 +115,19 @@ trait AssertsElement
     | Assert Count
     |--------------------------------------------------------------------------
     */
+
+    /** Assert the element the expected number of elements matching the given selector. */
+    public function assertNumberOfElements(string $selector, string $comparison, int $count, ?string $message = null): static
+    {
+        return match ($comparison) {
+            '='  => $this->assertElementsCount($selector, $count, $message),
+            '!=' => $this->assertElementsNotCount($selector, $count, $message),
+            '>'  => $this->assertElementsCountGreaterThan($selector, $count, $message),
+            '>=' => $this->assertElementsCountGreaterThanOrEqual($selector, $count, $message),
+            '<'  => $this->assertElementsCountLessThan($selector, $count, $message),
+            '<=' => $this->assertElementsCountLessThanOrEqual($selector, $count, $message),
+        };
+    }
 
     /** Assert the element contains the exact number of elements matching the given selector. */
     public function assertElementsCount(string $selector, int $count, ?string $message = null): static

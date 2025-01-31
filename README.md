@@ -423,7 +423,6 @@ $element->when(
 
 Assertable HTML provides loads of assertions to help you test your HTML is exactly as expected. The majority of these assertions live on the `AssertableElement` instance, and can be categorised as follows:
 
-- **Exists**: Assert one or many child elements do or don't exist.
 - **Tag**: `Assert the element's tag.
 - **Matches**: Assert the element does or doesn't match a selector.
 - **Count**: Assert the number of child elements matching a selector.
@@ -432,28 +431,37 @@ Assertable HTML provides loads of assertions to help you test your HTML is exact
 - **Classes:** Assert the element's classes.
 - **Attributes:** Assert the element's attributes.
 
-Here's an example:
+Here are some examples:
 
 ```php
-$element->assertTagEquals('div')
-    ->assertIdEquals('foo');
+$element->assertTagEquals('div');
+$element->assertIdEquals('foo');
 
-$element->assertClassContains('heading')
-    ->assertClassDoesntContain('subheading')
-    ->assertTextContains('Welcome')
-    ->assertTextDoesntContain('Foo!');
+$element->assertMatchesSelector('span.foo');
+$element->assertDoesntMatchSelector(':has(img)');
 
+$element->assertElementsNotCount('ul', 0);
 $element->assertElementsCount('li.bullet', 3);
+$element->assertNumberOfElements('li.odd', '>', 42); // Supports =, !=, >, >=, < and <= comparisons.
+
+$element->assertTextContains('Welcome');
+$element->assertTextDoesntContain('Foo!');
+
+$element->assertClassContains('heading');
+$element->assertClassDoesntContain('subheading');
+
+$element->assertAttributeEquals('data-foo', 'bar');
+$element->assertAttributeMissing('data-bar');
 ```
 
 If you're using an IDE such as PhpStorm or VSCode, it should auto-complete the dozens of assertions available for you, along with their parameters.
 
 ### Assertion Messages
 
-All assertions include a final `$message` parameter, which allows you to customise the failure message in your tests for your application:
+All assertions include a final `$message` parameter, which allows you to customise the failure message in your tests to your application:
 
 ```php
-$document->assertElementDoesntExist('img.avatar', 'The profile page is missing an avatar image.');
+$document->assertElementsCount('img.avatar', 0, 'The profile page is missing an avatar image.');
 ```
 
 This can be useful when you need to identify test failures that are specific to your web application. 

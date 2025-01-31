@@ -17,72 +17,6 @@ class AssertsElementTest extends TestCase
 {
     /*
     |--------------------------------------------------------------------------
-    | Assert Exists
-    |--------------------------------------------------------------------------
-    */
-
-    public function test_assert_one_element_exists_passes(): void
-    {
-        $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertOneElementExists('p');
-    }
-
-    public function test_assert_one_element_exists_fails(): void
-    {
-        $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage("The element [div] doesn't contain exactly one element matching the given selector [foo].");
-
-        $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertOneElementExists('foo');
-    }
-
-    public function test_assert_one_element_doesnt_exist_passes(): void
-    {
-        $this->getAssertableElement('<div><p>Foo</p><p>Bar</p></div>')
-            ->assertOneElementDoesntExist('p');
-    }
-
-    public function test_assert_one_element_doesnt_exist_fails(): void
-    {
-        $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage('The element [div] contains zero or more than one elements matching the given selector [p].');
-
-        $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertOneElementDoesntExist('p');
-    }
-
-    public function test_assert_many_elements_exists_passes(): void
-    {
-        $this->getAssertableElement('<div><p>Foo</p><p>Bar</p></div>')
-            ->assertManyElementsExist('p');
-    }
-
-    public function test_assert_many_elements_exists_fails(): void
-    {
-        $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage("The element [div] doesn't contain any elements matching the given selector [foo].");
-
-        $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertManyElementsExist('foo');
-    }
-
-    public function test_assert_many_elements_dont_exist_passes(): void
-    {
-        $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertManyElementsDontExist('foo');
-    }
-
-    public function test_assert_many_elements_dont_exist_fails(): void
-    {
-        $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage('The element [div] contains elements matching the given selector [p].');
-
-        $this->getAssertableElement('<div><p>Foo</p></div>')
-            ->assertManyElementsDontExist('p');
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | Assert Tag
     |--------------------------------------------------------------------------
     */
@@ -196,10 +130,22 @@ class AssertsElementTest extends TestCase
         HTML);
 
         $assertable->assertElementsCount('li', 4);
+        $assertable->assertNumberOfElements('li', '=', 4);
+
+        $assertable->assertElementsNotCount('li', 42);
+        $assertable->assertNumberOfElements('li', '!=', 42);
+
         $assertable->assertElementsCountGreaterThan('li', 1);
+        $assertable->assertNumberOfElements('li', '>', 1);
+
         $assertable->assertElementsCountGreaterThanOrEqual('li', 4);
+        $assertable->assertNumberOfElements('li', '>=', 4);
+
         $assertable->assertElementsCountLessThan('li', 5);
+        $assertable->assertNumberOfElements('li', '<', 5);
+
         $assertable->assertElementsCountLessThanOrEqual('li', 4);
+        $assertable->assertNumberOfElements('li', '<=', 4);
     }
 
     #[DataProvider('assert_count_comparisons_fail_data_provider')]
