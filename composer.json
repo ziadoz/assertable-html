@@ -1,7 +1,7 @@
 {
-    "name": "ziadoz/assert-html",
-    "description": "A library for performing test assertions on HTML.",
-    "homepage": "https://github.com/ziadoz/assert-html",
+    "name": "ziadoz/assertable-html",
+    "description": " Assertable HTML is an elegantly designed PHPUnit library that makes performing assertions on HTML responses from PHP and Laravel applications quick and enjoyable. ",
+    "homepage": "https://github.com/ziadoz/assertable-html",
     "type": "library",
     "license": "MIT",
     "autoload": {
