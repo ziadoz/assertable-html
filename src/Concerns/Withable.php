@@ -15,7 +15,7 @@ trait Withable
      *
      * @param  callable(AssertableElement $assertable): void  $callback
      */
-    public function with(string $selector, callable $callback): static
+    public function find(string $selector, callable $callback): static
     {
         $callback($this->querySelector($selector));
 
@@ -27,7 +27,7 @@ trait Withable
      *
      * @param  callable(AssertableElementsList $assertable): void  $callback
      */
-    public function many(string $selector, callable $callback): static
+    public function findMany(string $selector, callable $callback): static
     {
         $callback($this->querySelectorAll($selector));
 
@@ -39,7 +39,7 @@ trait Withable
      *
      * @param  callable(AssertableElement $assertable): void  $callback
      */
-    public function elsewhere(string $selector, callable $callback): static
+    public function findElsewhere(string $selector, callable $callback): static
     {
         $document = $this instanceof AssertableDocument
             ? $this

@@ -27,7 +27,7 @@ trait AssertsHtml
     /** Return an assertable HTML document scoped to <head>. */
     public function assertHead(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): static
     {
-        $this->assertableHtml($html, $options, $overrideEncoding)->with('head', $callback);
+        $this->assertableHtml($html, $options, $overrideEncoding)->find('head', $callback);
 
         return $this;
     }
@@ -35,7 +35,7 @@ trait AssertsHtml
     /** Return an assertable HTML document scoped to <body>. */
     public function assertBody(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): static
     {
-        $this->assertableHtml($html, $options, $overrideEncoding)->with('body', $callback);
+        $this->assertableHtml($html, $options, $overrideEncoding)->find('body', $callback);
 
         return $this;
     }
@@ -43,7 +43,7 @@ trait AssertsHtml
     /** Return an assertable HTML document scoped to the given selector. */
     public function assertElement(string $html, string $selector, callable $callback, int $options = 0, ?string $overrideEncoding = null): static
     {
-        $this->assertableHtml($html, $options, $overrideEncoding)->with($selector, $callback);
+        $this->assertableHtml($html, $options, $overrideEncoding)->find($selector, $callback);
 
         return $this;
     }
