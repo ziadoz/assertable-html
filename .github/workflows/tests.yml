@@ -41,10 +41,10 @@ jobs:
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Run Pint
-        run: composer fix-cs -- --test -v
+        run: composer run lint -- --test -v
 
       - name: Run unit tests
-        run: composer run tests:unit
+        run: composer run tests:unit -- --stop-on-failure --stop-on-error
 
       - name: Run integration tests
-        run: composer run tests:integration
+        run: composer run tests:integration -- --stop-on-failure --stop-on-error
