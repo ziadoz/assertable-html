@@ -36,7 +36,9 @@ jobs:
           coverage: none
 
       - name: Install Composer dependencies
-        run: composer install --${{ matrix.stability }} --prefer-dist --no-interaction
+        run: |
+          composer install --prefer-dist --no-interaction
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Run Pint
         run: composer fix-cs -- --test -v
