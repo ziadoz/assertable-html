@@ -1,0 +1,48 @@
+name: "Tests"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  coding-standards:
+    runs-on: ubuntu-24.04
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.4]
+        stability: [prefer-lowest, prefer-stable]
+
+    name: Run Tests (PHP ${{ matrix.php }} - Stability ${{ matrix.stability }})
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --${{ matrix.stability }} --prefer-dist --no-interaction
+
+      - name: Run Pint
+        run: composer fix-cs -- --test -v
+
+      - name: Run unit tests
+        run: composer run tests:unit
+
+      - name: Run integration tests
+        run: composer run tests:integration
