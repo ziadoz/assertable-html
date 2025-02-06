@@ -135,7 +135,7 @@ public function testResponse(): void
 };
 
 // Views...
-// Available methods: assertableHtml(), assertElement()
+// Available methods: assertableHtml(), assertView(), assertElement()
 public function testView(): void
 { 
     /*
@@ -149,7 +149,7 @@ public function testView(): void
     </nav>
     */
 
-    $this->view('nav')->assertElement(function (AssertableDocument $div) {
+    $this->view('nav')->assertView(function (AssertableDocument $div) {
         $div->assertTag('div');
 
         $lis = $div->querySelectorAll('ul li')
@@ -163,7 +163,7 @@ public function testView(): void
 }
 
 // Components...
-// Available methods: assertableHtml(), assertElement()
+// Available methods: assertableHtml(), assertComponent(), assertElement()
 // Note: Only available in Laravel >= 11.41.0
 public function testComponent: void
 {
@@ -174,7 +174,7 @@ public function testComponent: void
     </form>
     */
 
-    $this->component('action')->assertElement(function (AssertableDocument $form) {
+    $this->component('action')->assertComponent(function (AssertableDocument $form) {
         $form->assertTag('form')
             ->assertAttributeEquals('method', 'post')
             ->assertAttributeEquals('action', '/foo/bar');

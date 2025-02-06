@@ -22,13 +22,13 @@ class TestComponentTest extends TestCase
         $component = $this->component(Component::class);
 
         // Assertable Element
-        $assertable = $component->assertableElement();
+        $assertable = $component->assertableHtml();
         $assertable->querySelector('nav')->assertIdEquals('component');
 
         // Assert Element
-        $component->assertElement(function (AssertableDocument $assertable) {
+        $component->assertComponent(function (AssertableDocument $assertable) {
             $assertable->querySelector('nav')->assertIdEquals('component');
-        })->assertElement(function (AssertableDocument $assertable) {
+        })->assertComponent(function (AssertableDocument $assertable) {
             $lis = $assertable->querySelectorAll('a')
                 ->assertCount(3)
                 ->assertAll(function (AssertableElement $el): bool {
@@ -38,6 +38,8 @@ class TestComponentTest extends TestCase
             $lis[0]->assertIdEquals('foo')->assertTextContains('Foo');
             $lis[1]->assertIdEquals('bar')->assertTextContains('Bar');
             $lis[2]->assertIdEquals('baz')->assertTextContains('Baz');
+        })->assertElement('nav', function (AssertableElement $assertable) {
+            $assertable->querySelectorAll('a')->assertCount(3);
         });
     }
 

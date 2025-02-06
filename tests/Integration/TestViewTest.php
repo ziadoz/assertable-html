@@ -21,13 +21,13 @@ class TestViewTest extends TestCase
         $view = $this->view('view');
 
         // Assertable Element
-        $assertable = $view->assertableElement();
+        $assertable = $view->assertableHtml();
         $assertable->querySelector('div')->assertIdEquals('view');
 
         // Assert Element
-        $view->assertElement(function (AssertableDocument $assertable) {
+        $view->assertView(function (AssertableDocument $assertable) {
             $assertable->querySelector('div')->assertIdEquals('view');
-        })->assertElement(function (AssertableDocument $assertable) {
+        })->assertView(function (AssertableDocument $assertable) {
             $lis = $assertable->querySelectorAll('li')
                 ->assertCount(4)
                 ->assertAll(function (AssertableElement $el): bool {
@@ -38,6 +38,8 @@ class TestViewTest extends TestCase
             $lis[1]->assertIdEquals('bar')->assertTextContains('Bar');
             $lis[2]->assertIdEquals('baz')->assertTextContains('Baz');
             $lis[3]->assertIdEquals('qux')->assertTextContains('Qux');
+        })->assertElement('ul', function (AssertableElement $assertable) {
+            $assertable->querySelectorAll('li')->assertCount(4);
         });
     }
 
