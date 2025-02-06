@@ -21,9 +21,8 @@ jobs:
       fail-fast: true
       matrix:
         php: [8.4]
-        stability: [prefer-lowest, prefer-stable]
 
-    name: Run Tests (PHP ${{ matrix.php }} - Stability ${{ matrix.stability }})
+    name: Run Tests (PHP ${{ matrix.php }}
 
     steps:
       - name: Checkout code
@@ -38,7 +37,6 @@ jobs:
       - name: Install Composer dependencies
         run: |
           composer install --prefer-dist --no-interaction
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Run Pint
         run: composer run lint -- --test -v
