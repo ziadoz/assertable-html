@@ -38,7 +38,7 @@ class TestResponseMixins
     public function assertHead(): Closure
     {
         return function (callable $callback, int $options = 0, ?string $overrideEncoding = null): static {
-            AssertableDocument::createFromString($this->getHtmlContent(), $options, $overrideEncoding)->with('head', $callback);
+            AssertableDocument::createFromString($this->getHtmlContent(), $options, $overrideEncoding)->find('head', $callback);
 
             return $this;
         };
@@ -48,7 +48,7 @@ class TestResponseMixins
     public function assertBody(): Closure
     {
         return function (callable $callback, int $options = 0, ?string $overrideEncoding = null): static {
-            AssertableDocument::createFromString($this->getHtmlContent(), $options, $overrideEncoding)->with('body', $callback);
+            AssertableDocument::createFromString($this->getHtmlContent(), $options, $overrideEncoding)->find('body', $callback);
 
             return $this;
         };
@@ -58,7 +58,7 @@ class TestResponseMixins
     public function assertElement(): Closure
     {
         return function (string $selector, callable $callback, int $options = 0, ?string $overrideEncoding = null): static {
-            AssertableDocument::createFromString($this->getHtmlContent(), $options, $overrideEncoding)->with($selector, $callback);
+            AssertableDocument::createFromString($this->getHtmlContent(), $options, $overrideEncoding)->find($selector, $callback);
 
             return $this;
         };

@@ -60,18 +60,18 @@ class AssertableHtmlTest extends TestCase
         |--------------------------------------------------------------------------
         */
 
-        $html->with('ul', function (AssertableElement $el): void {
+        $html->find('ul', function (AssertableElement $el): void {
             $el->assertElementsCount('li', 3);
 
-            $el->with('li:nth-child(1)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'foo'));
-            $el->with('li:nth-child(2)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'bar'));
-            $el->with('li:nth-child(3)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'baz'));
+            $el->find('li:nth-child(1)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'foo'));
+            $el->find('li:nth-child(2)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'bar'));
+            $el->find('li:nth-child(3)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'baz'));
 
-            $el->elsewhere('div', function (AssertableElement $el): void {
+            $el->findElsewhere('div', function (AssertableElement $el): void {
                 $el->assertTextEquals('This is a test div.', true);
             });
 
-            $el->many('li', function (AssertableElementsList $els): void {
+            $el->findMany('li', function (AssertableElementsList $els): void {
                 $els[0]->assertTextEquals('Foo');
                 $els[1]->assertTextEquals('Bar');
                 $els[2]->assertTextEquals('Baz');
@@ -80,17 +80,17 @@ class AssertableHtmlTest extends TestCase
             $el->scope(function (AssertableElement $el): void {
                 $el->assertClassMissing();
             });
-        })->with('div', function (AssertableElement $el): void {
+        })->find('div', function (AssertableElement $el): void {
             $el->assertIdEquals('foo-bar');
 
-            $el->elsewhere('ul', function (AssertableElement $el): void {
+            $el->findElsewhere('ul', function (AssertableElement $el): void {
                 $el->assertElementsCount('li[id]', 3);
             });
-        })->many('p, span', function (AssertableElementsList $els): void {
+        })->findMany('p, span', function (AssertableElementsList $els): void {
             $els->assertCount(2);
             $els[0]->assertTagEquals('p');
             $els[1]->assertTagEquals('span');
-        })->elsewhere('p', function (AssertableElement $el): void {
+        })->findElsewhere('p', function (AssertableElement $el): void {
             $el->assertTextEquals('I am a test paragraph.');
         })->scope(function (AssertableDocument $doc): void {
             $doc->getElementById('foo-bar')->assertTextContains('This is a test div.');

@@ -179,7 +179,7 @@ public function testComponent: void
             ->assertAttributeEquals('method', 'post')
             ->assertAttributeEquals('action', '/foo/bar');
         
-        $form->with('input[name="name"]', function (AssertableElement $input) {
+        $form->find('input[name="name"]', function (AssertableElement $input) {
             $input->assertAttributeEquals('value', 'My New Action');
             $input->assertAttributePresent('required');
             $input->assertClassContains('form-input');
@@ -366,11 +366,11 @@ $document->getElementById('bar');
 
 ### Scopes
 
-Sometimes your assertions need room to breathe. For this you can use `with()`, `many()`, `elsewhere()` and `scope()` to filter elements into a callback for better readability.
+Sometimes your assertions need room to breathe. For this you can use `find()`, `findMany()`, `findElsewhere()` and `scope()` to filter elements into a callback for better readability.
 
-- `with()`: The first matching element in the **current** scope using `querySelector()`.
-- `many()`: Every matching element in the **current** scope using `querySelectorAll()`,
-- `elsewhere()`: The first matching element in the **document** scope using `querySelector()`.
+- `find()`: The first matching element in the **current** scope using `querySelector()`.
+- `findMany()`: Every matching element in the **current** scope using `querySelectorAll()`,
+- `findElsewhere()`: The first matching element in the **document** scope using `querySelector()`.
 - `scope()`: The current element.
 
 Let's give them a try:
@@ -392,14 +392,14 @@ $document = AssertableDocument::createFromString(<<<'HTML'
     </div>
 HTML, LIBXML_HTML_NOIMPLIED);
 
-$document->with('div#inner', function (AssertableElement $inner) {
+$document->find('div#inner', function (AssertableElement $inner) {
     $inner->assertIdEquals('inner');
 
-    $inner->many('div.innermost', function (AssertableElementsList $innerMosts) {
+    $inner->findMany('div.innermost', function (AssertableElementsList $innerMosts) {
         $innerMosts->assertCount(3);
     });
 
-    $inner->elsewhere('div#another-inner', function (AssertableElement $anotherInner) {
+    $inner->findElsewhere('div#another-inner', function (AssertableElement $anotherInner) {
         $anotherInner->assertIdEquals('another-inner');
     });
 
