@@ -21,8 +21,12 @@ jobs:
       fail-fast: true
       matrix:
         php: [8.4]
+        laravel: ["^11.41", "^12.0"]
+        dependencies:
+          - "lowest"
+          - "highest"
 
-    name: Run Tests (PHP ${{ matrix.php }}
+    name: Run Tests (PHP ${{ matrix.php }} | Laravel ${{ matrix.laravel }} | Dependencies ${{ matrix.dependencies == 'highest' && 'Highest' || 'Lowest' }})
 
     steps:
       - name: Checkout code
@@ -36,7 +40,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer install --prefer-dist --no-interaction
+          composer update --with='laravel/framework:${{ matrix.laravel }}' --prefer-dist --no-interaction --no-progress ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }}
 
       - name: Run Pint
         run: composer run lint -- --test -v
