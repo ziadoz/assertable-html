@@ -40,7 +40,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer install --with='laravel/framework:${{ matrix.laravel }}' --prefer-dist --no-interaction --no-progress ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }}
+          composer update --with='laravel/framework:${{ matrix.laravel }}' --prefer-dist --no-interaction --no-progress ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }}
 
       - name: Run Pint
         run: composer run lint -- --test -v
