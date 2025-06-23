@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Testing\TestComponent;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Testing\TestView;
@@ -23,7 +23,7 @@ class AssertableHtmlServiceProvider extends ServiceProvider
 
             // This functionality is only available in the point release after I added it to Laravel.
             // @see: https://github.com/laravel/framework/pull/54359
-            if (in_array(Macroable::class, class_uses(TestComponent::class) ?? [])) {
+            if (version_compare(Application::VERSION, '11.41.0', '>=')) {
                 TestComponent::mixin(new TestComponentMixins);
             }
         }
