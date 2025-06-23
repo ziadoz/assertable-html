@@ -426,7 +426,7 @@ $element->when(
 
 Assertable HTML provides loads of assertions to help you test your HTML is exactly as expected. The majority of these assertions live on the `AssertableElement` instance, and can be categorised as follows:
 
-- **Tag**: `Assert the element's tag.
+- **Tag**: Assert the element's tag.
 - **Matches**: Assert the element does or doesn't match a selector.
 - **Count**: Assert the number of child elements matching a selector.
 - **Text**: Assert the element's text.
