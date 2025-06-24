@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Unit\Concerns\Asserts;
+namespace Ziadoz\AssertableHtml\Tests\Unit\Concerns\Asserts;
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\DataProvider;
