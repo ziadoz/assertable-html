@@ -57,6 +57,12 @@ readonly class AssertableElement
         return $this->element;
     }
 
+    /** Promote this assertable element to an element-specific assertable element, if possible. */
+    public function promote(): static
+    {
+        return new AssertableElementPromoter($this->getElement())->promote() ?? $this;
+    }
+
     /** Get the assertable element HTML. */
     public function getHtml(): string
     {

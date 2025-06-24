@@ -76,7 +76,7 @@ final readonly class AssertableDocument
             ));
         }
 
-        return new AssertableElement($element);
+        return new AssertableElement($element)->promote();
     }
 
     /** Return assertable elements matching the given selector. */
@@ -95,7 +95,7 @@ final readonly class AssertableDocument
             ));
         }
 
-        return new AssertableElement($element);
+        return new AssertableElement($element)->promote();
     }
 
     /** Return assertable elements matching the given tag. */
