@@ -11,7 +11,6 @@ use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
-use Ziadoz\AssertableHtml\Dom\Elements\AssertableForm;
 
 class AssertableHtmlTest extends TestCase
 {
