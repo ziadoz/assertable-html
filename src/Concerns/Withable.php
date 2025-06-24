@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ziadoz\AssertableHtml\Concerns;
 
-trait Scopeable
+trait Withable
 {
     /**
      * Scope with the current assertable, mostly for readability purposes.
