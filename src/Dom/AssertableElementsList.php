@@ -16,14 +16,14 @@ use OutOfBoundsException;
 use RuntimeException;
 use Traversable;
 use Ziadoz\AssertableHtml\Concerns\AssertsElementsList;
-use Ziadoz\AssertableHtml\Concerns\Scopeable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
+use Ziadoz\AssertableHtml\Concerns\Withable;
 
 final readonly class AssertableElementsList implements ArrayAccess, Countable, IteratorAggregate
 {
     use AssertsElementsList;
-    use Scopeable;
     use Whenable;
+    use Withable;
 
     /** The assertable elements. */
     private array $elements;

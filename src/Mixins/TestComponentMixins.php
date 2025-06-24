@@ -21,7 +21,7 @@ class TestComponentMixins
     public function assertComponent(): Closure
     {
         return function (callable $callback, int $options = LIBXML_HTML_NOIMPLIED, ?string $overrideEncoding = null): static {
-            $this->assertableHtml($options, $overrideEncoding)->scope($callback);
+            $this->assertableHtml($options, $overrideEncoding)->with($callback);
 
             return $this;
         };
@@ -31,7 +31,7 @@ class TestComponentMixins
     public function assertElement(): Closure
     {
         return function (string $selector, callable $callback, int $options = LIBXML_HTML_NOIMPLIED, ?string $overrideEncoding = null): static {
-            $this->assertableHtml($options, $overrideEncoding)->with($selector, $callback);
+            $this->assertableHtml($options, $overrideEncoding)->one($selector, $callback);
 
             return $this;
         };

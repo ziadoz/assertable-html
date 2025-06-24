@@ -9,7 +9,7 @@ use Dom\HTMLDocument;
 use ErrorException;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Concerns\AssertsDocument;
-use Ziadoz\AssertableHtml\Concerns\Scopeable;
+use Ziadoz\AssertableHtml\Concerns\Targetable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
 use Ziadoz\AssertableHtml\Exceptions\UnableToCreateAssertableDocument;
@@ -17,7 +17,7 @@ use Ziadoz\AssertableHtml\Exceptions\UnableToCreateAssertableDocument;
 final readonly class AssertableDocument
 {
     use AssertsDocument;
-    use Scopeable;
+    use Targetable;
     use Whenable;
     use Withable;
 

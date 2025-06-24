@@ -60,12 +60,12 @@ class AssertableHtmlTest extends TestCase
         |--------------------------------------------------------------------------
         */
 
-        $html->with('ul', function (AssertableElement $el): void {
+        $html->one('ul', function (AssertableElement $el): void {
             $el->assertElementsCount('li', 3);
 
-            $el->with('li:nth-child(1)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'foo'));
-            $el->with('li:nth-child(2)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'bar'));
-            $el->with('li:nth-child(3)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'baz'));
+            $el->one('li:nth-child(1)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'foo'));
+            $el->one('li:nth-child(2)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'bar'));
+            $el->one('li:nth-child(3)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'baz'));
 
             $el->elsewhere('div', function (AssertableElement $el): void {
                 $el->assertTextEquals('This is a test div.', true);
@@ -77,10 +77,10 @@ class AssertableHtmlTest extends TestCase
                 $els[2]->assertTextEquals('Baz');
             });
 
-            $el->scope(function (AssertableElement $el): void {
+            $el->with(function (AssertableElement $el): void {
                 $el->assertClassMissing();
             });
-        })->with('div', function (AssertableElement $el): void {
+        })->one('div', function (AssertableElement $el): void {
             $el->assertIdEquals('foo-bar');
 
             $el->elsewhere('ul', function (AssertableElement $el): void {
@@ -92,7 +92,7 @@ class AssertableHtmlTest extends TestCase
             $els[1]->assertTagEquals('span');
         })->elsewhere('p', function (AssertableElement $el): void {
             $el->assertTextEquals('I am a test paragraph.');
-        })->scope(function (AssertableDocument $doc): void {
+        })->with(function (AssertableDocument $doc): void {
             $doc->getElementById('foo-bar')->assertTextContains('This is a test div.');
         });
 
