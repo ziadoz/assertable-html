@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Tests\Integration;
+namespace Ziadoz\AssertableHtml\Tests\Integration\Laravel;
 
 use Closure;
 use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Tests\Integration;
+namespace Ziadoz\AssertableHtml\Tests\Integration\Laravel;
 
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Orchestra\Testbench\TestCase;
 use Ziadoz\AssertableHtml\AssertableHtmlServiceProvider;
 use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
-use Ziadoz\AssertableHtml\Tests\Integration\Fixtures\Component;
+use Ziadoz\AssertableHtml\Tests\Integration\Laravel\Fixtures\Component;
 
 class TestComponentTest extends TestCase
 {
