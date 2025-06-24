@@ -8,7 +8,7 @@ use Dom\Document;
 use Dom\HTMLDocument;
 use ErrorException;
 use PHPUnit\Framework\Assert as PHPUnit;
-use Ziadoz\AssertableHtml\Concerns\AssertsDocument;
+use Ziadoz\AssertableHtml\Concerns\Asserts\AssertsDocument;
 use Ziadoz\AssertableHtml\Concerns\Targetable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;

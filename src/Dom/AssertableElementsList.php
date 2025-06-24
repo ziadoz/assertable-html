@@ -15,7 +15,7 @@ use IteratorAggregate;
 use OutOfBoundsException;
 use RuntimeException;
 use Traversable;
-use Ziadoz\AssertableHtml\Concerns\AssertsElementsList;
+use Ziadoz\AssertableHtml\Concerns\Asserts\AssertsElementsList;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Withable;
 
