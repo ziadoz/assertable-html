@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Ziadoz\AssertableHtml\Dom;
 
 use Stringable;
-use Ziadoz\AssertableHtml\Concerns\AssertsText;
+use Ziadoz\AssertableHtml\Concerns\Asserts\AssertsText;
 use Ziadoz\AssertableHtml\Support\Whitespace;
 
 final readonly class AssertableText implements Stringable

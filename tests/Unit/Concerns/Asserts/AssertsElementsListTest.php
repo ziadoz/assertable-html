@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Tests\Unit\Concerns;
+namespace Ziadoz\AssertableHtml\Tests\Unit\Concerns\Asserts;
 
 use OutOfBoundsException;
 use PHPUnit\Framework\AssertionFailedError;

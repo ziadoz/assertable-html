@@ -13,7 +13,7 @@ use OutOfBoundsException;
 use RuntimeException;
 use Stringable;
 use Traversable;
-use Ziadoz\AssertableHtml\Concerns\AssertsClassesList;
+use Ziadoz\AssertableHtml\Concerns\Asserts\AssertsClassesList;
 
 final readonly class AssertableClassesList implements ArrayAccess, Countable, IteratorAggregate, Stringable
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Concerns;
+namespace Ziadoz\AssertableHtml\Concerns\Asserts;
 
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Support\Whitespace;
