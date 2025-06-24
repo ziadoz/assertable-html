@@ -12,7 +12,7 @@ use IteratorAggregate;
 use OutOfBoundsException;
 use RuntimeException;
 use Traversable;
-use Ziadoz\AssertableHtml\Concerns\AssertsAttributesList;
+use Ziadoz\AssertableHtml\Concerns\Asserts\AssertsAttributesList;
 use Ziadoz\AssertableHtml\Support\Whitespace;
 
 final readonly class AssertableAttributesList implements ArrayAccess, Countable, IteratorAggregate

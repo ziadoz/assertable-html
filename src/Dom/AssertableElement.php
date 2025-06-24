@@ -7,7 +7,7 @@ namespace Ziadoz\AssertableHtml\Dom;
 use Dom\Element;
 use Dom\HTMLElement;
 use PHPUnit\Framework\Assert as PHPUnit;
-use Ziadoz\AssertableHtml\Concerns\AssertsElement;
+use Ziadoz\AssertableHtml\Concerns\Asserts\AssertsElement;
 use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
 use Ziadoz\AssertableHtml\Concerns\Targetable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
