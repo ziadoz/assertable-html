@@ -31,7 +31,7 @@ class TestViewMixins
     public function assertElement(): Closure
     {
         return function (string $selector, callable $callback, int $options = LIBXML_HTML_NOIMPLIED, ?string $overrideEncoding = null): static {
-            $this->assertableHtml($options, $overrideEncoding)->with($selector, $callback);
+            $this->assertableHtml($options, $overrideEncoding)->one($selector, $callback);
 
             return $this;
         };

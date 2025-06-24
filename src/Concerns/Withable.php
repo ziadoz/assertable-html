@@ -15,7 +15,7 @@ trait Withable
      *
      * @param  callable(AssertableElement $assertable): void  $callback
      */
-    public function with(string $selector, callable $callback): static
+    public function one(string $selector, callable $callback): static
     {
         $callback($this->querySelector($selector));
 
