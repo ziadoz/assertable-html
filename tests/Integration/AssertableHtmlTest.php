@@ -11,6 +11,7 @@ use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
 use Ziadoz\AssertableHtml\Dom\AssertableText;
+use Ziadoz\AssertableHtml\Dom\Elements\AssertableForm;
 
 class AssertableHtmlTest extends TestCase
 {
@@ -40,13 +41,6 @@ class AssertableHtmlTest extends TestCase
                     <li id="bar">Bar</li>
                     <li id="baz">Baz</li>
                 </ul>
-
-                <!-- Form -->
-                <form method="get" action="/foo/bar" enctype="multipart/form-data">
-                    <label>Name <input type="text" name="name" value="Foo Bar"></label>
-                    <label>Age <input type="number" name="age" value="42"></label>
-                    <button type="submit">Save</button>
-                </form>
 
                 <!-- Custom Element -->
                 <my-web-component>I am a web component.</my-web-component>
