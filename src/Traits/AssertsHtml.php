@@ -19,7 +19,7 @@ trait AssertsHtml
     /** Return an assertable HTML document. */
     public function assertHtml(string $html, callable $callback, int $options = 0, ?string $overrideEncoding = null): static
     {
-        $this->assertableHtml($html, $options, $overrideEncoding)->scope($callback);
+        $this->assertableHtml($html, $options, $overrideEncoding)->with($callback);
 
         return $this;
     }

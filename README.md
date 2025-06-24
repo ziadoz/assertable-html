@@ -366,12 +366,12 @@ $document->getElementById('bar');
 
 ### Scopes
 
-Sometimes your assertions need room to breathe. For this you can use `one()`, `many()`, `elsewhere()` and `scope()` to filter elements into a callback for better readability.
+Sometimes your assertions need room to breathe. For this you can use `one()`, `many()`, `elsewhere()` and `with()` to filter elements into a callback for better readability.
 
 - `one()`: The first matching element in the **current** scope using `querySelector()`.
 - `many()`: Every matching element in the **current** scope using `querySelectorAll()`,
 - `elsewhere()`: The first matching element in the **document** scope using `querySelector()`.
-- `scope()`: The current element.
+- `with()`: The current element.
 
 Let's give them a try:
 
@@ -403,7 +403,7 @@ $document->one('div#inner', function (AssertableElement $inner) {
         $anotherInner->assertIdEquals('another-inner');
     });
 
-    $inner->scope(function (AssertableElement $inner) {
+    $inner->with(function (AssertableElement $inner) {
         $inner->assertIdEquals('inner');
     });
 });

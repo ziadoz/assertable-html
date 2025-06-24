@@ -21,7 +21,7 @@ class TestViewMixins
     public function assertView(): Closure
     {
         return function (callable $callback, int $options = LIBXML_HTML_NOIMPLIED, ?string $overrideEncoding = null): static {
-            $this->assertableHtml($options, $overrideEncoding)->scope($callback);
+            $this->assertableHtml($options, $overrideEncoding)->with($callback);
 
             return $this;
         };

@@ -7,11 +7,11 @@ namespace Ziadoz\AssertableHtml\Concerns;
 trait Scopeable
 {
     /**
-     * Scope the current assertable, mostly for readability purposes.
+     * Scope with the current assertable, mostly for readability purposes.
      *
      * @param  callable(static $assertable): void  $callback
      */
-    public function scope(callable $callback): static
+    public function with(callable $callback): static
     {
         $callback($this);
 

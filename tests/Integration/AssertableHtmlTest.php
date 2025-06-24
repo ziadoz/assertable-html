@@ -77,7 +77,7 @@ class AssertableHtmlTest extends TestCase
                 $els[2]->assertTextEquals('Baz');
             });
 
-            $el->scope(function (AssertableElement $el): void {
+            $el->with(function (AssertableElement $el): void {
                 $el->assertClassMissing();
             });
         })->one('div', function (AssertableElement $el): void {
@@ -92,7 +92,7 @@ class AssertableHtmlTest extends TestCase
             $els[1]->assertTagEquals('span');
         })->elsewhere('p', function (AssertableElement $el): void {
             $el->assertTextEquals('I am a test paragraph.');
-        })->scope(function (AssertableDocument $doc): void {
+        })->with(function (AssertableDocument $doc): void {
             $doc->getElementById('foo-bar')->assertTextContains('This is a test div.');
         });
 

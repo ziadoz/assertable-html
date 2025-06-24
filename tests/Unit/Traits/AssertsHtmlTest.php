@@ -16,7 +16,7 @@ class AssertsHtmlTest extends TestCase
         $html = $this->getTestHtml();
         $case = $this->getTestClass();
 
-        $case->assertableHtml($html)->scope(function (AssertableDocument $assertable) {
+        $case->assertableHtml($html)->with(function (AssertableDocument $assertable) {
             $this->assertInstanceOf(AssertableDocument::class, $assertable);
         });
 

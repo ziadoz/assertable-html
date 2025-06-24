@@ -28,7 +28,7 @@ class TestResponseMixins
     public function assertHtml(): Closure
     {
         return function (callable $callback, int $options = 0, ?string $overrideEncoding = null): static {
-            AssertableDocument::createFromString($this->getHtmlContent(), $options, $overrideEncoding)->scope($callback);
+            AssertableDocument::createFromString($this->getHtmlContent(), $options, $overrideEncoding)->with($callback);
 
             return $this;
         };
