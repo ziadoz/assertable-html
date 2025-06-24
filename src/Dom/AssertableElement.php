@@ -9,17 +9,17 @@ use Dom\HTMLElement;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Concerns\AssertsElement;
 use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
-use Ziadoz\AssertableHtml\Concerns\Withable;
 use Ziadoz\AssertableHtml\Concerns\Targetable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
+use Ziadoz\AssertableHtml\Concerns\Withable;
 
 readonly class AssertableElement
 {
     use AssertsElement;
     use IdentifiesElement;
-    use Withable;
     use Targetable;
     use Whenable;
+    use Withable;
 
     /** The element's inner HTML. */
     public string $html;
