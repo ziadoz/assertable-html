@@ -8,7 +8,7 @@ use Ziadoz\AssertableHtml\Dom\AssertableDocument;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElementsList;
 
-trait Withable
+trait Targetable
 {
     /**
      * Scope the first assertable element within the current assertable document or element matching the given selector.

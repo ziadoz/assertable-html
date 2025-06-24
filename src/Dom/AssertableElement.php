@@ -11,7 +11,7 @@ use Ziadoz\AssertableHtml\Concerns\AssertsElement;
 use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;
 use Ziadoz\AssertableHtml\Concerns\Whenable;
-use Ziadoz\AssertableHtml\Concerns\Withable;
+use Ziadoz\AssertableHtml\Concerns\Targetable;
 
 readonly class AssertableElement
 {
@@ -19,7 +19,7 @@ readonly class AssertableElement
     use IdentifiesElement;
     use Scopeable;
     use Whenable;
-    use Withable;
+    use Targetable;
 
     /** The element's inner HTML. */
     public string $html;
