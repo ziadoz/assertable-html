@@ -111,7 +111,7 @@ final readonly class AssertableDocument
             set_error_handler(function (int $severity, string $message, string $file, int $line): never {
                 throw new UnableToCreateAssertableDocument(
                     'Unable to create assertable HTML document.',
-                    previous: new ErrorException($message, $severity, $severity, $file, $line),
+                    previous: new ErrorException($message, 0, $severity, $file, $line),
                 );
             });
 
