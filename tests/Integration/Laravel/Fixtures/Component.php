@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ziadoz\AssertableHtml\Tests\Integration\Fixtures;
+namespace Ziadoz\AssertableHtml\Tests\Integration\Laravel\Fixtures;
 
 use Illuminate\View\Component as LaravelComponent;
 use Illuminate\View\View;
