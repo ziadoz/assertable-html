@@ -10,16 +10,16 @@ use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Concerns\AssertsElement;
 use Ziadoz\AssertableHtml\Concerns\IdentifiesElement;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;
-use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Targetable;
+use Ziadoz\AssertableHtml\Concerns\Whenable;
 
 readonly class AssertableElement
 {
     use AssertsElement;
     use IdentifiesElement;
     use Scopeable;
-    use Whenable;
     use Targetable;
+    use Whenable;
 
     /** The element's inner HTML. */
     public string $html;

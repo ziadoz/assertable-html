@@ -10,16 +10,16 @@ use ErrorException;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Ziadoz\AssertableHtml\Concerns\AssertsDocument;
 use Ziadoz\AssertableHtml\Concerns\Scopeable;
-use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Concerns\Targetable;
+use Ziadoz\AssertableHtml\Concerns\Whenable;
 use Ziadoz\AssertableHtml\Exceptions\UnableToCreateAssertableDocument;
 
 final readonly class AssertableDocument
 {
     use AssertsDocument;
     use Scopeable;
-    use Whenable;
     use Targetable;
+    use Whenable;
 
     /** The document's page title. */
     public string $title;
