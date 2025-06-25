@@ -41,13 +41,6 @@ class AssertableHtmlTest extends TestCase
                     <li id="baz">Baz</li>
                 </ul>
 
-                <!-- Form -->
-                <form method="get" action="/foo/bar" enctype="multipart/form-data">
-                    <label>Name <input type="text" name="name" value="Foo Bar"></label>
-                    <label>Age <input type="number" name="age" value="42"></label>
-                    <button type="submit">Save</button>
-                </form>
-
                 <!-- Custom Element -->
                 <my-web-component>I am a web component.</my-web-component>
             </body>
@@ -62,6 +55,8 @@ class AssertableHtmlTest extends TestCase
 
         $html->one('ul', function (AssertableElement $el): void {
             $el->assertElementsCount('li', 3);
+            $el->assertElementsPresent('li');
+            $el->assertElementsMissing('foo');
 
             $el->one('li:nth-child(1)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'foo'));
             $el->one('li:nth-child(2)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'bar'));
