@@ -112,7 +112,7 @@ trait AssertsElement
 
     /*
     |--------------------------------------------------------------------------
-    | Assert Count
+    | Assert Elements Count
     |--------------------------------------------------------------------------
     */
 
@@ -201,6 +201,36 @@ trait AssertsElement
             "The element [%s] doesn't have less than or equal to [%d] elements matching the given selector [%s].",
             $this->identifier(),
             $count,
+            $selector,
+        ));
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Elements Present/Missing
+    |--------------------------------------------------------------------------
+    */
+
+    /** Assert the element contains one or more elements matching the given selector. */
+    public function assertElementsPresent(string $selector, ?string $message = null): static
+    {
+        $this->assertElementsCountGreaterThan($selector, 0, $message ?? sprintf(
+            "The element [%s] doesn't have one or more elements matching the given selector [%s].",
+            $this->identifier(),
+            $selector,
+        ));
+
+        return $this;
+    }
+
+    /** Assert the element contains no elements matching the given selector. */
+    public function assertElementsMissing(string $selector, ?string $message = null): static
+    {
+        $this->assertElementsCount($selector, 0, $message ?? sprintf(
+            'The element [%s] has one or more elements matching the given selector [%s].',
+            $this->identifier(),
             $selector,
         ));
 
