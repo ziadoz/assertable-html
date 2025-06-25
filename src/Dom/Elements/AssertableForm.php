@@ -33,7 +33,7 @@ readonly class AssertableForm extends AssertableElement implements PromotableAss
     /** Assert the form has the given method attribute (GET or POST). */
     public function assertMethod(string $method, ?string $message = null): static
     {
-        $method = $this->formatMethod($method);
+        $method = trim(mb_strtolower($method));
 
         $this->isValidMethod($method);
 
@@ -52,7 +52,7 @@ readonly class AssertableForm extends AssertableElement implements PromotableAss
     /** Assert the form has the given hidden input method (PUT, PATCH or DELETE). */
     public function assertHiddenInputMethod(string $selector, string $method, ?string $message = null): static
     {
-        $method = $this->formatMethod($method);
+        $method = trim(mb_strtolower($method));
 
         $this->isValidHiddenInputMethod($method);
 
@@ -76,12 +76,6 @@ readonly class AssertableForm extends AssertableElement implements PromotableAss
     |--------------------------------------------------------------------------
     */
 
-    /** Lowercase and trim the given method. */
-    protected function formatMethod(string $method): string
-    {
-        return trim(mb_strtolower($method));
-    }
-
     /** Fail if the method isn't a valid form method. */
     protected function isValidMethod(string $method): void
     {
@@ -93,7 +87,7 @@ readonly class AssertableForm extends AssertableElement implements PromotableAss
     /** Fail if the method isn't a valid hidden input method. */
     protected function isValidHiddenInputMethod(string $method): void
     {
-        if (! in_array($this->formatMethod($method), ['put', 'patch', 'delete'])) {
+        if (! in_array($method, ['put', 'patch', 'delete'])) {
             PHPUnit::fail(sprintf("The method [%s] isn't a valid form method.", $method));
         }
     }
