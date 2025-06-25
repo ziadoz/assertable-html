@@ -114,11 +114,11 @@ class AssertsElementTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
-    | Assert Count
+    | Assert Elements Count
     |--------------------------------------------------------------------------
     */
 
-    public function test_assert_count_comparisons_pass(): void
+    public function test_elements_assert_count_comparisons_pass(): void
     {
         $assertable = $this->getAssertableElement(<<<'HTML'
         <ul>
@@ -148,8 +148,8 @@ class AssertsElementTest extends TestCase
         $assertable->assertNumberOfElements('li', '<=', 4);
     }
 
-    #[DataProvider('assert_count_comparisons_fail_data_provider')]
-    public function test_assert_count_comparisons_fail(string $selector, string $comparison, int $expected, string $message): void
+    #[DataProvider('assert_elements_count_comparisons_fail_data_provider')]
+    public function test_elements_assert_count_comparisons_fail(string $selector, string $comparison, int $expected, string $message): void
     {
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage($message);
@@ -173,7 +173,7 @@ class AssertsElementTest extends TestCase
         };
     }
 
-    public static function assert_count_comparisons_fail_data_provider(): iterable
+    public static function assert_elements_count_comparisons_fail_data_provider(): iterable
     {
         yield 'equals' => [
             'li', '=', 1, "The element [ul] doesn't have exactly [1] elements matching the given selector [li].",
@@ -198,6 +198,37 @@ class AssertsElementTest extends TestCase
         yield 'less than or equal to' => [
             'li', '<=', 1, "The element [ul] doesn't have less than or equal to [1] elements matching the given selector [li].",
         ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Elements Present/Missing
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_assert_elements_present_missing_pass(): void
+    {
+        $this->getAssertableElement('<ul><li>Foo</li></ul>')
+            ->assertElementsPresent('li')
+            ->assertElementsMissing('p');
+    }
+
+    public function test_assert_elements_present_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage("The element [ul] doesn't have one or more elements matching the given selector [p].");
+
+        $this->getAssertableElement('<ul><li>Foo</li></ul>')
+            ->assertElementsPresent('p');
+    }
+
+    public function test_assert_elements_missing_fails(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('The element [ul] has one or more elements matching the given selector [li].');
+
+        $this->getAssertableElement('<ul><li>Foo</li></ul>')
+            ->assertElementsMissing('li');
     }
 
     /*

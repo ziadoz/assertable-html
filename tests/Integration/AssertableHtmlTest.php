@@ -55,6 +55,8 @@ class AssertableHtmlTest extends TestCase
 
         $html->one('ul', function (AssertableElement $el): void {
             $el->assertElementsCount('li', 3);
+            $el->assertElementsPresent('li');
+            $el->assertElementsMissing('foo');
 
             $el->one('li:nth-child(1)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'foo'));
             $el->one('li:nth-child(2)', fn (AssertableElement $el) => $el->assertAttributeEquals('id', 'bar'));
