@@ -9,6 +9,7 @@ use Dom\HTMLDocument;
 use Dom\HTMLElement;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Ziadoz\AssertableHtml\Dom\AssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElementPromoter;
 use Ziadoz\AssertableHtml\Dom\Elements\AssertableForm;
 
@@ -23,6 +24,7 @@ class AssertableElementPromoterTest extends TestCase
     public static function promote_data_provider(): iterable
     {
         yield 'form' => ['<form></form>', AssertableForm::class];
+        yield 'fallback' => ['<my-element/>', AssertableElement::class];
     }
 
     /*
