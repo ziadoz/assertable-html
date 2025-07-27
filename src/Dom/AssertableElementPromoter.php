@@ -6,6 +6,7 @@ namespace Ziadoz\AssertableHtml\Dom;
 
 use Dom\Element;
 use Dom\HTMLElement;
+use Ziadoz\AssertableHtml\Contracts\PromotableAssertableElement;
 use Ziadoz\AssertableHtml\Dom\Elements\AssertableForm;
 
 final readonly class AssertableElementPromoter
@@ -20,13 +21,13 @@ final readonly class AssertableElementPromoter
     }
 
     /** Promote and return the first matching assertable element that matches the given HTML element. */
-    public function promote(): AssertableElement
+    public function promote(): (PromotableAssertableElement&AssertableElement)|null
     {
         $match = array_find(
             self::CUSTOM_ELEMENTS,
             fn (string $customElement): bool => $customElement::shouldPromote($this->element),
         );
 
-        return $match ? new $match($this->element) : new AssertableElement($this->element);
+        return $match ? new $match($this->element) : null;
     }
 }
