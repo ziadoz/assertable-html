@@ -46,6 +46,7 @@ readonly class AssertableForm extends AssertableElement implements PromotableAss
         return $this;
     }
 
+    /** Assert the form has the GET method attribute. */
     public function assertMethodGet(?string $message = null): static
     {
         $this->assertMethod('get', $message);
@@ -53,6 +54,7 @@ readonly class AssertableForm extends AssertableElement implements PromotableAss
         return $this;
     }
 
+    /** Assert the form has the POST method attribute. */
     public function assertMethodPost(?string $message = null): static
     {
         $this->assertMethod('post', $message);
@@ -60,6 +62,7 @@ readonly class AssertableForm extends AssertableElement implements PromotableAss
         return $this;
     }
 
+    /** Assert the form has the DIALOG method attribute. */
     public function assertMethodDialog(?string $message = null): static
     {
         $this->assertMethod('dialog', $message);
@@ -87,6 +90,7 @@ readonly class AssertableForm extends AssertableElement implements PromotableAss
         return $this;
     }
 
+    /** Assert the form has the PUT hidden input method. */
     public function assertMethodPut(?string $message = null): static
     {
         $this->assertHiddenInputMethod('input[type="hidden"][name="_method"]', 'put', $message);
@@ -94,6 +98,7 @@ readonly class AssertableForm extends AssertableElement implements PromotableAss
         return $this;
     }
 
+    /** Assert the form has the PATCH hidden input method. */
     public function assertMethodPatch(?string $message = null): static
     {
         $this->assertHiddenInputMethod('input[type="hidden"][name="_method"]', 'patch', $message);
@@ -101,6 +106,7 @@ readonly class AssertableForm extends AssertableElement implements PromotableAss
         return $this;
     }
 
+    /** Assert the form has the DELETE hidden input method. */
     public function assertMethodDelete(?string $message = null): static
     {
         $this->assertHiddenInputMethod('input[type="hidden"][name="_method"]', 'delete', $message);
@@ -114,6 +120,7 @@ readonly class AssertableForm extends AssertableElement implements PromotableAss
     |--------------------------------------------------------------------------
     */
 
+    /** Assert the form accepts uploads (has correct enctype and at least one file input. */
     public function assertAcceptsUpload(?string $message = null): static
     {
         $this->assertMany(function (): void {
