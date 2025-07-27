@@ -15,14 +15,21 @@ use Ziadoz\AssertableHtml\Dom\Elements\AssertableForm;
 class AssertableElementPromoterTest extends TestCase
 {
     #[DataProvider('promote_data_provider')]
-    public function test_promote(string $html, string $class): void
+    public function test_promote(string $html, ?string $class = null): void
     {
-        $this->assertInstanceOf($class, new AssertableElementPromoter($this->getElement($html))->promote());
+        $promoted = new AssertableElementPromoter($this->getElement($html))->promote();
+
+        if (is_string($class)) {
+            $this->assertInstanceOf($class, $promoted);
+        } else {
+            $this->assertNull($promoted);
+        }
     }
 
     public static function promote_data_provider(): iterable
     {
         yield 'form' => ['<form></form>', AssertableForm::class];
+        yield 'null' => ['<my-element></my-element>', null];
     }
 
     /*
