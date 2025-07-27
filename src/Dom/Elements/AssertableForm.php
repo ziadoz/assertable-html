@@ -6,12 +6,14 @@ namespace Ziadoz\AssertableHtml\Dom\Elements;
 
 use Dom\Element;
 use Dom\HTMLElement;
-use PHPUnit\Framework\Assert as PHPUnit;
+use Ziadoz\AssertableHtml\Concerns\AssertsMany;
 use Ziadoz\AssertableHtml\Contracts\PromotableAssertableElement;
 use Ziadoz\AssertableHtml\Dom\AssertableElement;
 
 readonly class AssertableForm extends AssertableElement implements PromotableAssertableElement
 {
+    use AssertsMany;
+
     /*
     |--------------------------------------------------------------------------
     | Interface
@@ -30,65 +32,95 @@ readonly class AssertableForm extends AssertableElement implements PromotableAss
     |--------------------------------------------------------------------------
     */
 
-    /** Assert the form has the given method attribute (GET or POST). */
+    /** Assert the form has the given method attribute. */
     public function assertMethod(string $method, ?string $message = null): static
     {
         $method = trim(mb_strtolower($method));
 
-        $this->isValidMethod($method);
-
         $this->assertAttribute(
             'method',
             fn (?string $value): bool => trim(mb_strtolower((string) $value)) === $method,
-            $message ?? sprintf(
-                "The form method doesn't equal [%s].",
-                $method,
-            ),
+            $message ?? sprintf("The form method doesn't equal [%s].", $method),
         );
 
         return $this;
     }
 
-    /** Assert the form has the given hidden input method (PUT, PATCH or DELETE). */
-    public function assertHiddenInputMethod(string $selector, string $method, ?string $message = null): static
+    public function assertMethodGet(?string $message = null): static
     {
-        $method = trim(mb_strtolower($method));
+        $this->assertMethod('get', $message);
 
-        $this->isValidHiddenInputMethod($method);
+        return $this;
+    }
 
-        $this->querySelector($selector)
-            ->assertMatchesSelector('input[type="hidden"]')
-            ->assertAttribute(
-                'value',
-                fn (?string $value): bool => trim(mb_strtolower((string) $value)) === $method,
-                $message ?? sprintf(
-                    "The form hidden input method doesn't equal [%s].",
-                    $method,
-                ),
-            );
+    public function assertMethodPost(?string $message = null): static
+    {
+        $this->assertMethod('post', $message);
+
+        return $this;
+    }
+
+    public function assertMethodDialog(?string $message = null): static
+    {
+        $this->assertMethod('dialog', $message);
 
         return $this;
     }
 
     /*
     |--------------------------------------------------------------------------
-    | Internal
+    | Assert Hidden Method
     |--------------------------------------------------------------------------
     */
 
-    /** Fail if the method isn't a valid form method. */
-    protected function isValidMethod(string $method): void
+    /** Assert the form has the given hidden input method. */
+    public function assertHiddenInputMethod(string $selector, string $method, ?string $message = null): static
     {
-        if (! in_array($this->formatMethod($method), ['get', 'post', 'dialog'])) {
-            PHPUnit::fail(sprintf("The method [%s] isn't a valid form method.", $method));
-        }
+        $this->assertMany(function () use ($selector, $method): void {
+            $method = trim(mb_strtolower($method));
+
+            $this->querySelector($selector)
+                ->assertMatchesSelector('input[type="hidden"]')
+                ->assertAttribute('value', fn (?string $value): bool => trim(mb_strtolower((string) $value)) === $method);
+        }, $message ?? sprintf("The form hidden input method doesn't equal [%s].", $method));
+
+        return $this;
     }
 
-    /** Fail if the method isn't a valid hidden input method. */
-    protected function isValidHiddenInputMethod(string $method): void
+    public function assertMethodPut(?string $message = null): static
     {
-        if (! in_array($method, ['put', 'patch', 'delete'])) {
-            PHPUnit::fail(sprintf("The method [%s] isn't a valid form method.", $method));
-        }
+        $this->assertHiddenInputMethod('input[type="hidden"][name="_method"]', 'put', $message);
+
+        return $this;
+    }
+
+    public function assertMethodPatch(?string $message = null): static
+    {
+        $this->assertHiddenInputMethod('input[type="hidden"][name="_method"]', 'patch', $message);
+
+        return $this;
+    }
+
+    public function assertMethodDelete(?string $message = null): static
+    {
+        $this->assertHiddenInputMethod('input[type="hidden"][name="_method"]', 'delete', $message);
+
+        return $this;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assert Upload
+    |--------------------------------------------------------------------------
+    */
+
+    public function assertAcceptsUpload(?string $message = null): static
+    {
+        $this->assertMany(function (): void {
+            $this->assertAttribute('enctype', fn (?string $value): bool => trim(mb_strtolower((string) $value)) === 'multipart/form-data')
+                ->assertElementsCountGreaterThanOrEqual('input[type="file"]', 1);
+        }, $message ?? "The form doesn't accept uploads.");
+
+        return $this;
     }
 }

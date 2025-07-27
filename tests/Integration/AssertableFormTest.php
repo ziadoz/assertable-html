@@ -12,13 +12,34 @@ class AssertableFormTest extends TestCase
     public function test_assertable_form(): void
     {
         // Form Methods
-        AssertableDocument::createFromString('<form method="get"></form>', LIBXML_HTML_NOIMPLIED)
+        AssertableDocument::createFromString('<form method="GET"></form>', LIBXML_HTML_NOIMPLIED)
             ->querySelector('form')
-            ->assertMethod('get');
+            ->assertMethodGet();
 
-        AssertableDocument::createFromString('<form><input type="hidden" name="_method" value="put"></form>', LIBXML_HTML_NOIMPLIED)
+        AssertableDocument::createFromString('<form method="POST"></form>', LIBXML_HTML_NOIMPLIED)
             ->querySelector('form')
-            ->assertHiddenInputMethod('input[name="_method"]', 'put');
+            ->assertMethodPost();
+
+        AssertableDocument::createFromString('<form method="DIALOG"></form>', LIBXML_HTML_NOIMPLIED)
+            ->querySelector('form')
+            ->assertMethodDialog();
+
+        AssertableDocument::createFromString('<form><input type="hidden" name="_method" value="PUT"></form>', LIBXML_HTML_NOIMPLIED)
+            ->querySelector('form')
+            ->assertMethodPut();
+
+        AssertableDocument::createFromString('<form><input type="hidden" name="_method" value="PATCH"></form>', LIBXML_HTML_NOIMPLIED)
+            ->querySelector('form')
+            ->assertMethodPatch();
+
+        AssertableDocument::createFromString('<form><input type="hidden" name="_method" value="DELETE"></form>', LIBXML_HTML_NOIMPLIED)
+            ->querySelector('form')
+            ->assertMethodDelete();
+
+        // Form Uploads
+        AssertableDocument::createFromString('<form enctype="multipart/form-data"><input type="file"></form>', LIBXML_HTML_NOIMPLIED)
+            ->querySelector('form')
+            ->assertAcceptsUpload();
     }
 
     // <form method="get" action="/foo/bar" enctype="multipart/form-data" id="foo" class="bar">
