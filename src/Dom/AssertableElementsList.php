@@ -33,7 +33,7 @@ final readonly class AssertableElementsList implements ArrayAccess, Countable, I
     {
         $this->elements = array_values(
             array_map(
-                fn (HTMLElement|Element $element): AssertableElement => new AssertableElement($element),
+                fn (HTMLElement|Element $element): AssertableElement => new AssertableElement($element)->promote(),
                 $nodes instanceof NodeList
                     ? iterator_to_array($nodes)
                     : $this->htmlCollectionToArray($nodes),
