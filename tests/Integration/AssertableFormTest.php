@@ -41,17 +41,4 @@ class AssertableFormTest extends TestCase
             ->querySelector('form')
             ->assertAcceptsUpload();
     }
-
-    // <form method="get" action="/foo/bar" enctype="multipart/form-data" id="foo" class="bar">
-    // <!-- Inputs -->
-    // <label>Name <input type="text" name="name" value="Foo Bar"></label>
-    // <label>Age <input type="number" name="age" value="42"></label>
-    //
-    // <!-- Upload Inputs -->
-    // <label>File <input type="file" name="file"></label>
-    //
-    // <!-- Submits -->
-    // <button type="submit">Save</button>
-    // </form>
-
 }
