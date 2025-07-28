@@ -16,6 +16,7 @@ class AssertsManyTest extends TestCase
         try {
             $object = $this->getAssertsMany();
             $object->assertMany(function () {
+                PHPUnit::assertSame('Foo', 'Foo');
                 PHPUnit::assertSame('Foo', 'Bar', 'Foo is not Bar');
             }, 'The test assertion failed');
         } catch (AssertionFailedError $exception) {
