@@ -13,7 +13,7 @@ class TestComponentMixins
     public function assertableHtml(): Closure
     {
         return function (int $options = LIBXML_HTML_NOIMPLIED, ?string $overrideEncoding = null): AssertableDocument {
-            return AssertableDocument::createFromString((string) $this->rendered, $options, $overrideEncoding);
+            return AssertableDocument::createFromString((string) $this, $options, $overrideEncoding);
         };
     }
 
